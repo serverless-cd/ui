@@ -1,116 +1,93 @@
-import React, { FC } from 'react';
-import ReactFlow, { Background, MarkerType, Position, Node } from 'reactflow/dist/umd';
+import React, { FC, useEffect } from 'react';
+import ReactFlow, {
+  Background,
+  MarkerType,
+  Position,
+  Node,
+  Edge,
+  useNodesState,
+  useEdgesState,
+} from 'reactflow';
 
-const edges = [
-  {
-    id: '0',
-    source: '0',
-    target: '1',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '1',
-    source: '1',
-    target: '2',
-    type: 'smoothstep',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '2',
-    source: '2',
-    target: '3',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '3',
-    source: '3',
-    target: '4',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '4',
-    source: '4',
-    target: '5',
-    type: 'smoothstep',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '5',
-    source: '5',
-    target: '6',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-  {
-    id: '6',
-    source: '6',
-    target: '7',
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-];
-
+interface INode extends Node {
+  key?: string;
+  label?: string;
+}
 interface PipelineInitNodeProps {
-  nodes: Node[];
+  nodes: INode[];
+  refreshIndex?: number;
+  onClick?: (node: INode) => void;
 }
 
-const PipelineInitNode: FC<PipelineInitNodeProps> = ({ nodes }) => {
-  const getNodes = (nodes) => {
-    const newNodes = [];
-    for (const index in nodes) {
-      const node = nodes[index];
-      const obj: Node = {
-        id: index,
-        data: {
-          label: node.label,
-        },
-        position: { x: Number(index) * 200, y: 0 },
-        draggable: false,
-        connectable: false,
-        ...node,
-      };
-      if (index === '0') {
-        obj.type = 'input';
-        obj.sourcePosition = Position.Right;
-      } else if (index === String(nodes.length - 1)) {
-        obj.type = 'output';
-        obj.targetPosition = Position.Left;
-      } else {
-        obj.sourcePosition = Position.Right;
-        obj.targetPosition = Position.Left;
-      }
-      newNodes.push(obj);
+const getData = (nodes: INode[]) => {
+  const newNodes = [];
+  const newEdges = [];
+  let gap = 0;
+  let lastNode = {} as INode;
+  for (const index in nodes) {
+    const node = nodes[index];
+    // node
+    if (index !== '0') {
+      gap += lastNode.className === 'circle' ? 110 : 200;
     }
-    console.log(newNodes, 'newNodes');
+    const nodeObj: INode = {
+      id: index,
+      data: {
+        label: node.label,
+      },
+      position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
+      draggable: false,
+      connectable: false,
+      ...node,
+    };
+    if (index === '0') {
+      nodeObj.type = 'input';
+      nodeObj.sourcePosition = Position.Right;
+    } else if (index === String(nodes.length - 1)) {
+      nodeObj.type = 'output';
+      nodeObj.targetPosition = Position.Left;
+    } else {
+      nodeObj.sourcePosition = Position.Right;
+      nodeObj.targetPosition = Position.Left;
+    }
+    newNodes.push(nodeObj);
+    // edge
+    const edgeObj: Edge = {
+      id: index,
+      source: index,
+      target: String(Number(index) + 1),
+      animated: true,
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+      },
+    };
+    newEdges.push(edgeObj);
+    lastNode = nodeObj;
+  }
+  console.log('newNodes', newNodes);
+  console.log('newEdges', newEdges);
+  return { newNodes, newEdges };
+};
 
-    return newNodes;
-  };
+const PipelineInitNode: FC<PipelineInitNodeProps> = (props) => {
+  const { nodes: originNodes, refreshIndex, onClick } = props;
+  const [nodes, setNodes] = useNodesState([]);
+  const [edges, setEdges] = useEdgesState([]);
+  useEffect(() => {
+    const { newNodes, newEdges } = getData(originNodes);
+    setNodes(newNodes);
+    setEdges(newEdges);
+  }, []);
+  useEffect(() => {
+    if (refreshIndex > 0) {
+      setNodes(nodes.map((node) => ({ ...node, selected: false })));
+    }
+  }, [refreshIndex]);
   return (
     <ReactFlow
-      nodes={getNodes(nodes)}
+      nodes={nodes}
       edges={edges}
-      onNodeClick={(e, node) => {
-        console.log('onNodeClick', node);
-      }}
+      onNodeClick={(e, node) => onClick && onClick(node)}
       fitView
     >
       <Background color="#aaa" gap={16} />

@@ -3,15 +3,15 @@
 Demo:
 
 ```tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { PipelineInitNode } from '@xsahxl/pipeline-ui';
 
 export default () => {
+  const [refreshIndex, setFreshIndex] = useState(0);
   const nodes = [
     {
       label: <div>开始</div>,
       className: 'circle',
-      gap: 150,
     },
     {
       label: <div>代码源</div>,
@@ -36,9 +36,13 @@ export default () => {
       className: 'circle',
     },
   ];
+  const onClick = (node) => {
+    console.log('onClick', node);
+  };
   return (
     <div style={{ height: 200 }}>
-      <PipelineInitNode nodes={nodes} />
+      <PipelineInitNode nodes={nodes} refreshIndex={refreshIndex} onClick={onClick} />
+      <button onClick={() => setFreshIndex(Date.now())}>取消选中</button>
     </div>
   );
 };

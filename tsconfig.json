@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "es2015", "es2017"],
-    "allowJs": false,
-    "jsx": "react",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "outDir": "dist"
-  },
-  "include": ["src"]
+    "jsx": "react",
+    "esModuleInterop": true,
+    "types": ["jest"],
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": true
+  }
 }

@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "es5",
+    "lib": ["dom", "es2015", "es2017"],
+    "allowJs": false,
     "jsx": "react",
-    "esModuleInterop": true,
-    "types": ["jest"],
-    "strict": true,
     "skipLibCheck": true,
-    "declaration": true
-  }
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "outDir": "dist"
+  },
+  "include": ["src"]
 }

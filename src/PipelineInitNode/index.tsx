@@ -7,7 +7,7 @@ import ReactFlow, {
   Edge,
   useNodesState,
   useEdgesState,
-} from 'reactflow';
+} from 'react-flow-renderer';
 
 interface INode extends Node {
   key?: string;

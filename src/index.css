@@ -15,3 +15,6 @@
   border-color: #0070cc;
   box-shadow: 0 0 0 0.5px #0070cc;
 }
+.react-flow__attribution {
+  display: none;
+}

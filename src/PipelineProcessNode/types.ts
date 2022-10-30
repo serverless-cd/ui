@@ -15,6 +15,5 @@ export interface INode extends Node {
 }
 export interface PipelineProcessNodeProps {
   nodes: INode[];
-  refreshIndex?: number;
   onClick?: (node: INode) => void;
 }

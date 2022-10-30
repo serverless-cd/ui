@@ -66,19 +66,14 @@ const getData = (nodes: INode[]) => {
 };
 
 const PipelineProcessNode: FC<PipelineProcessNodeProps> = (props) => {
-  const { nodes: originNodes, refreshIndex, onClick } = props;
+  const { nodes: originNodes, onClick } = props;
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
   useEffect(() => {
     const { newNodes, newEdges } = getData(originNodes);
     setNodes(newNodes);
     setEdges(newEdges);
-  }, []);
-  useEffect(() => {
-    if (refreshIndex > 0) {
-      setNodes(nodes.map((node) => ({ ...node, selected: false })));
-    }
-  }, [refreshIndex]);
+  }, [originNodes]);
   return (
     <ReactFlow
       nodes={nodes}

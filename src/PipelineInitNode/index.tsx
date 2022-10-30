@@ -15,7 +15,6 @@ interface INode extends Node {
 }
 interface PipelineInitNodeProps {
   nodes: INode[];
-  refreshIndex?: number;
   onClick?: (node: INode) => void;
 }
 
@@ -70,19 +69,15 @@ const getData = (nodes: INode[]) => {
 };
 
 const PipelineInitNode: FC<PipelineInitNodeProps> = (props) => {
-  const { nodes: originNodes, refreshIndex, onClick } = props;
+  const { nodes: originNodes, onClick } = props;
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
   useEffect(() => {
+    console.log('originNodes', originNodes);
     const { newNodes, newEdges } = getData(originNodes);
     setNodes(newNodes);
     setEdges(newEdges);
-  }, []);
-  useEffect(() => {
-    if (refreshIndex > 0) {
-      setNodes(nodes.map((node) => ({ ...node, selected: false })));
-    }
-  }, [refreshIndex]);
+  }, [originNodes]);
   return (
     <ReactFlow
       nodes={nodes}

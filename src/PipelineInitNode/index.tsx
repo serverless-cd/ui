@@ -8,6 +8,7 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from 'react-flow-renderer';
+import './index.less';
 
 interface INode extends Node {
   key?: string;
@@ -80,6 +81,14 @@ const PipelineInitNode: FC<PipelineInitNodeProps> = (props) => {
   }, [originNodes]);
   return (
     <ReactFlow
+      className="serverless-cd-pipeline-init-container"
+      nodesDraggable={false}
+      zoomOnScroll={false}
+      zoomOnPinch={false}
+      zoomOnDoubleClick={false}
+      minZoom={1}
+      maxZoom={1}
+      panOnScroll={false}
       nodes={nodes}
       edges={edges}
       onNodeClick={(e, node) => onClick && onClick(node)}

@@ -7,8 +7,9 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from 'react-flow-renderer';
-import { INode, PipelineProcessNodeProps } from './types';
+import { INode, PipelineProcessNodeProps, STATUS_COLOR, NodeStatus } from './types';
 import Icon from './Icon';
+import './index.less';
 
 const getData = (nodes: INode[]) => {
   const newNodes = [];
@@ -25,16 +26,21 @@ const getData = (nodes: INode[]) => {
       id: index,
       data: {
         label: (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className={`custom-node-container`}>
             {node.status && <Icon type={node.status} />}
-            {node.label}
+            <div className="node_label"> {node.label}</div>
           </div>
         ),
       },
       position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
       draggable: false,
       connectable: false,
+      className: `status-${node.status}`,
+      style: {
+        borderTop: `2px solid ${STATUS_COLOR[node.status] || STATUS_COLOR.pending}`,
+      },
       ...node,
+      selectable: node.status !== NodeStatus.PENDING,
     };
     if (index === '0') {
       nodeObj.type = 'input';
@@ -52,7 +58,6 @@ const getData = (nodes: INode[]) => {
       id: index,
       source: index,
       target: String(Number(index) + 1),
-      animated: true,
       markerEnd: {
         type: MarkerType.ArrowClosed,
       },
@@ -76,6 +81,14 @@ const PipelineProcessNode: FC<PipelineProcessNodeProps> = (props) => {
   }, [originNodes]);
   return (
     <ReactFlow
+      className="serverless-cd-pipeline-process-container"
+      nodesDraggable={false}
+      zoomOnScroll={false}
+      zoomOnPinch={false}
+      zoomOnDoubleClick={false}
+      minZoom={1}
+      maxZoom={1}
+      panOnScroll={false}
       nodes={nodes}
       edges={edges}
       onNodeClick={(e, node) => onClick && onClick(node)}

@@ -8,16 +8,12 @@ import { PipelineProcessNode } from '@xsahxl/pipeline-ui';
 
 const defaultNodes = [
   {
-    label: <div>开始</div>,
-    className: 'circle',
-  },
-  {
     label: <div>代码源</div>,
     status: 'success',
   },
   {
     label: <div>前置检查</div>,
-    status: 'success',
+    status: 'running',
     // type: 'group',
   },
   {
@@ -39,10 +35,6 @@ const defaultNodes = [
   {
     label: <div>发布</div>,
     status: 'pending',
-  },
-  {
-    label: <div>结束</div>,
-    className: 'circle',
   },
 ];
 

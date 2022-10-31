@@ -1,0 +1,90 @@
+@success: #52c41a;
+@bgSuccess: #e5f6dd;
+
+@running: #479dff;
+@bgRunning: #e3f0ff;
+
+@warn: rgb(255, 164, 61);
+@bgWarn: #fff2cc;
+
+@failure: #f5222d;
+@bgFailure: #fddee0;
+
+.serverless-cd-pipeline-process-container {
+  .react-flow__attribution {
+    display: none;
+  }
+  .react-flow__node {
+    width: 120px;
+    padding: 4px 8px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    .custom-node-container {
+      display: flex;
+      align-items: center;
+      //   justify-content: center;
+    }
+    .react-flow__handle {
+      background-color: #999;
+    }
+    .node-status-icon {
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+    }
+    .node-status-icon-running {
+      animation: spin 1s linear infinite;
+    }
+    .node-label {
+      width: 120px;
+      overflow: hidden;
+      color: rgba(0, 0, 0, 0.85);
+      font-size: 12px;
+      line-height: 20px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    &.status-pending {
+      cursor: not-allowed;
+    }
+    &.selected {
+      font-weight: bold;
+      box-shadow: unset !important;
+      &.status-success {
+        background-color: @bgSuccess;
+        border-right-color: @success !important;
+        border-bottom-color: @success !important;
+        border-left-color: @success !important;
+      }
+      &.status-running {
+        background-color: @bgRunning;
+        border-right-color: @running !important;
+        border-bottom-color: @running !important;
+        border-left-color: @running !important;
+      }
+      &.status-warn {
+        background-color: @bgWarn;
+        border-right-color: @warn !important;
+        border-bottom-color: @warn !important;
+        border-left-color: @warn !important;
+      }
+      &.status-failure {
+        background-color: @bgFailure;
+        border-right-color: @failure !important;
+        border-bottom-color: @failure !important;
+        border-left-color: @failure !important;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

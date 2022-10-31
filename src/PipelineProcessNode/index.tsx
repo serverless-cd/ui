@@ -7,22 +7,29 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
 } from 'react-flow-renderer';
-import { INode, PipelineProcessNodeProps, STATUS_COLOR, NodeStatus } from './types';
+import {
+  IPipelineProcessNode,
+  IPipelineProcessNodeProps,
+  IPipelineProcessNodeStatusColor,
+  IPipelineProcessNodeStatus,
+} from './types';
 import Icon from './Icon';
 import './index.less';
 
-const getData = (nodes: INode[]) => {
+export * from './types';
+
+const getData = (nodes: IPipelineProcessNode[]) => {
   const newNodes = [];
   const newEdges = [];
   let gap = 0;
-  let lastNode = {} as INode;
+  let lastNode = {} as IPipelineProcessNode;
   for (const index in nodes) {
     const node = nodes[index];
     // node
     if (index !== '0') {
       gap += lastNode.className === 'circle' ? 110 : 200;
     }
-    const nodeObj: INode = {
+    const nodeObj: IPipelineProcessNode = {
       id: index,
       data: {
         label: (
@@ -37,10 +44,12 @@ const getData = (nodes: INode[]) => {
       connectable: false,
       className: `status-${node.status}`,
       style: {
-        borderTop: `2px solid ${STATUS_COLOR[node.status] || STATUS_COLOR.pending}`,
+        borderTop: `2px solid ${
+          IPipelineProcessNodeStatusColor[node.status] || IPipelineProcessNodeStatusColor.pending
+        }`,
       },
       ...node,
-      selectable: node.status !== NodeStatus.PENDING,
+      selectable: node.status !== IPipelineProcessNodeStatus.PENDING,
     };
     if (index === '0') {
       nodeObj.type = 'input';
@@ -70,7 +79,7 @@ const getData = (nodes: INode[]) => {
   return { newNodes, newEdges };
 };
 
-const PipelineProcessNode: FC<PipelineProcessNodeProps> = (props) => {
+export const PipelineProcessNode: FC<IPipelineProcessNodeProps> = (props) => {
   const { nodes: originNodes, onClick } = props;
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
@@ -98,5 +107,3 @@ const PipelineProcessNode: FC<PipelineProcessNodeProps> = (props) => {
     </ReactFlow>
   );
 };
-
-export default PipelineProcessNode;

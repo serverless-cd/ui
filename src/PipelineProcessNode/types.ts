@@ -1,6 +1,6 @@
 import { Node } from 'react-flow-renderer';
 
-export enum NodeStatus {
+export enum IPipelineProcessNodeStatus {
   PENDING = 'pending',
   RUNNING = 'running',
   SUCCESS = 'success',
@@ -8,7 +8,7 @@ export enum NodeStatus {
   WARN = 'warn',
 }
 
-export enum STATUS_COLOR {
+export enum IPipelineProcessNodeStatusColor {
   pending = '#999',
   running = '#479DFF',
   success = '#52C41A',
@@ -16,12 +16,12 @@ export enum STATUS_COLOR {
   warn = 'rgb(255, 164, 61)',
 }
 
-export interface INode extends Node {
+export interface IPipelineProcessNode extends Node {
   key?: string;
   label?: string;
-  status?: `${NodeStatus}`;
+  status?: `${IPipelineProcessNodeStatus}`;
 }
-export interface PipelineProcessNodeProps {
-  nodes: INode[];
-  onClick?: (node: INode) => void;
+export interface IPipelineProcessNodeProps {
+  nodes: IPipelineProcessNode[];
+  onClick?: (node: IPipelineProcessNode) => void;
 }

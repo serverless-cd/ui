@@ -4,32 +4,34 @@ Demo:
 
 ```tsx
 import React, { useState } from 'react';
-import { PipelineProcessNode } from '@serverless-cd/pipeline-ui';
+import { PipelineProcessNode, IPipelineProcessNodeStatus } from '@serverless-cd/pipeline-ui';
+
+console.log(IPipelineProcessNodeStatus);
 
 const defaultNodes = [
   {
     label: <div>代码源</div>,
-    status: 'success',
+    status: IPipelineProcessNodeStatus.SUCCESS,
   },
   {
     label: <div>前置检查</div>,
-    status: 'running',
+    status: IPipelineProcessNodeStatus.RUNNING,
   },
   {
     label: <div>构建部署</div>,
-    status: 'warn',
+    status: IPipelineProcessNodeStatus.WARN,
   },
   {
     label: <div>灰度</div>,
-    status: 'failure',
+    status: IPipelineProcessNodeStatus.FAILURE,
   },
   {
     label: <div>审批</div>,
-    status: 'pending',
+    status: IPipelineProcessNodeStatus.PENDING,
   },
   {
     label: <div>发布</div>,
-    status: 'pending',
+    status: IPipelineProcessNodeStatus.PENDING,
   },
 ];
 
@@ -39,12 +41,12 @@ export default () => {
     console.log('onClick', node);
   };
   return (
-    <div style={{ height: 200 }}>
+    <>
       <PipelineProcessNode nodes={nodes} onClick={onClick} />
       <button onClick={() => setNodes(nodes.map((node) => ({ ...node, selected: false })))}>
         取消选中
       </button>
-    </div>
+    </>
   );
 };
 ```

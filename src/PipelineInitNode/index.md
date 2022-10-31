@@ -41,12 +41,12 @@ export default () => {
     console.log('onClick', node);
   };
   return (
-    <div style={{ height: 200 }}>
+    <>
       <PipelineInitNode nodes={nodes} onClick={onClick} />
       <button onClick={() => setNodes(nodes.map((node) => ({ ...node, selected: false })))}>
         取消选中
       </button>
-    </div>
+    </>
   );
 };
 ```

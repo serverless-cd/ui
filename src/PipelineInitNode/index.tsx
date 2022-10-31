@@ -10,27 +10,27 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import './index.less';
 
-interface INode extends Node {
+export interface IPipelineInitNode extends Node {
   key?: string;
   label?: string;
 }
-interface PipelineInitNodeProps {
-  nodes: INode[];
-  onClick?: (node: INode) => void;
+export interface IPipelineInitNodeProps {
+  nodes: IPipelineInitNode[];
+  onClick?: (node: IPipelineInitNode) => void;
 }
 
-const getData = (nodes: INode[]) => {
+const getData = (nodes: IPipelineInitNode[]) => {
   const newNodes = [];
   const newEdges = [];
   let gap = 0;
-  let lastNode = {} as INode;
+  let lastNode = {} as IPipelineInitNode;
   for (const index in nodes) {
     const node = nodes[index];
     // node
     if (index !== '0') {
       gap += lastNode.className === 'circle' ? 110 : 200;
     }
-    const nodeObj: INode = {
+    const nodeObj: IPipelineInitNode = {
       id: index,
       data: {
         label: node.label,
@@ -69,7 +69,7 @@ const getData = (nodes: INode[]) => {
   return { newNodes, newEdges };
 };
 
-const PipelineInitNode: FC<PipelineInitNodeProps> = (props) => {
+export const PipelineInitNode: FC<IPipelineInitNodeProps> = (props) => {
   const { nodes: originNodes, onClick } = props;
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
@@ -98,5 +98,3 @@ const PipelineInitNode: FC<PipelineInitNodeProps> = (props) => {
     </ReactFlow>
   );
 };
-
-export default PipelineInitNode;

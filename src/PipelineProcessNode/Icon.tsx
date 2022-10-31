@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { NodeStatus } from './types';
+import { IPipelineProcessNodeStatus } from './types';
 
 interface IconProps {
-  type: `${NodeStatus}`;
+  type: `${IPipelineProcessNodeStatus}`;
 }
 
 enum STATUS_ICON {
@@ -15,18 +15,18 @@ enum STATUS_ICON {
 
 const Icon: FC<IconProps> = ({ type }) => {
   switch (type) {
-    case NodeStatus.SUCCESS:
+    case IPipelineProcessNodeStatus.SUCCESS:
       return <img className="node-status-icon" src={STATUS_ICON.SUCCESS}></img>;
-    case NodeStatus.WARN:
+    case IPipelineProcessNodeStatus.WARN:
       return <img className="node-status-icon" src={STATUS_ICON.WARN}></img>;
 
-    case NodeStatus.FAILURE:
+    case IPipelineProcessNodeStatus.FAILURE:
       return <img className="node-status-icon" src={STATUS_ICON.FAILURE}></img>;
 
-    case NodeStatus.PENDING:
+    case IPipelineProcessNodeStatus.PENDING:
       return <img className="node-status-icon" src={STATUS_ICON.PENDING}></img>;
 
-    case NodeStatus.RUNNING:
+    case IPipelineProcessNodeStatus.RUNNING:
       return (
         <img className="node-status-icon node-status-icon-running" src={STATUS_ICON.RUNNING}></img>
       );

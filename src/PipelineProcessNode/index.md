@@ -4,7 +4,7 @@ Demo:
 
 ```tsx
 import React, { useState } from 'react';
-import { PipelineProcessNode } from '@xsahxl/pipeline-ui';
+import { PipelineProcessNode } from '@serverless-cd/pipeline-ui';
 
 const defaultNodes = [
   {
@@ -14,19 +14,14 @@ const defaultNodes = [
   {
     label: <div>前置检查</div>,
     status: 'running',
-    // type: 'group',
   },
   {
     label: <div>构建部署</div>,
     status: 'warn',
-    // parentNode: '2',
-    // extent: 'parent',
   },
   {
     label: <div>灰度</div>,
     status: 'failure',
-    // parentNode: '2',
-    // extent: 'parent',
   },
   {
     label: <div>审批</div>,

@@ -1,6 +1,6 @@
 {
-  "name": "@xsahxl/pipeline-ui",
-  "version": "0.0.1-beta.11",
+  "name": "@serverless-cd/pipeline-ui",
+  "version": "0.0.1",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -29,8 +29,7 @@
     ]
   },
   "dependencies": {
-    "react-flow-renderer": "^10.3.17",
-    "reactflow": "^11.1.2"
+    "react-flow-renderer": "^10.3.17"
   },
   "peerDependencies": {
     "react": "16 || 17 || 18",

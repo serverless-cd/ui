@@ -4,7 +4,7 @@ Demo:
 
 ```tsx
 import React, { useState } from 'react';
-import { PipelineInitNode } from '@xsahxl/pipeline-ui';
+import { PipelineInitNode } from '@serverless-cd/pipeline-ui';
 
 const defaultNodes = [
   {

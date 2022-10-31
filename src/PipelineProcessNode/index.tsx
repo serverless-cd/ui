@@ -95,7 +95,6 @@ export const PipelineProcessNode: FC<IPipelineProcessNodeProps> = (props) => {
       zoomOnScroll={false}
       zoomOnPinch={false}
       zoomOnDoubleClick={false}
-      minZoom={1}
       maxZoom={1}
       panOnScroll={false}
       nodes={nodes}

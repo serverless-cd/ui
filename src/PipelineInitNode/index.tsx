@@ -11,8 +11,8 @@ import ReactFlow, {
 import './index.less';
 
 export interface IPipelineInitNode extends Node {
-  key?: string;
   label?: string;
+  [key: string]: any;
 }
 export interface IPipelineInitNodeProps {
   nodes: IPipelineInitNode[];

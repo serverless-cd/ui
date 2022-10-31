@@ -17,9 +17,9 @@ export enum IPipelineProcessNodeStatusColor {
 }
 
 export interface IPipelineProcessNode extends Node {
-  key?: string;
   label?: string;
   status?: `${IPipelineProcessNodeStatus}`;
+  [key: string]: any;
 }
 export interface IPipelineProcessNodeProps {
   nodes: IPipelineProcessNode[];

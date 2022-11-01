@@ -1,5 +1,3 @@
-import { Node } from 'react-flow-renderer';
-
 export enum IPipelineProcessNodeStatus {
   PENDING = 'pending',
   RUNNING = 'running',
@@ -15,10 +13,11 @@ export enum IPipelineProcessNodeStatusColor {
   failure = '#F5222D',
   warn = 'rgb(255, 164, 61)',
 }
-
-export interface IPipelineProcessNode extends Node {
-  label?: string;
+export interface IPipelineProcessNode {
+  label: string;
   status?: `${IPipelineProcessNodeStatus}`;
+  selected?: boolean;
+  selectable?: boolean;
   [key: string]: any;
 }
 export interface IPipelineProcessNodeProps {

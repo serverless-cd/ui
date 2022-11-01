@@ -18,7 +18,10 @@ const defaultNodes = [
     label: <div>前置检查</div>,
   },
   {
-    label: <div>构建部署</div>,
+    label: <div>构建部署(Build/Deploy)</div>,
+    style: {
+      width: 160,
+    },
   },
   {
     label: <div>灰度</div>,

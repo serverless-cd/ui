@@ -27,7 +27,12 @@ const getData = (nodes: IPipelineProcessNode[]) => {
     const node = nodes[index];
     // node
     if (index !== '0') {
-      gap += lastNode.className === 'circle' ? 110 : 200;
+      gap +=
+        lastNode.className === 'circle'
+          ? 110
+          : typeof lastNode.style?.width === 'number'
+          ? lastNode.style?.width + 50
+          : 200;
     }
     const nodeObj: IPipelineProcessNode = {
       id: index,

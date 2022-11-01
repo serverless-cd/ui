@@ -3,15 +3,16 @@ import ReactFlow, {
   Background,
   MarkerType,
   Position,
-  Node,
   Edge,
   useNodesState,
   useEdgesState,
 } from 'react-flow-renderer';
 import './index.less';
 
-export interface IPipelineInitNode extends Node {
-  label?: string;
+export interface IPipelineInitNode {
+  label: string;
+  selected?: boolean;
+  selectable?: boolean;
   [key: string]: any;
 }
 export interface IPipelineInitNodeProps {
@@ -28,7 +29,12 @@ const getData = (nodes: IPipelineInitNode[]) => {
     const node = nodes[index];
     // node
     if (index !== '0') {
-      gap += lastNode.className === 'circle' ? 110 : 200;
+      gap +=
+        lastNode.className === 'circle'
+          ? 110
+          : typeof lastNode.style?.width === 'number'
+          ? lastNode.style?.width + 50
+          : 200;
     }
     const nodeObj: IPipelineInitNode = {
       id: index,

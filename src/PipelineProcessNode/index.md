@@ -4,7 +4,7 @@ Demo:
 
 ```tsx
 import React, { useState } from 'react';
-import { PipelineProcessNode, IPipelineProcessNodeStatus } from '@serverless-cd/pipeline-ui';
+import { PipelineProcessNode, IPipelineProcessNodeStatus } from '@serverless-cd/ui';
 
 console.log(IPipelineProcessNodeStatus);
 

@@ -3,9 +3,9 @@
 Demo:
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-
+import { Field } from '@alicloud/console-components';
 import { Trigger } from '@serverless-cd/ui';
 
 // 使用方式1
@@ -23,7 +23,25 @@ import { Trigger } from '@serverless-cd/ui';
 // };
 
 export default () => {
-  return <Trigger />;
+  const field = Field.useField();
+  const { init, getValue, setValue } = field;
+  const initValue = {
+    push: {
+      branches: {
+        prefix: ['1'],
+        precise: ['1'],
+      },
+      tags: {
+        prefix: ['22'],
+      },
+    },
+  };
+
+  useEffect(() => {
+    console.log(getValue('trigger'), 'trigger');
+  }, [getValue('trigger')]);
+
+  return <Trigger {...init('trigger', { initValue })} />;
 };
 ```
 

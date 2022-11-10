@@ -6,7 +6,7 @@ import { Field } from '@alicloud/console-components';
 import { TriggerTypes } from './constants';
 import './index.less';
 
-const uniTriggers = (trigger) => {
+const uniqOrOmitTriggers = (trigger) => {
   const newTrigger = {};
   map(['push.branches', 'push.tags', 'pr.branches', 'pr.tags'], (item) => {
     const matchType = get(trigger, item, {});
@@ -41,7 +41,7 @@ const Trigger = (props: TriggersProps) => {
       trigger['pr'] = pr;
     }
 
-    trigger = uniTriggers(trigger);
+    trigger = uniqOrOmitTriggers(trigger);
 
     onChange(trigger);
   }, [getValue('push'), getValue('pr')]);

@@ -6,7 +6,7 @@ import { TriggerTypeProps } from './types';
 import { isEmpty, map, get } from 'lodash';
 
 const TriggerType = (props: TriggerTypeProps) => {
-  const { labelKey, value, setValue } = props;
+  const { labelKey, value, onChange } = props;
   const [triggerChecked, setTriggerChecked] = useState(false);
 
   useEffect(() => {
@@ -16,14 +16,14 @@ const TriggerType = (props: TriggerTypeProps) => {
   const triggerChange = (checked) => {
     setTriggerChecked(checked);
     if (checked) {
-      setValue(labelKey, { ...value, branches: { prefix: [] } });
+      matchTypeChange({ ...value, branches: { prefix: [] } });
     } else {
-      setValue(labelKey, {});
+      matchTypeChange({});
     }
   };
 
-  const matchTypeChange = (v, matchLabelKey) => {
-    setValue(labelKey, { ...value, [matchLabelKey]: v });
+  const matchTypeChange = (value) => {
+    onChange(value);
   };
 
   return (
@@ -39,7 +39,7 @@ const TriggerType = (props: TriggerTypeProps) => {
               triggerChecked={triggerChecked}
               labelKey={matchLabelKey}
               triggerValues={get(value, matchLabelKey, {})}
-              onChange={(value) => matchTypeChange(value, matchLabelKey)}
+              onChange={(v) => matchTypeChange({ ...value, [matchLabelKey]: v })}
               key={labelKey + matchLabelKey}
             />
           );

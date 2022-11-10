@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Input, Select } from '@alicloud/console-components';
+import { Checkbox } from '@alicloud/console-components';
 import { isEmpty, keys, map, uniqueId, noop, get } from 'lodash';
-import { MatchRuleDataSource, MatchTypeCheckedLabel } from './constants';
+import { MatchTypeCheckedLabel } from './constants';
 import { MatchTypeProps } from './types';
 import MatchTypeValue from './MatchTypeValue';
 

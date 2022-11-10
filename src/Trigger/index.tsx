@@ -25,26 +25,26 @@ const uniqOrOmitTriggers = (trigger) => {
 const Trigger = (props: TriggersProps) => {
   const { value, onChange = noop } = props;
   const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
-  const field = Field.useField();
-  const { init, getValue, setValue } = field;
+  const field = Field.useField({
+    onChange: () => {
+      const push = field.getValue('push');
+      const pr = field.getValue('pr');
+      let trigger = {};
 
-  useEffect(() => {
-    const push = getValue('push');
-    const pr = getValue('pr');
-    let trigger = {};
+      if (!isEmpty(push)) {
+        trigger['push'] = push;
+      }
 
-    if (!isEmpty(push)) {
-      trigger['push'] = push;
-    }
+      if (!isEmpty(pr)) {
+        trigger['pr'] = pr;
+      }
 
-    if (!isEmpty(pr)) {
-      trigger['pr'] = pr;
-    }
+      trigger = uniqOrOmitTriggers(trigger);
 
-    trigger = uniqOrOmitTriggers(trigger);
-
-    onChange(trigger);
-  }, [getValue('push'), getValue('pr')]);
+      onChange(trigger);
+    },
+  });
+  const { init, setValue } = field;
 
   return (
     <>

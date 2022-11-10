@@ -29,13 +29,16 @@
     ]
   },
   "dependencies": {
+    "js-cookie": "^3.0.1",
     "react-flow-renderer": "^10.3.17"
   },
   "peerDependencies": {
+    "@alicloud/console-components": "^1.5.10",
+    "moment": "^2.29.4",
     "react": "16 || 17 || 18",
     "react-dom": "16 || 17 || 18",
-    "@alicloud/console-components": "^1.5.10",
-    "moment": "^2.29.4"
+    "lodash": "^4.17.21",
+    "js-cookie": "^3.0.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -52,6 +55,7 @@
     "father": "^4.0.0-rc.2",
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "prettier": "^2.2.1",
     "react": "^18.2.0",

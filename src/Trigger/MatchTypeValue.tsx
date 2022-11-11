@@ -19,7 +19,7 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
       const formaValues = {};
       map(branchList, (item) => {
         if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
-        formaValues[item.type].push(item.value);
+        item.value && formaValues[item.type].push(item.value);
       });
       onChange(formaValues);
     }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TriggerType from './TriggerType';
 import { TriggersProps } from './types';
-import { map, get, noop, isEmpty, keys, uniq, set } from 'lodash';
+import { map, get, noop, isEmpty, keys, uniq, set, omit } from 'lodash';
 import { Field } from '@alicloud/console-components';
 import { TriggerTypes } from './constants';
 import './index.less';
@@ -9,11 +9,15 @@ import './index.less';
 const uniqOrOmitTriggers = (trigger) => {
   const newTrigger = {};
   map(['push.branches', 'push.tags', 'pr.branches', 'pr.tags'], (item) => {
-    const matchType = get(trigger, item, {});
+    let matchType = get(trigger, item, {});
     if (!isEmpty(matchType)) {
       map(keys(matchType), (matchKey) => {
         if (matchType[matchKey].length > 1) {
           matchType[matchKey] = uniq(matchType[matchKey]);
+        }
+
+        if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix') {
+          matchType = omit(matchType, [matchKey]);
         }
       });
       set(newTrigger, item, matchType);
@@ -25,6 +29,7 @@ const uniqOrOmitTriggers = (trigger) => {
 const Trigger = (props: TriggersProps) => {
   const { value, onChange = noop } = props;
   const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
+
   const field = Field.useField({
     onChange: () => {
       const push = field.getValue('push');

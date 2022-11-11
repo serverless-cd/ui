@@ -77,15 +77,9 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
               />
             </div>
             {branchList.length > 1 && (
-              <Button
-                type="primary"
-                text
-                onClick={() => handleDelete(id)}
-                style={{ position: 'absolute', height: '100%', right: -20 }}
-                className="mt-6 ml-8"
-              >
-                <Icon type="delete" />
-              </Button>
+              <div onClick={() => handleDelete(id)} className="trigger-matching-delete-icon">
+                <Icon type="delete" size="xs" />
+              </div>
             )}
           </div>
         );

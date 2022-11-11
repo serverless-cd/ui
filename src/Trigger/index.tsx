@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TriggerType from './TriggerType';
 import { TriggersProps } from './types';
 import { map, get, noop, isEmpty, keys, uniq, set } from 'lodash';

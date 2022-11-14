@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Checkbox } from '@alicloud/console-components';
-import { isEmpty, keys, map, uniqueId, noop, get } from 'lodash';
+import { isEmpty, keys, map, uniqueId, noop } from 'lodash';
 import { MatchTypeCheckedLabel } from './constants';
 import { MatchTypeProps } from './types';
 import MatchTypeValue from './MatchTypeValue';
@@ -33,7 +33,7 @@ const MatchType = (props: MatchTypeProps) => {
   };
 
   return (
-    <div style={{ padding: '16px 26px', display: triggerChecked ? 'block' : 'none' }}>
+    <div style={{ padding: '16px 0 16px 26px', display: triggerChecked ? 'block' : 'none' }}>
       <Checkbox checked={matchChecked} onChange={matchChange}>
         {MatchTypeCheckedLabel[labelKey]}
       </Checkbox>

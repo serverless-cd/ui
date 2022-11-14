@@ -22,6 +22,6 @@ export interface TriggerTypeProps {
 }
 
 export interface TriggersProps {
-  value: object;
+  value?: object;
   onChange: Function;
 }

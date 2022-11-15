@@ -24,4 +24,11 @@ export interface TriggerTypeProps {
 export interface TriggersProps {
   value?: object;
   onChange: Function;
+  mode?: string;
+}
+
+export interface StrictModeProps {
+  triggerValues: object;
+  value?: object | any;
+  onChange: Function;
 }

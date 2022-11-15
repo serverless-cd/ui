@@ -19,12 +19,12 @@ export const MatchRuleDataSource = [
   },
 ];
 
-enum TriggerType {
+export enum TriggerType {
   PUSH = 'push',
   PR = 'pr',
 }
 
-enum MatchType {
+export enum MatchType {
   BRANCHES = 'branches',
   TAGS = 'tags',
 }

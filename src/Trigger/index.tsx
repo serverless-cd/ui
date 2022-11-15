@@ -3,10 +3,11 @@ import TriggerType from './TriggerType';
 import { TriggersProps } from './types';
 import { map, get, noop, isEmpty, keys, uniq, set, omit } from 'lodash';
 import { Field } from '@alicloud/console-components';
+import StrictModeTrigger from './StrictMode';
 import { TriggerTypes } from './constants';
 import './index.less';
 
-const uniqOrOmitTriggers = (trigger) => {
+const uniqOrOmitTriggers = (trigger, mode) => {
   const newTrigger = {};
   map(['push.branches', 'push.tags', 'pr.branches', 'pr.tags'], (item) => {
     let matchType = get(trigger, item, {});
@@ -16,7 +17,7 @@ const uniqOrOmitTriggers = (trigger) => {
           matchType[matchKey] = uniq(matchType[matchKey]);
         }
 
-        if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix') {
+        if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix' && mode === 'normal') {
           matchType = omit(matchType, [matchKey]);
         }
       });
@@ -27,24 +28,29 @@ const uniqOrOmitTriggers = (trigger) => {
 };
 
 const Trigger = (props: TriggersProps) => {
-  const { value, onChange = noop } = props;
+  const { value, onChange = noop, mode = 'normal' } = props;
   const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
 
   const field = Field.useField({
     onChange: () => {
-      const push = field.getValue('push');
-      const pr = field.getValue('pr');
       let trigger = {};
 
-      if (!isEmpty(push)) {
-        trigger['push'] = push;
+      if (mode === 'normal') {
+        const push = field.getValue('push');
+        const pr = field.getValue('pr');
+
+        if (!isEmpty(push)) {
+          trigger['push'] = push;
+        }
+        if (!isEmpty(pr)) {
+          trigger['pr'] = pr;
+        }
       }
 
-      if (!isEmpty(pr)) {
-        trigger['pr'] = pr;
+      if (mode === 'strict') {
+        trigger = field.getValue('strict');
       }
-
-      trigger = uniqOrOmitTriggers(trigger);
+      trigger = uniqOrOmitTriggers(trigger, mode);
 
       onChange(trigger);
     },
@@ -53,17 +59,24 @@ const Trigger = (props: TriggersProps) => {
 
   return (
     <>
-      {map(TriggerTypes, (labelKey) => {
-        const initValue = get(triggerValues, labelKey, {});
-        return (
-          <TriggerType
-            {...init(labelKey, { initValue })}
-            labelKey={labelKey}
-            key={labelKey}
-            setValue={setValue}
-          />
-        );
-      })}
+      {mode === 'normal' &&
+        map(TriggerTypes, (labelKey) => {
+          const initValue = get(triggerValues, labelKey, {});
+          return (
+            <TriggerType
+              {...init(labelKey, { initValue })}
+              labelKey={labelKey}
+              key={labelKey}
+              setValue={setValue}
+            />
+          );
+        })}
+      {mode === 'strict' && (
+        <StrictModeTrigger
+          {...init('strict', { initValue: triggerValues })}
+          triggerValues={triggerValues}
+        />
+      )}
     </>
   );
 };

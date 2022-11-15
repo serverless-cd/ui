@@ -2,10 +2,12 @@
 
 Demo:
 
+mode： normal strict
+
 ```tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field } from '@alicloud/console-components';
+import { Field, Button } from '@alicloud/console-components';
 import { Trigger } from '@serverless-cd/ui';
 
 // 使用方式1
@@ -24,15 +26,12 @@ import { Trigger } from '@serverless-cd/ui';
 
 export default () => {
   const field = Field.useField();
+  const [mode, setMode] = useState('normal');
   const { init, getValue, setValue } = field;
   const initValue = {
     push: {
       branches: {
-        prefix: ['1'],
-        precise: ['1'],
-      },
-      tags: {
-        prefix: ['22'],
+        precise: ['master'],
       },
     },
   };
@@ -41,7 +40,17 @@ export default () => {
     console.log(getValue('trigger'), 'trigger');
   }, [getValue('trigger')]);
 
-  return <Trigger {...init('trigger', { initValue })} />;
+  return (
+    <div>
+      <div style={{ marginBottom: 20 }}>
+        <Button style={{ marginRight: 20 }} onClick={() => setMode('strict')}>
+          strict
+        </Button>
+        <Button onClick={() => setMode('normal')}>normal</Button>
+      </div>
+      <Trigger {...init('trigger', { initValue })} mode={mode} />
+    </div>
+  );
 };
 ```
 

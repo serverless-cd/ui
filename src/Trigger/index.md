@@ -26,7 +26,7 @@ import { Trigger } from '@serverless-cd/ui';
 
 export default () => {
   const field = Field.useField();
-  const [mode, setMode] = useState('normal');
+  const [mode, setMode] = useState('strict');
   const { init, getValue, setValue } = field;
   const initValue = {
     push: {
@@ -40,13 +40,18 @@ export default () => {
     console.log(getValue('trigger'), 'trigger');
   }, [getValue('trigger')]);
 
+  const onClick = (mode) => {
+    setValue('trigger', {});
+    setMode(mode);
+  };
+
   return (
     <div>
       <div style={{ marginBottom: 20 }}>
-        <Button style={{ marginRight: 20 }} onClick={() => setMode('strict')}>
+        <Button style={{ marginRight: 20 }} onClick={() => onClick('strict')}>
           strict
         </Button>
-        <Button onClick={() => setMode('normal')}>normal</Button>
+        <Button onClick={() => onClick('normal')}>normal</Button>
       </div>
       <Trigger {...init('trigger', { initValue })} mode={mode} />
     </div>

@@ -17,17 +17,19 @@ const RadioGroup = Radio.Group;
 
 const StrictMatch = (props) => {
   const [initRadioValue, setInitRadio] = useState(MatchType.BRANCHES);
-  const { triggerChecked, labelKey, matchValues, onChange = noop } = props;
+  const { triggerChecked, matchValues, onChange = noop, labelKey } = props;
   const [matchRuleList, setMatchRuleList] = useState([]);
+  const [lastValue, setLastValue] = useState({});
 
   useEffect(() => {
     const triggerTypes = keys(matchValues);
-    if (!isEmpty(keys(matchValues))) {
+    if (!isEmpty(triggerTypes)) {
       setInitRadio(triggerTypes[0]);
     } else {
       setInitRadio(MatchType.BRANCHES);
     }
-    formtMatchValues(matchValues[initRadioValue]);
+    formtMatchValues(matchValues[triggerTypes[0] || MatchType.BRANCHES]);
+    setLastValue({ ...lastValue, ...matchValues[triggerTypes[0] || MatchType.BRANCHES] });
   }, [matchValues]);
 
   const formtMatchValues = (values) => {
@@ -49,7 +51,7 @@ const StrictMatch = (props) => {
   const matchChange = (matchType) => {
     const matchTypeValueKey = matchType === MatchType.BRANCHES ? 'precise' : 'prefix';
     setInitRadio(matchType);
-    onChange({ [matchType]: { [matchTypeValueKey]: [] } });
+    onChange({ [matchType]: { [matchTypeValueKey]: lastValue[matchTypeValueKey] || [] } });
   };
 
   const onBranchValueChange = (value, id, matchLabelKey) => {
@@ -63,7 +65,7 @@ const StrictMatch = (props) => {
         if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
         item.value && formaValues[item.type].push(item.value);
       });
-      onChange(formaValues);
+      onChange({ [matchLabelKey]: formaValues });
     }
     setMatchRuleList(changeValues);
   };
@@ -74,31 +76,42 @@ const StrictMatch = (props) => {
       onChange={matchChange}
       style={{ display: triggerChecked ? 'block' : 'none' }}
     >
-      {map(MatchTypes, (matchLabelKey) => (
-        <div
-          style={{ margin: '16px 0 16px 26px', display: 'flex', height: 32, alignItems: 'center' }}
-        >
-          <Radio value={matchLabelKey}>{MatchTypeCheckedLabel[matchLabelKey]}</Radio>
-          {initRadioValue === matchLabelKey && (
-            <div style={{ display: initRadioValue === matchLabelKey ? 'block' : 'none', flex: 1 }}>
-              {map(matchRuleList, (value) => {
-                const matchType = get(value, 'type', 'prefix');
-                const placeholder = branchValuePlaceholder[matchLabelKey][matchType];
-                const branchValue = get(value, 'value', '');
-                const id = get(value, 'id', uniqueId());
-                return (
-                  <Input
-                    style={{ width: '100%' }}
-                    placeholder={placeholder}
-                    value={branchValue}
-                    onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ))}
+      {map(MatchTypes, (matchLabelKey) => {
+        if (labelKey === 'pr' && matchLabelKey === 'tags') return;
+
+        return (
+          <div
+            style={{
+              margin: '16px 0 16px 26px',
+              display: 'flex',
+              height: 32,
+              alignItems: 'center',
+            }}
+          >
+            <Radio value={matchLabelKey}>{MatchTypeCheckedLabel[matchLabelKey]}</Radio>
+            {initRadioValue === matchLabelKey && (
+              <div
+                style={{ display: initRadioValue === matchLabelKey ? 'block' : 'none', flex: 1 }}
+              >
+                {map(matchRuleList, (value) => {
+                  const matchType = get(value, 'type', 'prefix');
+                  const placeholder = branchValuePlaceholder[matchLabelKey][matchType];
+                  const branchValue = get(value, 'value', '');
+                  const id = get(value, 'id', uniqueId());
+                  return (
+                    <Input
+                      style={{ width: '100%' }}
+                      placeholder={placeholder}
+                      value={branchValue}
+                      onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </RadioGroup>
   );
 };

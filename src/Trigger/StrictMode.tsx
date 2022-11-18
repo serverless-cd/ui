@@ -17,7 +17,7 @@ const RadioGroup = Radio.Group;
 
 const StrictMatch = (props) => {
   const [initRadioValue, setInitRadio] = useState(MatchType.BRANCHES);
-  const { triggerChecked, matchValues, onChange = noop, labelKey } = props;
+  const { triggerChecked, matchValues, onChange = noop, labelKey, disabled } = props;
   const [matchRuleList, setMatchRuleList] = useState([]);
   const [lastValue, setLastValue] = useState({});
 
@@ -75,6 +75,7 @@ const StrictMatch = (props) => {
       value={initRadioValue}
       onChange={matchChange}
       style={{ display: triggerChecked ? 'block' : 'none' }}
+      disabled={disabled}
     >
       {map(MatchTypes, (matchLabelKey) => {
         if (labelKey === 'pr' && matchLabelKey === 'tags') return;
@@ -88,7 +89,9 @@ const StrictMatch = (props) => {
               alignItems: 'center',
             }}
           >
-            <Radio value={matchLabelKey}>{MatchTypeCheckedLabel[matchLabelKey]}</Radio>
+            <Radio value={matchLabelKey} disabled={disabled}>
+              {MatchTypeCheckedLabel[matchLabelKey]}
+            </Radio>
             {initRadioValue === matchLabelKey && (
               <div
                 style={{ display: initRadioValue === matchLabelKey ? 'block' : 'none', flex: 1 }}
@@ -103,6 +106,7 @@ const StrictMatch = (props) => {
                       style={{ width: '100%' }}
                       placeholder={placeholder}
                       value={branchValue}
+                      disabled={disabled}
                       onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
                     />
                   );
@@ -118,7 +122,7 @@ const StrictMatch = (props) => {
 
 const StrictModeTrigger = (props: StrictModeProps) => {
   const [initRadioValue, setInitRadio] = useState(TriggerType.PUSH);
-  const { value, onChange, triggerValues } = props;
+  const { value, onChange, triggerValues, disabled = false } = props;
 
   useEffect(() => {
     const triggerTypes = keys(triggerValues);
@@ -135,17 +139,25 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   };
 
   return (
-    <RadioGroup value={initRadioValue} onChange={triggerChange} style={{ width: '100%' }}>
+    <RadioGroup
+      value={initRadioValue}
+      onChange={triggerChange}
+      disabled={disabled}
+      style={{ width: '100%' }}
+    >
       {map(TriggerTypes, (labelKey) => {
         return (
           <div className="trigger-content">
-            <Radio value={labelKey}>{TriggerTypeCheckedLabel[labelKey]}</Radio>
+            <Radio value={labelKey} disabled={disabled}>
+              {TriggerTypeCheckedLabel[labelKey]}
+            </Radio>
             {labelKey === initRadioValue && (
               <StrictMatch
                 labelKey={labelKey}
                 triggerChecked={labelKey === initRadioValue}
                 matchValues={get(value, labelKey, {})}
                 onChange={(v) => onChange({ [labelKey]: v })}
+                disabled={disabled}
               />
             )}
           </div>

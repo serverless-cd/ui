@@ -6,7 +6,7 @@ import { TriggerTypeProps } from './types';
 import { isEmpty, map, get } from 'lodash';
 
 const TriggerType = (props: TriggerTypeProps) => {
-  const { labelKey, value, onChange } = props;
+  const { labelKey, value, onChange, disabled } = props;
   const [triggerChecked, setTriggerChecked] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const TriggerType = (props: TriggerTypeProps) => {
 
   return (
     <div className="trigger-content">
-      <Checkbox checked={triggerChecked} onChange={triggerChange}>
+      <Checkbox checked={triggerChecked} onChange={triggerChange} disabled={disabled}>
         {TriggerTypeCheckedLabel[labelKey]}
       </Checkbox>
       {triggerChecked &&
@@ -41,6 +41,7 @@ const TriggerType = (props: TriggerTypeProps) => {
               triggerValues={get(value, matchLabelKey, {})}
               onChange={(v) => matchTypeChange({ ...value, [matchLabelKey]: v })}
               key={labelKey + matchLabelKey}
+              disabled={disabled}
             />
           );
         })}

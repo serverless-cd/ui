@@ -6,7 +6,7 @@ import { MatchTypeProps } from './types';
 import MatchTypeValue from './MatchTypeValue';
 
 const MatchType = (props: MatchTypeProps) => {
-  const { triggerChecked, labelKey, triggerValues, onChange = noop } = props;
+  const { triggerChecked, labelKey, triggerValues, onChange = noop, disabled } = props;
   const [matchChecked, setMatchChecked] = useState(false);
   const [matchRuleList, setMatchRuleList] = useState([]);
 
@@ -34,7 +34,7 @@ const MatchType = (props: MatchTypeProps) => {
 
   return (
     <div style={{ padding: '16px 0 16px 26px', display: triggerChecked ? 'block' : 'none' }}>
-      <Checkbox checked={matchChecked} onChange={matchChange}>
+      <Checkbox checked={matchChecked} onChange={matchChange} disabled={disabled}>
         {MatchTypeCheckedLabel[labelKey]}
       </Checkbox>
       {matchChecked && (
@@ -42,6 +42,7 @@ const MatchType = (props: MatchTypeProps) => {
           triggerTypeChecked={matchChecked}
           matchRuleList={matchRuleList}
           onChange={onChange}
+          disabled={disabled}
           triggerType={labelKey}
         />
       )}

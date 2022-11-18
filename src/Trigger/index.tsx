@@ -28,7 +28,7 @@ const uniqOrOmitTriggers = (trigger, mode) => {
 };
 
 const Trigger = (props: TriggersProps) => {
-  const { value, onChange = noop, mode = 'normal' } = props;
+  const { value, onChange = noop, mode = 'normal', disabled = false } = props;
   const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
 
   const field = Field.useField({
@@ -67,6 +67,7 @@ const Trigger = (props: TriggersProps) => {
               {...init(labelKey, { initValue })}
               labelKey={labelKey}
               key={labelKey}
+              disabled={disabled}
               setValue={setValue}
             />
           );
@@ -75,6 +76,7 @@ const Trigger = (props: TriggersProps) => {
         <StrictModeTrigger
           {...init('strict', { initValue: triggerValues })}
           triggerValues={triggerValues}
+          disabled={disabled}
         />
       )}
     </>

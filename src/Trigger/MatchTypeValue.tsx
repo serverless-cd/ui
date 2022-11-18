@@ -5,7 +5,7 @@ import { MatchTypeValuesProps } from './types';
 import { map, get, uniqueId, filter, isEmpty } from 'lodash';
 
 const MatchTypeValue = (props: MatchTypeValuesProps) => {
-  const { triggerTypeChecked, matchRuleList, triggerType, onChange } = props;
+  const { triggerTypeChecked, matchRuleList, triggerType, onChange, disabled } = props;
   const [branchList, setBranchList] = useState(matchRuleList);
 
   useEffect(() => {
@@ -65,6 +65,7 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
                 name="matchType"
                 onChange={(value) => onBranchValueChange(value, 'type', id)}
                 dataSource={MatchRuleDataSource}
+                disabled={disabled}
               />
             </div>
             <div className="trigger-matching-form-item-content" style={{ flex: 1, marginLeft: 8 }}>
@@ -74,9 +75,10 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
                 value={branchValue}
                 onChange={(value) => onBranchValueChange(value, 'value', id)}
                 name="branchValue"
+                disabled={disabled}
               />
             </div>
-            {branchList.length > 1 && (
+            {branchList.length > 1 && !disabled && (
               <div onClick={() => handleDelete(id)} className="trigger-matching-delete-icon">
                 <Icon type="delete" size="xs" />
               </div>
@@ -84,10 +86,12 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
           </div>
         );
       })}
-      <Button onClick={onCreate}>
-        <Icon type="add" />
-        添加
-      </Button>
+      {!disabled && (
+        <Button onClick={onCreate}>
+          <Icon type="add" />
+          添加
+        </Button>
+      )}
     </div>
   );
 };

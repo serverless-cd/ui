@@ -53,7 +53,7 @@ export default () => {
         </Button>
         <Button onClick={() => onClick('normal')}>normal</Button>
       </div>
-      <Trigger {...init('trigger', { initValue })} mode={mode} />
+      <Trigger {...init('trigger', { initValue })} mode={mode} disabled />
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { Node } from 'react-flow-renderer';
+
 export enum IPipelineProcessNodeStatus {
   PENDING = 'pending',
   RUNNING = 'running',
@@ -20,7 +22,9 @@ export interface IPipelineProcessNode {
   selectable?: boolean;
   [key: string]: any;
 }
+
 export interface IPipelineProcessNodeProps {
   nodes: IPipelineProcessNode[];
-  onClick?: (node: IPipelineProcessNode) => void;
+  direction?: 'horizontal' | 'vertical';
+  onClick?: (node: Node<any>) => void;
 }

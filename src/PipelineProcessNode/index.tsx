@@ -18,7 +18,10 @@ import './index.less';
 
 export * from './types';
 
-const getData = (nodes: IPipelineProcessNode[]) => {
+const getData = (nodes: IPipelineProcessNode[], direction: 'horizontal' | 'vertical') => {
+  const positionStart = direction === 'horizontal' ? Position.Left : Position.Top;
+  const positionEnd = direction === 'horizontal' ? Position.Right : Position.Bottom;
+
   const newNodes = [];
   const newEdges = [];
   let gap = 0;
@@ -27,12 +30,21 @@ const getData = (nodes: IPipelineProcessNode[]) => {
     const node = nodes[index];
     // node
     if (index !== '0') {
-      gap +=
-        lastNode.className === 'circle'
-          ? 110
-          : typeof lastNode.style?.width === 'number'
-          ? lastNode.style?.width + 50
-          : 200;
+      if (direction === 'horizontal') {
+        gap +=
+          lastNode.className === 'circle'
+            ? 110
+            : typeof lastNode.style?.width === 'number'
+            ? lastNode.style?.width + 50
+            : 200;
+      } else {
+        gap +=
+          lastNode.className === 'circle'
+            ? 25
+            : typeof lastNode.style?.width === 'number'
+            ? lastNode.style?.height + 12
+            : 50;
+      }
     }
     const nodeObj: IPipelineProcessNode = {
       id: index,
@@ -44,7 +56,10 @@ const getData = (nodes: IPipelineProcessNode[]) => {
           </div>
         ),
       },
-      position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
+      position:
+        direction === 'horizontal'
+          ? { x: gap, y: node.className === 'circle' ? -10 : 0 }
+          : { y: gap, x: node.className === 'circle' ? -10 : 0 },
       draggable: false,
       connectable: false,
       className: `status-${node.status}`,
@@ -58,13 +73,13 @@ const getData = (nodes: IPipelineProcessNode[]) => {
     };
     if (index === '0') {
       nodeObj.type = 'input';
-      nodeObj.sourcePosition = Position.Right;
+      nodeObj.sourcePosition = positionEnd;
     } else if (index === String(nodes.length - 1)) {
       nodeObj.type = 'output';
-      nodeObj.targetPosition = Position.Left;
+      nodeObj.targetPosition = positionStart;
     } else {
-      nodeObj.sourcePosition = Position.Right;
-      nodeObj.targetPosition = Position.Left;
+      nodeObj.sourcePosition = positionEnd;
+      nodeObj.targetPosition = positionStart;
     }
     newNodes.push(nodeObj);
     // edge
@@ -85,11 +100,11 @@ const getData = (nodes: IPipelineProcessNode[]) => {
 };
 
 export const PipelineProcessNode: FC<IPipelineProcessNodeProps> = (props) => {
-  const { nodes: originNodes, onClick } = props;
+  const { nodes: originNodes, direction = 'horizontal', onClick } = props;
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
   useEffect(() => {
-    const { newNodes, newEdges } = getData(originNodes);
+    const { newNodes, newEdges } = getData(originNodes, direction);
     setNodes(newNodes);
     setEdges(newEdges);
   }, [originNodes]);

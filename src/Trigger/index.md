@@ -28,6 +28,7 @@ export default () => {
   const field = Field.useField();
   const [mode, setMode] = useState('strict');
   const { init, getValue, setValue } = field;
+  const [loading, setLoading] = useState(true);
   const initValue = {
     push: {
       branches: {
@@ -35,6 +36,16 @@ export default () => {
       },
     },
   };
+  const branchList = [
+    { label: 'master', value: 'master' },
+    { label: 'main', value: 'main' },
+  ];
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     console.log(getValue('trigger'), 'trigger');
@@ -53,7 +64,13 @@ export default () => {
         </Button>
         <Button onClick={() => onClick('normal')}>normal</Button>
       </div>
-      <Trigger {...init('trigger', { initValue })} mode={mode} disabled />
+      <Trigger
+        {...init('trigger', { initValue })}
+        mode={mode}
+        loading={loading}
+        disabled={false}
+        branchList={branchList}
+      />
     </div>
   );
 };

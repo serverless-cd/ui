@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StrictModeProps } from './types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
-import { Radio, Input } from '@alicloud/console-components';
+import { Radio, Input, Select } from '@alicloud/console-components';
 import {
   TriggerTypes,
   TriggerTypeCheckedLabel,
@@ -17,7 +17,15 @@ const RadioGroup = Radio.Group;
 
 const StrictMatch = (props) => {
   const [initRadioValue, setInitRadio] = useState(MatchType.BRANCHES);
-  const { triggerChecked, matchValues, onChange = noop, labelKey, disabled } = props;
+  const {
+    triggerChecked,
+    matchValues,
+    onChange = noop,
+    labelKey,
+    disabled,
+    loading,
+    branchList,
+  } = props;
   const [matchRuleList, setMatchRuleList] = useState([]);
   const [lastValue, setLastValue] = useState({});
 
@@ -102,13 +110,27 @@ const StrictMatch = (props) => {
                   const branchValue = get(value, 'value', '');
                   const id = get(value, 'id', uniqueId());
                   return (
-                    <Input
-                      style={{ width: '100%' }}
-                      placeholder={placeholder}
-                      value={branchValue}
-                      disabled={disabled}
-                      onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
-                    />
+                    <>
+                      {matchLabelKey === 'tags' ? (
+                        <Input
+                          style={{ width: '100%' }}
+                          placeholder={placeholder}
+                          value={branchValue}
+                          disabled={disabled}
+                          onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
+                        />
+                      ) : (
+                        <Select
+                          style={{ width: '100%' }}
+                          dataSource={branchList}
+                          placeholder={placeholder}
+                          value={branchValue}
+                          disabled={disabled || loading}
+                          state={loading ? 'loading' : undefined}
+                          onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
+                        />
+                      )}
+                    </>
                   );
                 })}
               </div>
@@ -122,7 +144,7 @@ const StrictMatch = (props) => {
 
 const StrictModeTrigger = (props: StrictModeProps) => {
   const [initRadioValue, setInitRadio] = useState(TriggerType.PUSH);
-  const { value, onChange, triggerValues, disabled = false } = props;
+  const { value, onChange, triggerValues, disabled = false, loading = false, branchList } = props;
 
   useEffect(() => {
     const triggerTypes = keys(triggerValues);
@@ -158,6 +180,8 @@ const StrictModeTrigger = (props: StrictModeProps) => {
                 matchValues={get(value, labelKey, {})}
                 onChange={(v) => onChange({ [labelKey]: v })}
                 disabled={disabled}
+                loading={loading}
+                branchList={branchList}
               />
             )}
           </div>

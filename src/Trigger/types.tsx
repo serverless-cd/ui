@@ -29,6 +29,8 @@ export interface TriggersProps {
   onChange: Function;
   mode?: string;
   disabled?: boolean;
+  branchList?: Array<any>;
+  loading?: boolean;
 }
 
 export interface StrictModeProps {
@@ -36,4 +38,6 @@ export interface StrictModeProps {
   value?: object | any;
   onChange: Function;
   disabled?: boolean;
+  branchList?: Array<any>;
+  loading?: boolean;
 }

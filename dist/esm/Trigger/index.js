@@ -116,7 +116,9 @@ var Trigger = function Trigger(props) {
     _props$mode = props.mode,
     mode = _props$mode === void 0 ? 'normal' : _props$mode,
     _props$disabled = props.disabled,
-    disabled = _props$disabled === void 0 ? false : _props$disabled;
+    disabled = _props$disabled === void 0 ? false : _props$disabled,
+    loading = props.loading,
+    branchList = props.branchList;
 
   var _useState = useState(
       isEmpty(value)
@@ -193,6 +195,8 @@ var Trigger = function Trigger(props) {
           {
             triggerValues: triggerValues,
             disabled: disabled,
+            loading: loading,
+            branchList: branchList,
           },
         ),
       ),

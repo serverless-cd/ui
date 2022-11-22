@@ -14,7 +14,7 @@ export declare enum IPipelineProcessNodeStatusColor {
   warn = 'rgb(255, 164, 61)',
 }
 export interface IPipelineProcessNode {
-  label: string;
+  label: string | Element;
   status?: `${IPipelineProcessNodeStatus}`;
   selected?: boolean;
   selectable?: boolean;

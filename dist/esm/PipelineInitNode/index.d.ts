@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import './index.less';
 export interface IPipelineInitNode {
-  label: string;
+  label: string | Element;
   selected?: boolean;
   selectable?: boolean;
   [key: string]: any;

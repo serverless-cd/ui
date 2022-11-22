@@ -135,7 +135,7 @@ function _arrayWithHoles(arr) {
 
 import React, { useEffect, useState } from 'react';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
-import { Radio, Input } from '@alicloud/console-components';
+import { Radio, Input, Select } from '@alicloud/console-components';
 import {
   TriggerTypes,
   TriggerTypeCheckedLabel,
@@ -159,7 +159,9 @@ var StrictMatch = function StrictMatch(props) {
     _props$onChange = props.onChange,
     onChange = _props$onChange === void 0 ? noop : _props$onChange,
     labelKey = props.labelKey,
-    disabled = props.disabled;
+    disabled = props.disabled,
+    loading = props.loading,
+    branchList = props.branchList;
 
   var _useState3 = useState([]),
     _useState4 = _slicedToArray(_useState3, 2),
@@ -294,17 +296,35 @@ var StrictMatch = function StrictMatch(props) {
               var placeholder = branchValuePlaceholder[matchLabelKey][matchType];
               var branchValue = get(value, 'value', '');
               var id = get(value, 'id', uniqueId());
-              return /*#__PURE__*/ React.createElement(Input, {
-                style: {
-                  width: '100%',
-                },
-                placeholder: placeholder,
-                value: branchValue,
-                disabled: disabled,
-                onChange: function onChange(value) {
-                  return onBranchValueChange(value, id, matchLabelKey);
-                },
-              });
+              return /*#__PURE__*/ React.createElement(
+                React.Fragment,
+                null,
+                matchLabelKey === 'tags'
+                  ? /*#__PURE__*/ React.createElement(Input, {
+                      style: {
+                        width: '100%',
+                      },
+                      placeholder: placeholder,
+                      value: branchValue,
+                      disabled: disabled,
+                      onChange: function onChange(value) {
+                        return onBranchValueChange(value, id, matchLabelKey);
+                      },
+                    })
+                  : /*#__PURE__*/ React.createElement(Select, {
+                      style: {
+                        width: '100%',
+                      },
+                      dataSource: branchList,
+                      placeholder: placeholder,
+                      value: branchValue,
+                      disabled: disabled || loading,
+                      state: loading ? 'loading' : undefined,
+                      onChange: function onChange(value) {
+                        return onBranchValueChange(value, id, matchLabelKey);
+                      },
+                    }),
+              );
             }),
           ),
       );
@@ -322,7 +342,10 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
     _onChange5 = props.onChange,
     triggerValues = props.triggerValues,
     _props$disabled = props.disabled,
-    disabled = _props$disabled === void 0 ? false : _props$disabled;
+    disabled = _props$disabled === void 0 ? false : _props$disabled,
+    _props$loading = props.loading,
+    loading = _props$loading === void 0 ? false : _props$loading,
+    branchList = props.branchList;
   useEffect(
     function () {
       var triggerTypes = keys(triggerValues);
@@ -381,6 +404,8 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
               return _onChange5(_defineProperty({}, labelKey, v));
             },
             disabled: disabled,
+            loading: loading,
+            branchList: branchList,
           }),
       );
     }),

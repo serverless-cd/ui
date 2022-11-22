@@ -1,0 +1,22 @@
+declare const _default: {
+  'ui.trigger.match.rule': string;
+  'ui.trigger.target.branch': string;
+  'ui.trigger.add': string;
+  'ui.trigger.match.rule.type.prefix': string;
+  'ui.trigger.match.rule.type.precise': string;
+  'ui.trigger.match.rule.type.include': string;
+  'ui.trigger.match.rule.type.exclude': string;
+  'ui.trigger.type.push': string;
+  'ui.trigger.type.pr': string;
+  'ui.trigger.match.type.branches': string;
+  'ui.trigger.match.type.tag': string;
+  'ui.trigger.match.branch.prefix.value': string;
+  'ui.trigger.match.branch.precise.value': string;
+  'ui.trigger.match.branch.include.value': string;
+  'ui.trigger.match.branch.exclude.value': string;
+  'ui.trigger.match.tag.prefix.value': string;
+  'ui.trigger.match.tag.precise.value': string;
+  'ui.trigger.match.tag.include.value': string;
+  'ui.trigger.match.tag.exclude.value': string;
+};
+export default _default;

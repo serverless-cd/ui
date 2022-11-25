@@ -152,7 +152,7 @@ var getData = function getData(nodes) {
         },
         draggable: false,
         connectable: false,
-        className: ''.concat(_node.className, ' ').concat(_node.enable ? 'enable' : ''),
+        className: ''.concat(_node.enable ? 'enable' : ''),
       },
       _node,
     );

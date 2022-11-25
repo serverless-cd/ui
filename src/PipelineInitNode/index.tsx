@@ -46,7 +46,7 @@ const getData = (nodes: IPipelineInitNode[]) => {
       position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
       draggable: false,
       connectable: false,
-      className: `${node.className} ${node.enable ? 'enable' : ''}`,
+      className: `${node.enable ? 'enable' : ''}`,
       ...node,
     };
     if (index === '0') {

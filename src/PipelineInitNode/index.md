@@ -13,6 +13,7 @@ const defaultNodes = [
   },
   {
     label: <div>代码源</div>,
+    enable: true,
   },
   {
     label: <div>前置检查</div>,
@@ -22,6 +23,7 @@ const defaultNodes = [
     style: {
       width: 160,
     },
+    enable: true,
   },
   {
     label: <div>灰度</div>,

@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Node } from 'react-flow-renderer';
 
 export enum IPipelineProcessNodeStatus {
@@ -16,7 +17,7 @@ export enum IPipelineProcessNodeStatusColor {
   warn = 'rgb(255, 164, 61)',
 }
 export interface IPipelineProcessNode {
-  label: string | Element;
+  label: ReactNode;
   status?: `${IPipelineProcessNodeStatus}`;
   selected?: boolean;
   selectable?: boolean;

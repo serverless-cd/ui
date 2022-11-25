@@ -6,18 +6,20 @@ import ReactFlow, {
   Edge,
   useNodesState,
   useEdgesState,
+  Node,
 } from 'react-flow-renderer';
 import './index.less';
 
 export interface IPipelineInitNode {
-  label: string | Element;
+  label: React.ReactNode;
+  enable: boolean;
   selected?: boolean;
   selectable?: boolean;
   [key: string]: any;
 }
 export interface IPipelineInitNodeProps {
   nodes: IPipelineInitNode[];
-  onClick?: (node: IPipelineInitNode) => void;
+  onClick?: (node: Node<any>) => void;
 }
 
 const getData = (nodes: IPipelineInitNode[]) => {
@@ -44,6 +46,7 @@ const getData = (nodes: IPipelineInitNode[]) => {
       position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
       draggable: false,
       connectable: false,
+      className: `${node.className} ${node.enable ? 'enable' : ''}`,
       ...node,
     };
     if (index === '0') {
@@ -70,8 +73,6 @@ const getData = (nodes: IPipelineInitNode[]) => {
     newEdges.push(edgeObj);
     lastNode = nodeObj;
   }
-  console.log('newNodes', newNodes);
-  console.log('newEdges', newEdges);
   return { newNodes, newEdges };
 };
 
@@ -80,7 +81,6 @@ export const PipelineInitNode: FC<IPipelineInitNodeProps> = (props) => {
   const [nodes, setNodes] = useNodesState([]);
   const [edges, setEdges] = useEdgesState([]);
   useEffect(() => {
-    console.log('originNodes', originNodes);
     const { newNodes, newEdges } = getData(originNodes);
     setNodes(newNodes);
     setEdges(newEdges);

@@ -152,6 +152,7 @@ var getData = function getData(nodes) {
         },
         draggable: false,
         connectable: false,
+        className: ''.concat(_node.className, ' ').concat(_node.enable ? 'enable' : ''),
       },
       _node,
     );
@@ -182,8 +183,6 @@ var getData = function getData(nodes) {
     lastNode = nodeObj;
   }
 
-  console.log('newNodes', newNodes);
-  console.log('newEdges', newEdges);
   return {
     newNodes: newNodes,
     newEdges: newEdges,
@@ -206,8 +205,6 @@ export var PipelineInitNode = function PipelineInitNode(props) {
 
   useEffect(
     function () {
-      console.log('originNodes', originNodes);
-
       var _getData = getData(originNodes),
         newNodes = _getData.newNodes,
         newEdges = _getData.newEdges;

@@ -12,7 +12,7 @@ import './index.less';
 
 export interface IPipelineInitNode {
   label: React.ReactNode;
-  enable: boolean;
+  enable?: boolean;
   selected?: boolean;
   selectable?: boolean;
   [key: string]: any;

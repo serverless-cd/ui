@@ -110,7 +110,9 @@ import React, { useState, useEffect } from 'react';
 import { Checkbox } from '@alicloud/console-components';
 import MatchType from './MatchType';
 import { TriggerTypeCheckedLabel, MatchTypes } from './constants';
+import { PR } from './types';
 import { isEmpty, map, get } from 'lodash';
+import ActivityType from './ActivityType';
 
 var TriggerType = function TriggerType(props) {
   var labelKey = props.labelKey,
@@ -154,6 +156,18 @@ var TriggerType = function TriggerType(props) {
     onChange(value);
   };
 
+  var activityTypeChange = function activityTypeChange(selectedItems) {
+    matchTypeChange(
+      _objectSpread(
+        _objectSpread({}, value),
+        {},
+        {
+          types: selectedItems,
+        },
+      ),
+    );
+  };
+
   return /*#__PURE__*/ React.createElement(
     'div',
     {
@@ -169,21 +183,31 @@ var TriggerType = function TriggerType(props) {
       TriggerTypeCheckedLabel[labelKey],
     ),
     triggerChecked &&
-      map(MatchTypes, function (matchLabelKey) {
-        if (labelKey === 'pr' && matchLabelKey === 'tags') return;
-        return /*#__PURE__*/ React.createElement(MatchType, {
-          triggerChecked: triggerChecked,
-          labelKey: matchLabelKey,
-          triggerValues: get(value, matchLabelKey, {}),
-          onChange: function onChange(v) {
-            return matchTypeChange(
-              _objectSpread(_objectSpread({}, value), {}, _defineProperty({}, matchLabelKey, v)),
-            );
-          },
-          key: labelKey + matchLabelKey,
-          disabled: disabled,
-        });
-      }),
+      /*#__PURE__*/ React.createElement(
+        React.Fragment,
+        null,
+        labelKey === PR &&
+          /*#__PURE__*/ React.createElement(ActivityType, {
+            onChange: activityTypeChange,
+            value: get(value, 'types'),
+          }),
+        map(MatchTypes, function (matchLabelKey) {
+          if (labelKey === PR && matchLabelKey === 'tags') return;
+          return /*#__PURE__*/ React.createElement(MatchType, {
+            triggerChecked: triggerChecked,
+            triggerType: labelKey,
+            labelKey: matchLabelKey,
+            triggerValues: get(value, matchLabelKey, {}),
+            onChange: function onChange(v) {
+              return matchTypeChange(
+                _objectSpread(_objectSpread({}, value), {}, _defineProperty({}, matchLabelKey, v)),
+              );
+            },
+            key: labelKey + matchLabelKey,
+            disabled: disabled,
+          });
+        }),
+      ),
   );
 };
 

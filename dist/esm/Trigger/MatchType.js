@@ -94,6 +94,7 @@ import React, { useState, useEffect } from 'react';
 import { Checkbox } from '@alicloud/console-components';
 import { isEmpty, keys, map, uniqueId, noop } from 'lodash';
 import { MatchTypeCheckedLabel } from './constants';
+import { PR } from './types';
 import MatchTypeValue from './MatchTypeValue';
 
 var MatchType = function MatchType(props) {
@@ -102,7 +103,8 @@ var MatchType = function MatchType(props) {
     triggerValues = props.triggerValues,
     _props$onChange = props.onChange,
     onChange = _props$onChange === void 0 ? noop : _props$onChange,
-    disabled = props.disabled;
+    disabled = props.disabled,
+    triggerType = props.triggerType;
 
   var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -126,14 +128,16 @@ var MatchType = function MatchType(props) {
             ? [
                 {
                   type: type,
-                  value: '',
+                  target: '',
+                  source: '',
                   id: uniqueId(),
                 },
               ]
             : map(triggerValues[type], function (value) {
                 return {
                   type: type,
-                  value: value,
+                  target: triggerType === PR ? value.target : value,
+                  source: triggerType === PR ? value.source : '',
                   id: uniqueId(),
                 };
               });
@@ -181,7 +185,8 @@ var MatchType = function MatchType(props) {
         matchRuleList: matchRuleList,
         onChange: onChange,
         disabled: disabled,
-        triggerType: labelKey,
+        triggerType: triggerType,
+        matchTypeKey: labelKey,
       }),
   );
 };

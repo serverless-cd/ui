@@ -134,6 +134,7 @@ function _arrayWithHoles(arr) {
 }
 
 import React, { useEffect, useState } from 'react';
+import { PR } from './types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
 import { Radio, Input, Select } from '@alicloud/console-components';
 import {
@@ -145,7 +146,9 @@ import {
   MatchType,
   branchValuePlaceholder,
 } from './constants';
+import ActivityType from './ActivityType';
 import './index.less';
+import { i18n } from '../utils';
 var RadioGroup = Radio.Group;
 
 var StrictMatch = function StrictMatch(props) {
@@ -203,14 +206,16 @@ var StrictMatch = function StrictMatch(props) {
           ? [
               {
                 type: type,
-                value: '',
+                target: '',
+                source: '',
                 id: uniqueId(),
               },
             ]
           : map(values[type], function (value) {
               return {
                 type: type,
-                value: value,
+                target: labelKey === PR ? value.target : value,
+                source: labelKey === PR ? value.source : '',
                 id: uniqueId(),
               };
             });
@@ -234,17 +239,28 @@ var StrictMatch = function StrictMatch(props) {
     );
   };
 
-  var onBranchValueChange = function onBranchValueChange(value, id, matchLabelKey) {
+  var checkValues = function checkValues(value, type, id) {
     var changeValues = map(matchRuleList, function (item) {
-      item.value = item.id === id ? value : item.value;
+      item[type] = item.id === id ? value : item[type];
       return item;
     });
+    return changeValues;
+  };
 
+  var onBranchValueChange = function onBranchValueChange(changeValues, matchLabelKey) {
     if (!isEmpty(changeValues)) {
       var formaValues = {};
       map(changeValues, function (item) {
         if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
-        item.value && formaValues[item.type].push(item.value);
+
+        if (labelKey === PR) {
+          formaValues[item.type].push({
+            target: item.target,
+            source: item.source,
+          });
+        } else {
+          item.target && formaValues[item.type].push(item.target);
+        }
       });
       onChange(_defineProperty({}, matchLabelKey, formaValues));
     }
@@ -263,15 +279,14 @@ var StrictMatch = function StrictMatch(props) {
       disabled: disabled,
     },
     map(MatchTypes, function (matchLabelKey) {
-      if (labelKey === 'pr' && matchLabelKey === 'tags') return;
+      if (labelKey === PR && matchLabelKey === 'tags') return;
       return /*#__PURE__*/ React.createElement(
         'div',
         {
           style: {
             margin: '16px 0 16px 26px',
             display: 'flex',
-            height: 32,
-            alignItems: 'center',
+            alignItems: 'flex-end',
           },
         },
         /*#__PURE__*/ React.createElement(
@@ -279,6 +294,10 @@ var StrictMatch = function StrictMatch(props) {
           {
             value: matchLabelKey,
             disabled: disabled,
+            style: {
+              height: 32,
+              lineHeight: '32px',
+            },
           },
           MatchTypeCheckedLabel[matchLabelKey],
         ),
@@ -294,11 +313,16 @@ var StrictMatch = function StrictMatch(props) {
             map(matchRuleList, function (value) {
               var matchType = get(value, 'type', 'prefix');
               var placeholder = branchValuePlaceholder[matchLabelKey][matchType];
-              var branchValue = get(value, 'value', '');
+              var branchValue = get(value, 'target', '');
+              var sourceValue = get(value, 'source', '');
               var id = get(value, 'id', uniqueId());
               return /*#__PURE__*/ React.createElement(
-                React.Fragment,
-                null,
+                'div',
+                {
+                  style: {
+                    display: 'flex',
+                  },
+                },
                 matchLabelKey === 'tags'
                   ? /*#__PURE__*/ React.createElement(Input, {
                       style: {
@@ -308,22 +332,68 @@ var StrictMatch = function StrictMatch(props) {
                       value: branchValue,
                       disabled: disabled,
                       onChange: function onChange(value) {
-                        return onBranchValueChange(value, id, matchLabelKey);
+                        return onBranchValueChange(checkValues(value, 'target', id), matchLabelKey);
                       },
                     })
-                  : /*#__PURE__*/ React.createElement(Select, {
+                  : /*#__PURE__*/ React.createElement(
+                      'div',
+                      {
+                        style: {
+                          flex: 1,
+                          marginRight: 8,
+                        },
+                      },
+                      /*#__PURE__*/ React.createElement(
+                        'span',
+                        null,
+                        i18n('ui.trigger.target.branch'),
+                      ),
+                      /*#__PURE__*/ React.createElement(Select, {
+                        style: {
+                          width: '100%',
+                          marginTop: 8,
+                        },
+                        dataSource: branchList,
+                        placeholder: placeholder,
+                        value: branchValue,
+                        disabled: disabled || loading,
+                        state: loading ? 'loading' : undefined,
+                        onChange: function onChange(value) {
+                          return onBranchValueChange(
+                            checkValues(value, 'target', id),
+                            matchLabelKey,
+                          );
+                        },
+                      }),
+                    ),
+                labelKey === PR &&
+                  /*#__PURE__*/ React.createElement(
+                    'div',
+                    {
+                      style: {
+                        flex: 1,
+                      },
+                    },
+                    /*#__PURE__*/ React.createElement(
+                      'span',
+                      null,
+                      i18n('ui.trigger.source.branch'),
+                    ),
+                    /*#__PURE__*/ React.createElement(Select, {
                       style: {
                         width: '100%',
+                        marginTop: 8,
                       },
                       dataSource: branchList,
                       placeholder: placeholder,
-                      value: branchValue,
+                      value: sourceValue,
                       disabled: disabled || loading,
                       state: loading ? 'loading' : undefined,
                       onChange: function onChange(value) {
-                        return onBranchValueChange(value, id, matchLabelKey);
+                        return onBranchValueChange(checkValues(value, 'source', id), matchLabelKey);
                       },
                     }),
+                  ),
               );
             }),
           ),
@@ -339,7 +409,7 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
     setInitRadio = _useState8[1];
 
   var value = props.value,
-    _onChange5 = props.onChange,
+    _onChange6 = props.onChange,
     triggerValues = props.triggerValues,
     _props$disabled = props.disabled,
     disabled = _props$disabled === void 0 ? false : _props$disabled,
@@ -362,12 +432,28 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
   var triggerChange = function triggerChange(typeKey) {
     setInitRadio(typeKey);
 
-    _onChange5(
+    _onChange6(
       _defineProperty({}, typeKey, {
         branches: {
           precise: [],
         },
       }),
+    );
+  };
+
+  var activityTypeChange = function activityTypeChange(values) {
+    _onChange6(
+      _defineProperty(
+        {},
+        PR,
+        _objectSpread(
+          _objectSpread({}, get(value, PR, {})),
+          {},
+          {
+            types: values,
+          },
+        ),
+      ),
     );
   };
 
@@ -395,13 +481,25 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
           },
           TriggerTypeCheckedLabel[labelKey],
         ),
+        labelKey === PR &&
+          labelKey === initRadioValue &&
+          /*#__PURE__*/ React.createElement(ActivityType, {
+            onChange: activityTypeChange,
+            value: get(value, ''.concat(PR, '.types')),
+          }),
         labelKey === initRadioValue &&
           /*#__PURE__*/ React.createElement(StrictMatch, {
             labelKey: labelKey,
             triggerChecked: labelKey === initRadioValue,
             matchValues: get(value, labelKey, {}),
             onChange: function onChange(v) {
-              return _onChange5(_defineProperty({}, labelKey, v));
+              return _onChange6(
+                _defineProperty(
+                  {},
+                  labelKey,
+                  _objectSpread(_objectSpread({}, get(value, labelKey, {})), v),
+                ),
+              );
             },
             disabled: disabled,
             loading: loading,

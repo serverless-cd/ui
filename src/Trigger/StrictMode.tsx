@@ -191,7 +191,6 @@ const StrictMatch = (props) => {
 const StrictModeTrigger = (props: StrictModeProps) => {
   const [initRadioValue, setInitRadio] = useState(TriggerType.PUSH);
   const { value, onChange, triggerValues, disabled = false, loading = false, branchList } = props;
-
   useEffect(() => {
     const triggerTypes = keys(triggerValues);
     if (!isEmpty(keys(triggerValues))) {
@@ -207,7 +206,6 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   };
 
   const activityTypeChange = (values) => {
-    console.log(values, 'values');
     onChange({ [PR]: { ...get(value, PR, {}), types: values } });
   };
 
@@ -225,14 +223,14 @@ const StrictModeTrigger = (props: StrictModeProps) => {
               {TriggerTypeCheckedLabel[labelKey]}
             </Radio>
             {labelKey === PR && labelKey === initRadioValue && (
-              <ActivityType onChange={activityTypeChange} value={get(value, `${PR}.types`, [])} />
+              <ActivityType onChange={activityTypeChange} value={get(value, `${PR}.types`)} />
             )}
             {labelKey === initRadioValue && (
               <StrictMatch
                 labelKey={labelKey}
                 triggerChecked={labelKey === initRadioValue}
                 matchValues={get(value, labelKey, {})}
-                onChange={(v) => onChange({ [labelKey]: v })}
+                onChange={(v) => onChange({ [labelKey]: { ...get(value, labelKey, {}), ...v } })}
                 disabled={disabled}
                 loading={loading}
                 branchList={branchList}

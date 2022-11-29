@@ -41,7 +41,7 @@ export var TriggerType;
 
 (function (TriggerType) {
   TriggerType['PUSH'] = 'push';
-  TriggerType['PR'] = 'pr';
+  TriggerType['PR'] = 'pull_request';
 })(TriggerType || (TriggerType = {}));
 
 export var MatchType;
@@ -60,7 +60,25 @@ var MatchValueType;
   MatchValueType['EXCLUDE'] = 'exclude';
 })(MatchValueType || (MatchValueType = {}));
 
-export var TriggerTypes = ['push', 'pr'];
+export var TriggerTypes = ['push', 'pull_request'];
+export var ActivityTypes = [
+  {
+    value: 'opened',
+    label: 'opened',
+  },
+  {
+    value: 'reopened',
+    label: 'reopened',
+  },
+  {
+    value: 'closed',
+    label: 'closed',
+  },
+  {
+    value: 'merged',
+    label: 'merged',
+  },
+];
 export var TriggerTypeCheckedLabel =
   ((_TriggerTypeCheckedLa = {}),
   _defineProperty(_TriggerTypeCheckedLa, TriggerType.PUSH, i18n('ui.trigger.type.push')),

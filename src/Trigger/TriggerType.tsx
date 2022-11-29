@@ -39,7 +39,7 @@ const TriggerType = (props: TriggerTypeProps) => {
       {triggerChecked && (
         <>
           {labelKey === PR && (
-            <ActivityType onChange={activityTypeChange} value={get(value, 'types', [])} />
+            <ActivityType onChange={activityTypeChange} value={get(value, 'types')} />
           )}
           {map(MatchTypes, (matchLabelKey) => {
             if (labelKey === PR && matchLabelKey === 'tags') return;

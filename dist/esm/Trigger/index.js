@@ -82,6 +82,7 @@ function _arrayWithHoles(arr) {
 
 import React, { useState } from 'react';
 import TriggerType from './TriggerType';
+import { PR, PUSH } from './types';
 import { map, get, noop, isEmpty, keys, uniq, set, omit } from 'lodash';
 import { Field } from '@alicloud/console-components';
 import StrictModeTrigger from './StrictMode';
@@ -90,22 +91,29 @@ import './index.less';
 
 var uniqOrOmitTriggers = function uniqOrOmitTriggers(trigger, mode) {
   var newTrigger = {};
-  map(['push.branches', 'push.tags', 'pr.branches', 'pr.tags'], function (item) {
-    var matchType = get(trigger, item, {});
+  map(
+    ['push.branches', 'push.tags', 'pull_request.branches', 'pull_request.types'],
+    function (item) {
+      var matchType = get(trigger, item, {});
 
-    if (!isEmpty(matchType)) {
-      map(keys(matchType), function (matchKey) {
-        if (matchType[matchKey].length > 1) {
-          matchType[matchKey] = uniq(matchType[matchKey]);
-        }
+      if (!isEmpty(matchType)) {
+        if (item === 'pull_request.types') {
+          set(newTrigger, item, matchType);
+        } else {
+          map(keys(matchType), function (matchKey) {
+            if (matchType[matchKey].length > 1) {
+              matchType[matchKey] = uniq(matchType[matchKey]);
+            }
 
-        if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix' && mode === 'normal') {
-          matchType = omit(matchType, [matchKey]);
+            if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix' && mode === 'normal') {
+              matchType = omit(matchType, [matchKey]);
+            }
+          });
+          set(newTrigger, item, matchType);
         }
-      });
-      set(newTrigger, item, matchType);
-    }
-  });
+      }
+    },
+  );
   return newTrigger;
 };
 
@@ -139,15 +147,15 @@ var Trigger = function Trigger(props) {
       var trigger = {};
 
       if (mode === 'normal') {
-        var push = field.getValue('push');
-        var pr = field.getValue('pr');
+        var push = field.getValue(PUSH);
+        var pr = field.getValue(PR);
 
         if (!isEmpty(push)) {
-          trigger['push'] = push;
+          trigger[PUSH] = push;
         }
 
         if (!isEmpty(pr)) {
-          trigger['pr'] = pr;
+          trigger[PR] = pr;
         }
       }
 

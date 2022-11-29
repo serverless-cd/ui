@@ -39,7 +39,7 @@ export default () => {
           },
         ],
       },
-      types: ['opened', 'reopened', 'closed'],
+      types: [],
     },
   };
   const branchList = [

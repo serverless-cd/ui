@@ -500,18 +500,19 @@ import { Form, Input, Switch, Select } from '@alicloud/console-components';
 import TextWithBalloon from './TextWithBalloon';
 import { FORM_CUSTOM_MIDDLE_LABEL_LEFT } from './types';
 import './index.less';
+import { i18n } from '../utils';
 var dataSource = [
   {
     value: 'needless',
-    label: '不提醒',
+    label: i18n('ui.notifiy.remindType.needless'),
   },
   {
     value: 'owner',
-    label: '所有人',
+    label: i18n('ui.notifiy.remindType.owner'),
   },
   {
     value: 'appoint',
-    label: '指定成员',
+    label: i18n('ui.notifiy.remindType.appoint'),
   },
 ];
 
@@ -544,12 +545,12 @@ var Notifiy = function Notifiy(props) {
                   break;
                 }
 
-                return _context.abrupt('return', callback('“webhook地址”为必填项。'));
+                return _context.abrupt('return', callback(i18n('ui.notifiy.webhook.tip')));
 
               case 4:
                 /^((https|http)?:\/\/)[^\s]+/.test(value)
                   ? callback()
-                  : callback('请输入正确的webhook地址');
+                  : callback(i18n('ui.notifiy.webhook.correct.tip'));
 
               case 5:
               case 'end':
@@ -577,7 +578,7 @@ var Notifiy = function Notifiy(props) {
     /*#__PURE__*/ React.createElement(
       Form.Item,
       {
-        label: '\u5F00\u542F\u901A\u77E5',
+        label: i18n('ui.notifiy.enable.label'),
         className: 'switch-center',
       },
       /*#__PURE__*/ React.createElement(
@@ -600,7 +601,7 @@ var Notifiy = function Notifiy(props) {
         /*#__PURE__*/ React.createElement(
           Form.Item,
           {
-            label: 'webhook\u5730\u5740',
+            label: i18n('ui.notifiy.webhook.label'),
           },
           /*#__PURE__*/ React.createElement(
             Input,
@@ -615,7 +616,7 @@ var Notifiy = function Notifiy(props) {
                 ],
               }),
               {
-                placeholder: '\u9489\u9489\u673A\u5668\u4EBA\u901A\u77E5 URL',
+                placeholder: i18n('ui.notifiy.webhook.placeholder'),
                 className: 'full-width',
               },
             ),
@@ -627,8 +628,8 @@ var Notifiy = function Notifiy(props) {
             label: /*#__PURE__*/ React.createElement(TextWithBalloon, {
               color: 'color-light-black',
               align: 'tr',
-              text: '加签秘钥',
-              tips: '钉钉自定义机器人必须开启安全设置，若未使用加签，无需填写加签秘钥',
+              text: i18n('ui.notifiy.secret.label'),
+              tips: i18n('ui.notifiy.secret.tips'),
             }),
           },
           /*#__PURE__*/ React.createElement(
@@ -639,8 +640,7 @@ var Notifiy = function Notifiy(props) {
                 initValue: initValue['secret'],
               }),
               {
-                placeholder:
-                  '\u82E5\u9489\u9489\u673A\u5668\u4EBA\u5B89\u5168\u8BBE\u7F6E\u5F00\u542F\u52A0\u7B7E\uFF0C\u8BF7\u586B\u5199\u52A0\u7B7E\u79D8\u94A5',
+                placeholder: i18n('ui.notifiy.secret.placeholder'),
                 className: 'full-width',
               },
             ),
@@ -649,7 +649,7 @@ var Notifiy = function Notifiy(props) {
         /*#__PURE__*/ React.createElement(
           Form.Item,
           {
-            label: '\u4EC5\u5931\u8D25\u65F6\u901A\u77E5',
+            label: i18n('ui.notifiy.skipOnSuccess.label'),
           },
           /*#__PURE__*/ React.createElement(
             Switch,
@@ -662,7 +662,7 @@ var Notifiy = function Notifiy(props) {
         /*#__PURE__*/ React.createElement(
           Form.Item,
           {
-            label: '\u81EA\u5B9A\u4E49\u5185\u5BB9',
+            label: i18n('ui.notifiy.messageContent.label'),
           },
           /*#__PURE__*/ React.createElement(
             Input.TextArea,
@@ -672,7 +672,7 @@ var Notifiy = function Notifiy(props) {
                 initValue: initValue['messageContent'],
               }),
               {
-                placeholder: '\u586B\u5199\u81EA\u5B9A\u4E49\u6D88\u606F\u5185\u5BB9',
+                placeholder: i18n('ui.notifiy.messageContent.placeholder'),
                 className: 'full-width',
               },
             ),
@@ -681,13 +681,13 @@ var Notifiy = function Notifiy(props) {
         /*#__PURE__*/ React.createElement(
           Form.Item,
           {
-            label: '\u63D0\u9192\u65B9\u5F0F',
+            label: i18n('ui.notifiy.remindType.label'),
           },
           /*#__PURE__*/ React.createElement(
             Select,
             _extends(
               {
-                placeholder: '\u8BF7\u9009\u62E9\u63D0\u9192\u65B9\u5F0F',
+                placeholder: i18n('ui.notifiy.remindType.placeholder'),
               },
               init('remindType', {
                 initValue: initValue['remindType'] || 'needless',
@@ -709,8 +709,8 @@ var Notifiy = function Notifiy(props) {
                 label: /*#__PURE__*/ React.createElement(TextWithBalloon, {
                   color: 'color-light-black',
                   align: 'tr',
-                  text: '@手机号',
-                  tips: '多个手机号之间以,分隔',
+                  text: i18n('ui.notifiy.atMobiles.label'),
+                  tips: i18n('ui.notifiy.atMobiles.tips'),
                 }),
               },
               /*#__PURE__*/ React.createElement(
@@ -721,8 +721,7 @@ var Notifiy = function Notifiy(props) {
                     initValue: initValue['atMobiles'],
                   }),
                   {
-                    placeholder:
-                      '\u8F93\u5165\u4F60\u8981@\u7684\u6210\u5458\u624B\u673A\u53F7(\u9489\u9489\u624B\u673A\u53F7)',
+                    placeholder: i18n('ui.notifiy.atMobiles.placeholder'),
                     className: 'full-width',
                     disabled: getValue('isAtAll'),
                   },
@@ -735,8 +734,8 @@ var Notifiy = function Notifiy(props) {
                 label: /*#__PURE__*/ React.createElement(TextWithBalloon, {
                   color: 'color-light-black',
                   align: 'tr',
-                  text: '@指定用户',
-                  tips: '多个用户之间以,分隔',
+                  text: i18n('ui.notifiy.atUserIds.label'),
+                  tips: i18n('ui.notifiy.atUserIds.tips'),
                 }),
               },
               /*#__PURE__*/ React.createElement(
@@ -747,7 +746,7 @@ var Notifiy = function Notifiy(props) {
                     initValue: initValue['atUserIds'],
                   }),
                   {
-                    placeholder: '\u8F93\u5165\u4F60\u8981@\u7684\u7528\u6237',
+                    placeholder: i18n('ui.notifiy.atUserIds.placeholder'),
                     className: 'full-width',
                     disabled: getValue('isAtAll'),
                   },

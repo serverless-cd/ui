@@ -4,16 +4,20 @@ export declare const MatchRuleDataSource: {
 }[];
 export declare enum TriggerType {
   PUSH = 'push',
-  PR = 'pr',
+  PR = 'pull_request',
 }
 export declare enum MatchType {
   BRANCHES = 'branches',
   TAGS = 'tags',
 }
 export declare const TriggerTypes: string[];
+export declare const ActivityTypes: {
+  value: string;
+  label: string;
+}[];
 export declare const TriggerTypeCheckedLabel: {
   push: any;
-  pr: any;
+  pull_request: any;
 };
 export declare const MatchTypes: string[];
 export declare const MatchTypeCheckedLabel: {

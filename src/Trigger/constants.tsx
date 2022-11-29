@@ -51,6 +51,10 @@ export const ActivityTypes = [
     value: 'closed',
     label: 'closed',
   },
+  {
+    value: 'merged',
+    label: 'merged',
+  },
 ];
 
 export const TriggerTypeCheckedLabel = {

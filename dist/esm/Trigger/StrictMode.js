@@ -385,7 +385,7 @@ var StrictMatch = function StrictMatch(props) {
                         marginTop: 8,
                       },
                       dataSource: branchList,
-                      placeholder: placeholder,
+                      placeholder: i18n('ui.trigger.match.source.branch'),
                       value: sourceValue,
                       disabled: disabled || loading,
                       state: loading ? 'loading' : undefined,

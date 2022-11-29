@@ -98,6 +98,7 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
               >
                 <Input
                   style={{ width: '100%' }}
+                  placeholder={i18n('ui.trigger.match.source.branch')}
                   value={sourceValue}
                   onChange={(value) => onBranchValueChange(value, 'source', id)}
                   name="sourceValue"

@@ -166,7 +166,7 @@ const StrictMatch = (props) => {
                           <Select
                             style={{ width: '100%', marginTop: 8 }}
                             dataSource={branchList}
-                            placeholder={placeholder}
+                            placeholder={i18n('ui.trigger.match.source.branch')}
                             value={sourceValue}
                             disabled={disabled || loading}
                             state={loading ? 'loading' : undefined}

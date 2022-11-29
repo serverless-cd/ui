@@ -11,6 +11,7 @@ declare const _default: {
   'ui.trigger.match.type.branches': string;
   'ui.trigger.match.type.tag': string;
   'ui.trigger.match.branch.prefix.value': string;
+  'ui.trigger.match.source.branch': string;
   'ui.trigger.match.branch.precise.value': string;
   'ui.trigger.match.branch.include.value': string;
   'ui.trigger.match.branch.exclude.value': string;

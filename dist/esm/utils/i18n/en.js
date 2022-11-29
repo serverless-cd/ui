@@ -12,6 +12,7 @@ export default {
   'ui.trigger.match.type.tag': 'Tag matching',
   'ui.trigger.match.branch.prefix.value':
     'Enter the branch prefix. If this parameter is not specified, all branches are monitored by default',
+  'ui.trigger.match.source.branch': 'Please fill in the source branch',
   'ui.trigger.match.branch.precise.value': 'Please complete the branch name',
   'ui.trigger.match.branch.include.value': 'Fill in the regular expression',
   'ui.trigger.match.branch.exclude.value': 'Please complete the branch name',

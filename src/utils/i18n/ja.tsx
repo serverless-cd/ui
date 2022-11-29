@@ -12,6 +12,7 @@ export default {
   'ui.trigger.match.type.tag': 'タッグマッチ',
   'ui.trigger.match.branch.prefix.value':
     'ブランチ プレフィックスを入力し、空白のままにして、デフォルトですべてのブランチをリッスンしてください',
+  'ui.trigger.match.source.branch': 'ソースブランチを入力してください',
   'ui.trigger.match.branch.precise.value': '完全な支店名を入力してください',
   'ui.trigger.match.branch.include.value': '正規表現を入力してください',
   'ui.trigger.match.branch.exclude.value': '完全な支店名を入力してください',

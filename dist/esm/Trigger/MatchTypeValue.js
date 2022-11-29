@@ -280,6 +280,7 @@ var MatchTypeValue = function MatchTypeValue(props) {
               style: {
                 width: '100%',
               },
+              placeholder: i18n('ui.trigger.match.source.branch'),
               value: sourceValue,
               onChange: function onChange(value) {
                 return onBranchValueChange(value, 'source', id);

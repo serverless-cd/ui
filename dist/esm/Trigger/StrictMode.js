@@ -343,11 +343,12 @@ var StrictMatch = function StrictMatch(props) {
                           marginRight: 8,
                         },
                       },
-                      /*#__PURE__*/ React.createElement(
-                        'span',
-                        null,
-                        i18n('ui.trigger.target.branch'),
-                      ),
+                      labelKey === PR &&
+                        /*#__PURE__*/ React.createElement(
+                          'span',
+                          null,
+                          i18n('ui.trigger.target.branch'),
+                        ),
                       /*#__PURE__*/ React.createElement(Select, {
                         style: {
                           width: '100%',
@@ -493,13 +494,10 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
             triggerChecked: labelKey === initRadioValue,
             matchValues: get(value, labelKey, {}),
             onChange: function onChange(v) {
-              return _onChange6(
-                _defineProperty(
-                  {},
-                  labelKey,
-                  _objectSpread(_objectSpread({}, get(value, labelKey, {})), v),
-                ),
-              );
+              var values =
+                labelKey === PR ? _objectSpread(_objectSpread({}, get(value, labelKey, {})), v) : v;
+
+              _onChange6(_defineProperty({}, labelKey, values));
             },
             disabled: disabled,
             loading: loading,

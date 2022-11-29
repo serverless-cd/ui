@@ -146,7 +146,7 @@ const StrictMatch = (props) => {
                         />
                       ) : (
                         <div style={{ flex: 1, marginRight: 8 }}>
-                          <span>{i18n('ui.trigger.target.branch')}</span>
+                          {labelKey === PR && <span>{i18n('ui.trigger.target.branch')}</span>}
                           <Select
                             style={{ width: '100%', marginTop: 8 }}
                             dataSource={branchList}
@@ -230,7 +230,10 @@ const StrictModeTrigger = (props: StrictModeProps) => {
                 labelKey={labelKey}
                 triggerChecked={labelKey === initRadioValue}
                 matchValues={get(value, labelKey, {})}
-                onChange={(v) => onChange({ [labelKey]: { ...get(value, labelKey, {}), ...v } })}
+                onChange={(v) => {
+                  const values = labelKey === PR ? { ...get(value, labelKey, {}), ...v } : v;
+                  onChange({ [labelKey]: values });
+                }}
                 disabled={disabled}
                 loading={loading}
                 branchList={branchList}

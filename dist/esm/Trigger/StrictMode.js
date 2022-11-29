@@ -178,7 +178,9 @@ var StrictMatch = function StrictMatch(props) {
 
   useEffect(
     function () {
-      var triggerTypes = keys(matchValues);
+      var triggerTypes = keys(matchValues).filter(function (type) {
+        return type !== 'types';
+      });
 
       if (!isEmpty(triggerTypes)) {
         setInitRadio(triggerTypes[0]);
@@ -431,6 +433,7 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
   );
 
   var triggerChange = function triggerChange(typeKey) {
+    console.log(typeKey, 'typeKey');
     setInitRadio(typeKey);
 
     _onChange6(

@@ -29,17 +29,31 @@ export default () => {
   const [mode, setMode] = useState('strict');
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
+  // const initValue = {
+  //   pull_request: {
+  //     branches: {
+  //       precise: [
+  //         {
+  //           source: '',
+  //           target: 'master',
+  //         },
+  //       ],
+  //     },
+  //     types: [],
+  //   },
+  // };
+
   const initValue = {
     pull_request: {
       branches: {
         precise: [
           {
-            source: 'main',
+            source: '',
             target: 'master',
           },
         ],
       },
-      types: [],
+      types: ['merged'],
     },
   };
   const branchList = [

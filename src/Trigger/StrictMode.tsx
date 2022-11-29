@@ -32,7 +32,7 @@ const StrictMatch = (props) => {
   const [lastValue, setLastValue] = useState({});
 
   useEffect(() => {
-    const triggerTypes = keys(matchValues);
+    const triggerTypes = keys(matchValues).filter((type) => type !== 'types');
     if (!isEmpty(triggerTypes)) {
       setInitRadio(triggerTypes[0]);
     } else {
@@ -201,6 +201,7 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   }, [triggerValues]);
 
   const triggerChange = (typeKey) => {
+    console.log(typeKey, 'typeKey');
     setInitRadio(typeKey);
     onChange({ [typeKey]: { branches: { precise: [] } } });
   };

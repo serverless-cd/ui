@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StrictModeProps } from './types';
+import { StrictModeProps, PR } from './types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
 import { Radio, Input, Select } from '@alicloud/console-components';
 import {
@@ -11,7 +11,9 @@ import {
   MatchType,
   branchValuePlaceholder,
 } from './constants';
+import ActivityType from './ActivityType';
 import './index.less';
+import { i18n } from '../utils';
 
 const RadioGroup = Radio.Group;
 
@@ -30,7 +32,7 @@ const StrictMatch = (props) => {
   const [lastValue, setLastValue] = useState({});
 
   useEffect(() => {
-    const triggerTypes = keys(matchValues);
+    const triggerTypes = keys(matchValues).filter((type) => type !== 'types');
     if (!isEmpty(triggerTypes)) {
       setInitRadio(triggerTypes[0]);
     } else {
@@ -46,8 +48,13 @@ const StrictMatch = (props) => {
       const MatchRuleValues = [];
       map(MatchRuleTypes, (type) => {
         const branchValues = isEmpty(values[type])
-          ? [{ type, value: '', id: uniqueId() }]
-          : map(values[type], (value) => ({ type, value, id: uniqueId() }));
+          ? [{ type, target: '', source: '', id: uniqueId() }]
+          : map(values[type], (value) => ({
+              type,
+              target: labelKey === PR ? value.target : value,
+              source: labelKey === PR ? value.source : '',
+              id: uniqueId(),
+            }));
         MatchRuleValues.push(...branchValues);
       });
       setMatchRuleList(MatchRuleValues);
@@ -62,16 +69,27 @@ const StrictMatch = (props) => {
     onChange({ [matchType]: { [matchTypeValueKey]: lastValue[matchTypeValueKey] || [] } });
   };
 
-  const onBranchValueChange = (value, id, matchLabelKey) => {
+  const checkValues = (value, type, id) => {
     const changeValues = map(matchRuleList, (item) => {
-      item.value = item.id === id ? value : item.value;
+      item[type] = item.id === id ? value : item[type];
       return item;
     });
+    return changeValues;
+  };
+
+  const onBranchValueChange = (changeValues, matchLabelKey) => {
     if (!isEmpty(changeValues)) {
       const formaValues = {};
       map(changeValues, (item) => {
         if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
-        item.value && formaValues[item.type].push(item.value);
+        if (labelKey === PR) {
+          formaValues[item.type].push({
+            target: item.target,
+            source: item.source,
+          });
+        } else {
+          item.target && formaValues[item.type].push(item.target);
+        }
       });
       onChange({ [matchLabelKey]: formaValues });
     }
@@ -86,18 +104,21 @@ const StrictMatch = (props) => {
       disabled={disabled}
     >
       {map(MatchTypes, (matchLabelKey) => {
-        if (labelKey === 'pr' && matchLabelKey === 'tags') return;
+        if (labelKey === PR && matchLabelKey === 'tags') return;
 
         return (
           <div
             style={{
               margin: '16px 0 16px 26px',
               display: 'flex',
-              height: 32,
-              alignItems: 'center',
+              alignItems: 'flex-end',
             }}
           >
-            <Radio value={matchLabelKey} disabled={disabled}>
+            <Radio
+              value={matchLabelKey}
+              disabled={disabled}
+              style={{ height: 32, lineHeight: '32px' }}
+            >
               {MatchTypeCheckedLabel[matchLabelKey]}
             </Radio>
             {initRadioValue === matchLabelKey && (
@@ -107,30 +128,55 @@ const StrictMatch = (props) => {
                 {map(matchRuleList, (value) => {
                   const matchType = get(value, 'type', 'prefix');
                   const placeholder = branchValuePlaceholder[matchLabelKey][matchType];
-                  const branchValue = get(value, 'value', '');
+                  const branchValue = get(value, 'target', '');
+                  const sourceValue = get(value, 'source', '');
+
                   const id = get(value, 'id', uniqueId());
                   return (
-                    <>
+                    <div style={{ display: 'flex' }}>
                       {matchLabelKey === 'tags' ? (
                         <Input
                           style={{ width: '100%' }}
                           placeholder={placeholder}
                           value={branchValue}
                           disabled={disabled}
-                          onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
+                          onChange={(value) =>
+                            onBranchValueChange(checkValues(value, 'target', id), matchLabelKey)
+                          }
                         />
                       ) : (
-                        <Select
-                          style={{ width: '100%' }}
-                          dataSource={branchList}
-                          placeholder={placeholder}
-                          value={branchValue}
-                          disabled={disabled || loading}
-                          state={loading ? 'loading' : undefined}
-                          onChange={(value) => onBranchValueChange(value, id, matchLabelKey)}
-                        />
+                        <div style={{ flex: 1, marginRight: 8 }}>
+                          {labelKey === PR && <span>{i18n('ui.trigger.target.branch')}</span>}
+                          <Select
+                            style={{ width: '100%', marginTop: 8 }}
+                            dataSource={branchList}
+                            placeholder={placeholder}
+                            value={branchValue}
+                            disabled={disabled || loading}
+                            state={loading ? 'loading' : undefined}
+                            onChange={(value) =>
+                              onBranchValueChange(checkValues(value, 'target', id), matchLabelKey)
+                            }
+                          />
+                        </div>
                       )}
-                    </>
+                      {labelKey === PR && (
+                        <div style={{ flex: 1 }}>
+                          <span>{i18n('ui.trigger.source.branch')}</span>
+                          <Select
+                            style={{ width: '100%', marginTop: 8 }}
+                            dataSource={branchList}
+                            placeholder={i18n('ui.trigger.match.source.branch')}
+                            value={sourceValue}
+                            disabled={disabled || loading}
+                            state={loading ? 'loading' : undefined}
+                            onChange={(value) =>
+                              onBranchValueChange(checkValues(value, 'source', id), matchLabelKey)
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -145,7 +191,6 @@ const StrictMatch = (props) => {
 const StrictModeTrigger = (props: StrictModeProps) => {
   const [initRadioValue, setInitRadio] = useState(TriggerType.PUSH);
   const { value, onChange, triggerValues, disabled = false, loading = false, branchList } = props;
-
   useEffect(() => {
     const triggerTypes = keys(triggerValues);
     if (!isEmpty(keys(triggerValues))) {
@@ -156,8 +201,13 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   }, [triggerValues]);
 
   const triggerChange = (typeKey) => {
+    console.log(typeKey, 'typeKey');
     setInitRadio(typeKey);
     onChange({ [typeKey]: { branches: { precise: [] } } });
+  };
+
+  const activityTypeChange = (values) => {
+    onChange({ [PR]: { ...get(value, PR, {}), types: values } });
   };
 
   return (
@@ -173,12 +223,18 @@ const StrictModeTrigger = (props: StrictModeProps) => {
             <Radio value={labelKey} disabled={disabled}>
               {TriggerTypeCheckedLabel[labelKey]}
             </Radio>
+            {labelKey === PR && labelKey === initRadioValue && (
+              <ActivityType onChange={activityTypeChange} value={get(value, `${PR}.types`)} />
+            )}
             {labelKey === initRadioValue && (
               <StrictMatch
                 labelKey={labelKey}
                 triggerChecked={labelKey === initRadioValue}
                 matchValues={get(value, labelKey, {})}
-                onChange={(v) => onChange({ [labelKey]: v })}
+                onChange={(v) => {
+                  const values = labelKey === PR ? { ...get(value, labelKey, {}), ...v } : v;
+                  onChange({ [labelKey]: values });
+                }}
                 disabled={disabled}
                 loading={loading}
                 branchList={branchList}

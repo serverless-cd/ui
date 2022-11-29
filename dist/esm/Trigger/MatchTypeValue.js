@@ -93,12 +93,15 @@ function _arrayWithHoles(arr) {
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Select, Icon } from '@alicloud/console-components';
 import { MatchRuleDataSource, branchValuePlaceholder } from './constants';
+import { PR } from './types';
 import { map, get, uniqueId, filter, isEmpty } from 'lodash';
+import { i18n } from '../utils';
 
 var MatchTypeValue = function MatchTypeValue(props) {
   var triggerTypeChecked = props.triggerTypeChecked,
     matchRuleList = props.matchRuleList,
     triggerType = props.triggerType,
+    matchTypeKey = props.matchTypeKey,
     onChange = props.onChange,
     disabled = props.disabled;
 
@@ -121,7 +124,15 @@ var MatchTypeValue = function MatchTypeValue(props) {
         var formaValues = {};
         map(branchList, function (item) {
           if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
-          item.value && formaValues[item.type].push(item.value);
+
+          if (triggerType === PR) {
+            formaValues[item.type].push({
+              target: item.target,
+              source: item.source,
+            });
+          } else {
+            item.target && formaValues[item.type].push(item.target);
+          }
         });
         onChange(formaValues);
       }
@@ -132,7 +143,8 @@ var MatchTypeValue = function MatchTypeValue(props) {
   var onCreate = function onCreate() {
     var initMatchValue = {
       type: 'prefix',
-      value: '',
+      target: '',
+      source: '',
       id: uniqueId(),
     };
     setBranchList([].concat(_toConsumableArray(branchList), [initMatchValue]));
@@ -176,7 +188,7 @@ var MatchTypeValue = function MatchTypeValue(props) {
             flexBasis: 160,
           },
         },
-        '\u5339\u914D\u89C4\u5219',
+        i18n('ui.trigger.match.rule'),
       ),
       /*#__PURE__*/ React.createElement(
         'span',
@@ -186,12 +198,24 @@ var MatchTypeValue = function MatchTypeValue(props) {
             marginLeft: 8,
           },
         },
-        '\u76EE\u6807\u5206\u652F',
+        i18n('ui.trigger.target.branch'),
       ),
+      triggerType === PR &&
+        /*#__PURE__*/ React.createElement(
+          'span',
+          {
+            style: {
+              flex: 1,
+              marginLeft: 8,
+            },
+          },
+          i18n('ui.trigger.source.branch'),
+        ),
     ),
     map(branchList, function (value) {
       var matchType = get(value, 'type', 'prefix');
-      var branchValue = get(value, 'value', '');
+      var branchValue = get(value, 'target', '');
+      var sourceValue = get(value, 'source', '');
       var id = get(value, 'id', uniqueId());
       return /*#__PURE__*/ React.createElement(
         'div',
@@ -233,15 +257,38 @@ var MatchTypeValue = function MatchTypeValue(props) {
             style: {
               width: '100%',
             },
-            placeholder: branchValuePlaceholder[triggerType][matchType],
+            placeholder: branchValuePlaceholder[matchTypeKey][matchType],
             value: branchValue,
             onChange: function onChange(value) {
-              return onBranchValueChange(value, 'value', id);
+              return onBranchValueChange(value, 'target', id);
             },
             name: 'branchValue',
             disabled: disabled,
           }),
         ),
+        triggerType === PR &&
+          /*#__PURE__*/ React.createElement(
+            'div',
+            {
+              className: 'trigger-matching-form-item-content',
+              style: {
+                flex: 1,
+                marginLeft: 8,
+              },
+            },
+            /*#__PURE__*/ React.createElement(Input, {
+              style: {
+                width: '100%',
+              },
+              placeholder: i18n('ui.trigger.match.source.branch'),
+              value: sourceValue,
+              onChange: function onChange(value) {
+                return onBranchValueChange(value, 'source', id);
+              },
+              name: 'sourceValue',
+              disabled: disabled,
+            }),
+          ),
         branchList.length > 1 &&
           !disabled &&
           /*#__PURE__*/ React.createElement(
@@ -268,7 +315,7 @@ var MatchTypeValue = function MatchTypeValue(props) {
         /*#__PURE__*/ React.createElement(Icon, {
           type: 'add',
         }),
-        '\u6DFB\u52A0',
+        i18n('ui.trigger.add'),
       ),
   );
 };

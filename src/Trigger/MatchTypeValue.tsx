@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Select, Icon } from '@alicloud/console-components';
 import { MatchRuleDataSource, branchValuePlaceholder } from './constants';
-import { MatchTypeValuesProps } from './types';
+import { MatchTypeValuesProps, PR } from './types';
 import { map, get, uniqueId, filter, isEmpty } from 'lodash';
+import { i18n } from '../utils';
 
 const MatchTypeValue = (props: MatchTypeValuesProps) => {
-  const { triggerTypeChecked, matchRuleList, triggerType, onChange, disabled } = props;
+  const { triggerTypeChecked, matchRuleList, triggerType, matchTypeKey, onChange, disabled } =
+    props;
   const [branchList, setBranchList] = useState(matchRuleList);
 
   useEffect(() => {
@@ -19,14 +21,21 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
       const formaValues = {};
       map(branchList, (item) => {
         if (isEmpty(formaValues[item.type])) formaValues[item.type] = [];
-        item.value && formaValues[item.type].push(item.value);
+        if (triggerType === PR) {
+          formaValues[item.type].push({
+            target: item.target,
+            source: item.source,
+          });
+        } else {
+          item.target && formaValues[item.type].push(item.target);
+        }
       });
       onChange(formaValues);
     }
   }, [branchList]);
 
   const onCreate = () => {
-    const initMatchValue = { type: 'prefix', value: '', id: uniqueId() };
+    const initMatchValue = { type: 'prefix', target: '', source: '', id: uniqueId() };
     setBranchList([...branchList, initMatchValue]);
   };
 
@@ -49,12 +58,16 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
       style={{ display: triggerTypeChecked ? 'block' : 'none' }}
     >
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <span style={{ flexBasis: 160 }}>匹配规则</span>
-        <span style={{ flex: 1, marginLeft: 8 }}>目标分支</span>
+        <span style={{ flexBasis: 160 }}>{i18n('ui.trigger.match.rule')}</span>
+        <span style={{ flex: 1, marginLeft: 8 }}>{i18n('ui.trigger.target.branch')}</span>
+        {triggerType === PR && (
+          <span style={{ flex: 1, marginLeft: 8 }}>{i18n('ui.trigger.source.branch')}</span>
+        )}
       </div>
       {map(branchList, (value) => {
         const matchType = get(value, 'type', 'prefix');
-        const branchValue = get(value, 'value', '');
+        const branchValue = get(value, 'target', '');
+        const sourceValue = get(value, 'source', '');
         const id = get(value, 'id', uniqueId());
         return (
           <div className="trigger-matching-form-item" key={id}>
@@ -71,13 +84,27 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
             <div className="trigger-matching-form-item-content" style={{ flex: 1, marginLeft: 8 }}>
               <Input
                 style={{ width: '100%' }}
-                placeholder={branchValuePlaceholder[triggerType][matchType]}
+                placeholder={branchValuePlaceholder[matchTypeKey][matchType]}
                 value={branchValue}
-                onChange={(value) => onBranchValueChange(value, 'value', id)}
+                onChange={(value) => onBranchValueChange(value, 'target', id)}
                 name="branchValue"
                 disabled={disabled}
               />
             </div>
+            {triggerType === PR && (
+              <div
+                className="trigger-matching-form-item-content"
+                style={{ flex: 1, marginLeft: 8 }}
+              >
+                <Input
+                  style={{ width: '100%' }}
+                  value={sourceValue}
+                  onChange={(value) => onBranchValueChange(value, 'source', id)}
+                  name="sourceValue"
+                  disabled={disabled}
+                />
+              </div>
+            )}
             {branchList.length > 1 && !disabled && (
               <div onClick={() => handleDelete(id)} className="trigger-matching-delete-icon">
                 <Icon type="delete" size="xs" />
@@ -89,7 +116,7 @@ const MatchTypeValue = (props: MatchTypeValuesProps) => {
       {!disabled && (
         <Button onClick={onCreate}>
           <Icon type="add" />
-          添加
+          {i18n('ui.trigger.add')}
         </Button>
       )}
     </div>

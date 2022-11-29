@@ -30,10 +30,16 @@ export default () => {
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
   const initValue = {
-    push: {
+    pull_request: {
       branches: {
-        precise: ['master'],
+        precise: [
+          {
+            source: 'main',
+            target: 'master',
+          },
+        ],
       },
+      types: ['opened', 'reopened', 'closed'],
     },
   };
   const branchList = [

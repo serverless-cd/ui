@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Checkbox } from '@alicloud/console-components';
 import MatchType from './MatchType';
 import { TriggerTypeCheckedLabel, MatchTypes } from './constants';
-import { TriggerTypeProps } from './types';
+import { TriggerTypeProps, PR } from './types';
 import { isEmpty, map, get } from 'lodash';
+import ActivityType from './ActivityType';
 
 const TriggerType = (props: TriggerTypeProps) => {
   const { labelKey, value, onChange, disabled } = props;
@@ -26,25 +27,36 @@ const TriggerType = (props: TriggerTypeProps) => {
     onChange(value);
   };
 
+  const activityTypeChange = (selectedItems) => {
+    matchTypeChange({ ...value, types: selectedItems });
+  };
+
   return (
     <div className="trigger-content">
       <Checkbox checked={triggerChecked} onChange={triggerChange} disabled={disabled}>
         {TriggerTypeCheckedLabel[labelKey]}
       </Checkbox>
-      {triggerChecked &&
-        map(MatchTypes, (matchLabelKey) => {
-          if (labelKey === 'pr' && matchLabelKey === 'tags') return;
-          return (
-            <MatchType
-              triggerChecked={triggerChecked}
-              labelKey={matchLabelKey}
-              triggerValues={get(value, matchLabelKey, {})}
-              onChange={(v) => matchTypeChange({ ...value, [matchLabelKey]: v })}
-              key={labelKey + matchLabelKey}
-              disabled={disabled}
-            />
-          );
-        })}
+      {triggerChecked && (
+        <>
+          {labelKey === PR && (
+            <ActivityType onChange={activityTypeChange} value={get(value, 'types', [])} />
+          )}
+          {map(MatchTypes, (matchLabelKey) => {
+            if (labelKey === PR && matchLabelKey === 'tags') return;
+            return (
+              <MatchType
+                triggerChecked={triggerChecked}
+                triggerType={labelKey}
+                labelKey={matchLabelKey}
+                triggerValues={get(value, matchLabelKey, {})}
+                onChange={(v) => matchTypeChange({ ...value, [matchLabelKey]: v })}
+                key={labelKey + matchLabelKey}
+                disabled={disabled}
+              />
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };

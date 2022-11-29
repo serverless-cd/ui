@@ -21,7 +21,7 @@ export const MatchRuleDataSource = [
 
 export enum TriggerType {
   PUSH = 'push',
-  PR = 'pr',
+  PR = 'pull_request',
 }
 
 export enum MatchType {
@@ -36,7 +36,22 @@ enum MatchValueType {
   EXCLUDE = 'exclude',
 }
 
-export const TriggerTypes = ['push', 'pr'];
+export const TriggerTypes = ['push', 'pull_request'];
+
+export const ActivityTypes = [
+  {
+    value: 'opened',
+    label: 'opened',
+  },
+  {
+    value: 'reopened',
+    label: 'reopened',
+  },
+  {
+    value: 'closed',
+    label: 'closed',
+  },
+];
 
 export const TriggerTypeCheckedLabel = {
   [TriggerType.PUSH]: i18n('ui.trigger.type.push'),

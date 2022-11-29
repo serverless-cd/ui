@@ -1,6 +1,7 @@
 export interface MatchTypeProps {
   triggerChecked: boolean;
   labelKey: string;
+  triggerType: string;
   triggerValues: object;
   onChange?: Function;
   key?: string;
@@ -11,6 +12,7 @@ export interface MatchTypeValuesProps {
   triggerTypeChecked: boolean;
   matchRuleList: Array<any>;
   triggerType: string;
+  matchTypeKey: string;
   onChange?: Function;
   disabled?: boolean;
 }
@@ -41,3 +43,6 @@ export interface StrictModeProps {
   branchList?: Array<any>;
   loading?: boolean;
 }
+
+export const PR = 'pull_request';
+export const PUSH = 'push';

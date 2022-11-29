@@ -4,11 +4,12 @@ import { Form, Input, Switch, Select } from '@alicloud/console-components';
 import TextWithBalloon from './TextWithBalloon';
 import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps } from './types';
 import './index.less';
+import { i18n } from '../utils';
 
 const dataSource = [
-  { value: 'needless', label: '不提醒' },
-  { value: 'owner', label: '所有人' },
-  { value: 'appoint', label: '指定成员' },
+  { value: 'needless', label: i18n('ui.notifiy.remindType.needless') },
+  { value: 'owner', label: i18n('ui.notifiy.remindType.owner') },
+  { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
 ];
 
 const Notifiy = (props: IProps) => {
@@ -18,14 +19,16 @@ const Notifiy = (props: IProps) => {
   const validateWebhook = async (rule, value, callback) => {
     if (!getValue('enable')) return callback();
     if (isEmpty(value)) {
-      return callback('“webhook地址”为必填项。');
+      return callback(i18n('ui.notifiy.webhook.tip'));
     }
-    /^((https|http)?:\/\/)[^\s]+/.test(value) ? callback() : callback('请输入正确的webhook地址');
+    /^((https|http)?:\/\/)[^\s]+/.test(value)
+      ? callback()
+      : callback(i18n('ui.notifiy.webhook.correct.tip'));
   };
 
   return (
     <Form field={field} className={className} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
-      <Form.Item label="开启通知" className="switch-center">
+      <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
         <Switch
           {...(init('enable', {
             valueName: 'checked',
@@ -35,13 +38,13 @@ const Notifiy = (props: IProps) => {
       </Form.Item>
       {getValue('enable') && (
         <Form field={field} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
-          <Form.Item label="webhook地址">
+          <Form.Item label={i18n('ui.notifiy.webhook.label')}>
             <Input
               {...init('webhook', {
                 initValue: initValue['webhook'],
                 rules: [{ validator: validateWebhook }],
               })}
-              placeholder="钉钉机器人通知 URL"
+              placeholder={i18n('ui.notifiy.webhook.placeholder')}
               className="full-width"
             />
           </Form.Item>
@@ -50,18 +53,18 @@ const Notifiy = (props: IProps) => {
               <TextWithBalloon
                 color="color-light-black"
                 align="tr"
-                text={'加签秘钥'}
-                tips={'钉钉自定义机器人必须开启安全设置，若未使用加签，无需填写加签秘钥'}
+                text={i18n('ui.notifiy.secret.label')}
+                tips={i18n('ui.notifiy.secret.tips')}
               />
             }
           >
             <Input
               {...init('secret', { initValue: initValue['secret'] })}
-              placeholder="若钉钉机器人安全设置开启加签，请填写加签秘钥"
+              placeholder={i18n('ui.notifiy.secret.placeholder')}
               className="full-width"
             />
           </Form.Item>
-          <Form.Item label="仅失败时通知">
+          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')}>
             <Switch
               {...(init('skipOnSuccess', {
                 valueName: 'checked',
@@ -69,16 +72,16 @@ const Notifiy = (props: IProps) => {
               }) as {})}
             ></Switch>
           </Form.Item>
-          <Form.Item label="自定义内容">
+          <Form.Item label={i18n('ui.notifiy.messageContent.label')}>
             <Input.TextArea
               {...init('messageContent', { initValue: initValue['messageContent'] })}
-              placeholder="填写自定义消息内容"
+              placeholder={i18n('ui.notifiy.messageContent.placeholder')}
               className="full-width"
             />
           </Form.Item>
-          <Form.Item label="提醒方式">
+          <Form.Item label={i18n('ui.notifiy.remindType.label')}>
             <Select
-              placeholder="请选择提醒方式"
+              placeholder={i18n('ui.notifiy.remindType.placeholder')}
               {...(init('remindType', {
                 initValue: initValue['remindType'] || 'needless',
               }) as {})}
@@ -93,14 +96,14 @@ const Notifiy = (props: IProps) => {
                   <TextWithBalloon
                     color="color-light-black"
                     align="tr"
-                    text={'@手机号'}
-                    tips={'多个手机号之间以,分隔'}
+                    text={i18n('ui.notifiy.atMobiles.label')}
+                    tips={i18n('ui.notifiy.atMobiles.tips')}
                   />
                 }
               >
                 <Input
                   {...init('atMobiles', { initValue: initValue['atMobiles'] })}
-                  placeholder="输入你要@的成员手机号(钉钉手机号)"
+                  placeholder={i18n('ui.notifiy.atMobiles.placeholder')}
                   className="full-width"
                   disabled={getValue('isAtAll')}
                 />
@@ -110,14 +113,14 @@ const Notifiy = (props: IProps) => {
                   <TextWithBalloon
                     color="color-light-black"
                     align="tr"
-                    text={'@指定用户'}
-                    tips={'多个用户之间以,分隔'}
+                    text={i18n('ui.notifiy.atUserIds.label')}
+                    tips={i18n('ui.notifiy.atUserIds.tips')}
                   />
                 }
               >
                 <Input
                   {...init('atUserIds', { initValue: initValue['atUserIds'] })}
-                  placeholder="输入你要@的用户"
+                  placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
                   className="full-width"
                   disabled={getValue('isAtAll')}
                 />

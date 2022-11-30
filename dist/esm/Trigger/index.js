@@ -133,7 +133,7 @@ var Trigger = function Trigger(props) {
         ? {
             push: {
               branches: {
-                prefix: [],
+                precise: [],
               },
             },
           }

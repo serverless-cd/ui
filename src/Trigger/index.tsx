@@ -33,7 +33,9 @@ const uniqOrOmitTriggers = (trigger, mode) => {
 
 const Trigger = (props: TriggersProps) => {
   const { value, onChange = noop, mode = 'normal', disabled = false, loading, branchList } = props;
-  const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
+  const [triggerValues] = useState(
+    isEmpty(value) ? { push: { branches: { precise: [] } } } : value,
+  );
 
   const field = Field.useField({
     onChange: () => {

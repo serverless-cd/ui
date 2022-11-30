@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StrictModeProps, PR } from './types';
+import { StrictModeProps, PR, PUSH } from './types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
 import { Radio, Input, Select } from '@alicloud/console-components';
 import {
@@ -39,6 +39,11 @@ const StrictMatch = (props) => {
       setInitRadio(MatchType.BRANCHES);
     }
     formtMatchValues(matchValues[triggerTypes[0] || MatchType.BRANCHES]);
+    console.log(lastValue, 'lastValue');
+    console.log(
+      { ...lastValue, ...matchValues[triggerTypes[0] || MatchType.BRANCHES] },
+      'lastValue222',
+    );
     setLastValue({ ...lastValue, ...matchValues[triggerTypes[0] || MatchType.BRANCHES] });
   }, [matchValues]);
 
@@ -85,7 +90,7 @@ const StrictMatch = (props) => {
         if (labelKey === PR) {
           formaValues[item.type].push({
             target: item.target,
-            source: item.source,
+            source: item.target !== item.source ? item.source : '',
           });
         } else {
           item.target && formaValues[item.type].push(item.target);
@@ -94,6 +99,15 @@ const StrictMatch = (props) => {
       onChange({ [matchLabelKey]: formaValues });
     }
     setMatchRuleList(changeValues);
+  };
+
+  const filterTargetValue = (value) => {
+    if (isEmpty(branchList)) return [];
+    return map(branchList, (branchItem) => {
+      let newItem = { ...branchItem };
+      newItem.disabled = newItem.value === value;
+      return newItem;
+    });
   };
 
   return (
@@ -119,7 +133,11 @@ const StrictMatch = (props) => {
               disabled={disabled}
               style={{ height: 32, lineHeight: '32px' }}
             >
-              {MatchTypeCheckedLabel[matchLabelKey]}
+              <span
+                className={labelKey === PUSH && matchLabelKey !== 'tags' ? 'trigger-label' : ' '}
+              >
+                {MatchTypeCheckedLabel[matchLabelKey]}
+              </span>
             </Radio>
             {initRadioValue === matchLabelKey && (
               <div
@@ -130,7 +148,6 @@ const StrictMatch = (props) => {
                   const placeholder = branchValuePlaceholder[matchLabelKey][matchType];
                   const branchValue = get(value, 'target', '');
                   const sourceValue = get(value, 'source', '');
-
                   const id = get(value, 'id', uniqueId());
                   return (
                     <div style={{ display: 'flex' }}>
@@ -146,7 +163,11 @@ const StrictMatch = (props) => {
                         />
                       ) : (
                         <div style={{ flex: 1, marginRight: 8 }}>
-                          {labelKey === PR && <span>{i18n('ui.trigger.target.branch')}</span>}
+                          {labelKey === PR && (
+                            <span className="trigger-label">
+                              {i18n('ui.trigger.target.branch')}
+                            </span>
+                          )}
                           <Select
                             style={{ width: '100%', marginTop: 8 }}
                             dataSource={branchList}
@@ -165,7 +186,7 @@ const StrictMatch = (props) => {
                           <span>{i18n('ui.trigger.source.branch')}</span>
                           <Select
                             style={{ width: '100%', marginTop: 8 }}
-                            dataSource={branchList}
+                            dataSource={filterTargetValue(branchValue)}
                             placeholder={i18n('ui.trigger.match.source.branch')}
                             value={sourceValue}
                             disabled={disabled || loading}
@@ -201,7 +222,6 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   }, [triggerValues]);
 
   const triggerChange = (typeKey) => {
-    console.log(typeKey, 'typeKey');
     setInitRadio(typeKey);
     onChange({ [typeKey]: { branches: { precise: [] } } });
   };

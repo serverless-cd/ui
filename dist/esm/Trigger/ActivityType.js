@@ -68,6 +68,7 @@ import { Checkbox } from '@alicloud/console-components';
 import { ActivityTypes } from './constants';
 import { i18n } from '../utils';
 import { isEmpty, size, map } from 'lodash';
+import './index.less';
 var CheckboxGroup = Checkbox.Group;
 
 var ActivityType = function ActivityType(props) {
@@ -104,10 +105,11 @@ var ActivityType = function ActivityType(props) {
       },
     },
     /*#__PURE__*/ React.createElement(
-      'span',
+      'label',
       {
+        className: 'trigger-label',
         style: {
-          marginRight: 16,
+          marginRight: 8,
         },
       },
       i18n('ui.trigger.activity.type'),

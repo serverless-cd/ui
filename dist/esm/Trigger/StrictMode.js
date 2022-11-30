@@ -134,7 +134,7 @@ function _arrayWithHoles(arr) {
 }
 
 import React, { useEffect, useState } from 'react';
-import { PR } from './types';
+import { PR, PUSH } from './types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
 import { Radio, Input, Select } from '@alicloud/console-components';
 import {
@@ -189,6 +189,14 @@ var StrictMatch = function StrictMatch(props) {
       }
 
       formtMatchValues(matchValues[triggerTypes[0] || MatchType.BRANCHES]);
+      console.log(lastValue, 'lastValue');
+      console.log(
+        _objectSpread(
+          _objectSpread({}, lastValue),
+          matchValues[triggerTypes[0] || MatchType.BRANCHES],
+        ),
+        'lastValue222',
+      );
       setLastValue(
         _objectSpread(
           _objectSpread({}, lastValue),
@@ -258,7 +266,7 @@ var StrictMatch = function StrictMatch(props) {
         if (labelKey === PR) {
           formaValues[item.type].push({
             target: item.target,
-            source: item.source,
+            source: item.target !== item.source ? item.source : '',
           });
         } else {
           item.target && formaValues[item.type].push(item.target);
@@ -268,6 +276,16 @@ var StrictMatch = function StrictMatch(props) {
     }
 
     setMatchRuleList(changeValues);
+  };
+
+  var filterTargetValue = function filterTargetValue(value) {
+    if (isEmpty(branchList)) return [];
+    return map(branchList, function (branchItem) {
+      var newItem = _objectSpread({}, branchItem);
+
+      newItem.disabled = newItem.value === value;
+      return newItem;
+    });
   };
 
   return /*#__PURE__*/ React.createElement(
@@ -301,7 +319,13 @@ var StrictMatch = function StrictMatch(props) {
               lineHeight: '32px',
             },
           },
-          MatchTypeCheckedLabel[matchLabelKey],
+          /*#__PURE__*/ React.createElement(
+            'span',
+            {
+              className: labelKey === PUSH && matchLabelKey !== 'tags' ? 'trigger-label' : ' ',
+            },
+            MatchTypeCheckedLabel[matchLabelKey],
+          ),
         ),
         initRadioValue === matchLabelKey &&
           /*#__PURE__*/ React.createElement(
@@ -348,7 +372,9 @@ var StrictMatch = function StrictMatch(props) {
                       labelKey === PR &&
                         /*#__PURE__*/ React.createElement(
                           'span',
-                          null,
+                          {
+                            className: 'trigger-label',
+                          },
                           i18n('ui.trigger.target.branch'),
                         ),
                       /*#__PURE__*/ React.createElement(Select, {
@@ -387,7 +413,7 @@ var StrictMatch = function StrictMatch(props) {
                         width: '100%',
                         marginTop: 8,
                       },
-                      dataSource: branchList,
+                      dataSource: filterTargetValue(branchValue),
                       placeholder: i18n('ui.trigger.match.source.branch'),
                       value: sourceValue,
                       disabled: disabled || loading,
@@ -433,7 +459,6 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
   );
 
   var triggerChange = function triggerChange(typeKey) {
-    console.log(typeKey, 'typeKey');
     setInitRadio(typeKey);
 
     _onChange6(

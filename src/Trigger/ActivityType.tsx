@@ -3,6 +3,7 @@ import { Checkbox } from '@alicloud/console-components';
 import { ActivityTypes } from './constants';
 import { i18n } from '../utils';
 import { isEmpty, size, map } from 'lodash';
+import './index.less';
 
 const { Group: CheckboxGroup } = Checkbox;
 
@@ -23,7 +24,9 @@ const ActivityType = (props) => {
 
   return (
     <div style={{ padding: '16px 0 0 50px', display: 'flex', alignItems: 'center' }}>
-      <span style={{ marginRight: 16 }}>{i18n('ui.trigger.activity.type')}</span>
+      <label className="trigger-label" style={{ marginRight: 8 }}>
+        {i18n('ui.trigger.activity.type')}
+      </label>
       <CheckboxGroup value={value} dataSource={dataSource} onChange={onChange} />
     </div>
   );

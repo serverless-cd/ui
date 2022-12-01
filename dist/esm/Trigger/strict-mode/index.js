@@ -106,111 +106,126 @@ function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
 
-import React, { useState, useEffect } from 'react';
-import { Checkbox } from '@alicloud/console-components';
-import MatchType from './MatchType';
-import { TriggerTypeCheckedLabel, MatchTypes } from './constants';
-import { PR } from './types';
-import { isEmpty, map, get } from 'lodash';
-import ActivityType from './ActivityType';
+import React, { useEffect, useState } from 'react';
+import { PR } from '../types';
+import { map, get, isEmpty, keys } from 'lodash';
+import { Radio } from '@alicloud/console-components';
+import { TriggerTypes, TriggerTypeCheckedLabel, TriggerType } from '../constants';
+import ActivityType from '../ActivityType';
+import StrictMatch from './StrictMatch';
+import '../index.less';
+var RadioGroup = Radio.Group;
 
-var TriggerType = function TriggerType(props) {
-  var labelKey = props.labelKey,
-    value = props.value,
-    onChange = props.onChange,
-    disabled = props.disabled,
-    field = props.field;
-
-  var _useState = useState(false),
+var StrictModeTrigger = function StrictModeTrigger(props) {
+  var _useState = useState(TriggerType.PUSH),
     _useState2 = _slicedToArray(_useState, 2),
-    triggerChecked = _useState2[0],
-    setTriggerChecked = _useState2[1];
+    initRadioValue = _useState2[0],
+    setInitRadio = _useState2[1];
 
+  var value = props.value,
+    _onChange4 = props.onChange,
+    triggerValues = props.triggerValues,
+    _props$disabled = props.disabled,
+    disabled = _props$disabled === void 0 ? false : _props$disabled,
+    _props$loading = props.loading,
+    loading = _props$loading === void 0 ? false : _props$loading,
+    branchList = props.branchList,
+    field = props.field,
+    isRefresh = props.isRefresh,
+    onRefresh = props.onRefresh;
   useEffect(
     function () {
-      setTriggerChecked(!isEmpty(value));
+      var triggerTypes = keys(triggerValues);
+
+      if (!isEmpty(keys(triggerValues))) {
+        setInitRadio(triggerTypes[0]);
+      } else {
+        setInitRadio(TriggerType.PUSH);
+      }
     },
-    [value],
+    [triggerValues],
   );
 
-  var triggerChange = function triggerChange(checked) {
-    setTriggerChecked(checked);
+  var triggerChange = function triggerChange(typeKey) {
+    setInitRadio(typeKey);
 
-    if (checked) {
-      matchTypeChange(
+    _onChange4(
+      _defineProperty({}, typeKey, {
+        branches: {
+          precise: [],
+        },
+      }),
+    );
+  };
+
+  var activityTypeChange = function activityTypeChange(values) {
+    _onChange4(
+      _defineProperty(
+        {},
+        PR,
         _objectSpread(
-          _objectSpread({}, value),
+          _objectSpread({}, get(value, PR, {})),
           {},
           {
-            branches: {
-              prefix: [],
-            },
+            types: values,
           },
         ),
-      );
-    } else {
-      matchTypeChange({});
-    }
-  };
-
-  var matchTypeChange = function matchTypeChange(value) {
-    onChange(value);
-  };
-
-  var activityTypeChange = function activityTypeChange(selectedItems) {
-    matchTypeChange(
-      _objectSpread(
-        _objectSpread({}, value),
-        {},
-        {
-          types: selectedItems,
-        },
       ),
     );
   };
 
   return /*#__PURE__*/ React.createElement(
-    'div',
+    RadioGroup,
     {
-      className: 'trigger-content',
-    },
-    /*#__PURE__*/ React.createElement(
-      Checkbox,
-      {
-        checked: triggerChecked,
-        onChange: triggerChange,
-        disabled: disabled,
+      value: initRadioValue,
+      onChange: triggerChange,
+      disabled: disabled,
+      style: {
+        width: '100%',
       },
-      TriggerTypeCheckedLabel[labelKey],
-    ),
-    triggerChecked &&
-      /*#__PURE__*/ React.createElement(
-        React.Fragment,
-        null,
+    },
+    map(TriggerTypes, function (labelKey) {
+      return /*#__PURE__*/ React.createElement(
+        'div',
+        {
+          className: 'trigger-content',
+        },
+        /*#__PURE__*/ React.createElement(
+          Radio,
+          {
+            value: labelKey,
+            disabled: disabled,
+          },
+          TriggerTypeCheckedLabel[labelKey],
+        ),
         labelKey === PR &&
+          labelKey === initRadioValue &&
           /*#__PURE__*/ React.createElement(ActivityType, {
             onChange: activityTypeChange,
-            value: get(value, 'types'),
+            value: get(value, ''.concat(PR, '.types')),
             field: field,
           }),
-        map(MatchTypes, function (matchLabelKey) {
-          if (labelKey === PR && matchLabelKey === 'tags') return;
-          return /*#__PURE__*/ React.createElement(MatchType, {
-            triggerChecked: triggerChecked,
-            triggerType: labelKey,
-            labelKey: matchLabelKey,
-            triggerValues: get(value, matchLabelKey, {}),
+        labelKey === initRadioValue &&
+          /*#__PURE__*/ React.createElement(StrictMatch, {
+            labelKey: labelKey,
+            triggerChecked: labelKey === initRadioValue,
+            matchValues: get(value, labelKey, {}),
             onChange: function onChange(v) {
-              return matchTypeChange(
-                _objectSpread(_objectSpread({}, value), {}, _defineProperty({}, matchLabelKey, v)),
-              );
+              var values =
+                labelKey === PR ? _objectSpread(_objectSpread({}, get(value, labelKey, {})), v) : v;
+
+              _onChange4(_defineProperty({}, labelKey, values));
             },
-            key: labelKey + matchLabelKey,
             disabled: disabled,
-          });
-        }),
-      ),
+            loading: loading,
+            field: field,
+            branchList: branchList,
+            isRefresh: isRefresh,
+            onRefresh: onRefresh,
+          }),
+      );
+    }),
   );
 };
 
-export default TriggerType;
+export default StrictModeTrigger;

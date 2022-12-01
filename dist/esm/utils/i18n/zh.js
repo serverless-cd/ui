@@ -20,6 +20,7 @@ export default {
   'ui.trigger.match.tag.include.value': '请填写正则表达式',
   'ui.trigger.match.tag.exclude.value': '请填写完整Tag名称',
   'ui.trigger.activity.type': '触发类型',
+  'ui.trigger.activity.type.verify.text': '触发类型是必填项',
   'ui.trigger.source.branch': '来源分支',
   'ui.notifiy.remindType.needless': '不提醒',
   'ui.notifiy.remindType.owner': '所有人',
@@ -44,4 +45,5 @@ export default {
   'ui.notifiy.atUserIds.label': '@指定用户',
   'ui.notifiy.atUserIds.tips': '多个用户之间以,分隔',
   'ui.notifiy.atUserIds.placeholder': '输入你要@的用户',
+  'ui.branch.verify.text': '分支是必填项',
 };

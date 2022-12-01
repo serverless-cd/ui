@@ -24,6 +24,7 @@ export interface TriggerTypeProps {
   setValue: Function;
   key?: string;
   disabled?: boolean;
+  field: object;
 }
 
 export interface TriggersProps {
@@ -33,6 +34,8 @@ export interface TriggersProps {
   disabled?: boolean;
   branchList?: Array<any>;
   loading?: boolean;
+  isRefresh?: boolean;
+  onRefresh?: Function;
 }
 
 export interface StrictModeProps {
@@ -42,6 +45,9 @@ export interface StrictModeProps {
   disabled?: boolean;
   branchList?: Array<any>;
   loading?: boolean;
+  field: object;
+  isRefresh?: boolean;
+  onRefresh?: Function;
 }
 
 export const PR = 'pull_request';

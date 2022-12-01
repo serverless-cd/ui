@@ -28,6 +28,14 @@
   margin-bottom: 8px;
 }
 
+.mr-8 {
+  margin-right: 8px;
+}
+
+.ml-8 {
+  margin-left: 8px;
+}
+
 .trigger-matching-delete-icon {
   position: absolute;
   right: -30px;
@@ -40,10 +48,43 @@
   cursor: pointer;
 }
 
+.trigger-matching-refresh-icon {
+  position: absolute;
+  right: -30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
 .trigger-label {
   &::after {
     margin-left: 4px;
     color: #c80000;
     content: '*';
   }
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.trigger-form {
+  position: relative;
+  display: flex;
+  .next-form-item {
+    margin-bottom: 0;
+  }
+}
+
+.branch-radio {
+  height: 32px;
+  line-height: 32px;
+}
+
+.branch-radio-pr {
+  height: 64px;
+  line-height: 94px;
 }

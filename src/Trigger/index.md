@@ -5,7 +5,7 @@ Demo:
 mode： normal strict
 
 ```tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field, Button } from '@alicloud/console-components';
 import { Trigger } from '@serverless-cd/ui';
@@ -29,11 +29,13 @@ export default () => {
   const [mode, setMode] = useState('strict');
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
-  const initValue = {};
-  const branchList = [
+  const [branchList, setBranchList] = useState([
     { label: 'master', value: 'master' },
     { label: 'main', value: 'main' },
-  ];
+  ]);
+
+  const triggerRef = useRef();
+  const initValue = {};
 
   useEffect(() => {
     setTimeout(() => {
@@ -50,6 +52,20 @@ export default () => {
     setMode(mode);
   };
 
+  const verifyTrigger = () => {
+    triggerRef.current.validate().then((validate) => {
+      console.log(validate, 'validate');
+    });
+  };
+  const onRefresh = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setBranchList([...branchList, { label: 'test', value: 'test' }]);
+      setLoading(false);
+    }, 3000);
+  };
+
   return (
     <div>
       <div style={{ marginBottom: 20 }}>
@@ -57,13 +73,17 @@ export default () => {
           strict
         </Button>
         <Button onClick={() => onClick('normal')}>normal</Button>
+        <Button onClick={verifyTrigger}>校验</Button>
       </div>
       <Trigger
         {...init('trigger', { initValue })}
         mode={mode}
         loading={loading}
         disabled={false}
+        isRefresh
+        onRefresh={onRefresh}
         branchList={branchList}
+        ref={triggerRef}
       />
     </div>
   );

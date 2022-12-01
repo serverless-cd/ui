@@ -1,3 +1,20 @@
+function _extends() {
+  _extends = Object.assign
+    ? Object.assign.bind()
+    : function (target) {
+        for (var i = 1; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      };
+  return _extends.apply(this, arguments);
+}
+
 function _toConsumableArray(arr) {
   return (
     _arrayWithoutHoles(arr) ||
@@ -134,21 +151,13 @@ function _arrayWithHoles(arr) {
 }
 
 import React, { useEffect, useState } from 'react';
-import { PR, PUSH } from './types';
+import { PR } from '../types';
 import { map, get, noop, isEmpty, keys, uniqueId } from 'lodash';
-import { Radio, Input, Select } from '@alicloud/console-components';
-import {
-  TriggerTypes,
-  TriggerTypeCheckedLabel,
-  TriggerType,
-  MatchTypeCheckedLabel,
-  MatchTypes,
-  MatchType,
-  branchValuePlaceholder,
-} from './constants';
-import ActivityType from './ActivityType';
-import './index.less';
-import { i18n } from '../utils';
+import { Radio, Input, Select, Form } from '@alicloud/console-components';
+import { MatchTypeCheckedLabel, MatchTypes, MatchType, branchValuePlaceholder } from '../constants';
+import Refresh from './Refresh';
+import { i18n } from '../../utils';
+import '../index.less';
 var RadioGroup = Radio.Group;
 
 var StrictMatch = function StrictMatch(props) {
@@ -164,7 +173,10 @@ var StrictMatch = function StrictMatch(props) {
     labelKey = props.labelKey,
     disabled = props.disabled,
     loading = props.loading,
-    branchList = props.branchList;
+    branchList = props.branchList,
+    field = props.field,
+    isRefresh = props.isRefresh,
+    onRefresh = props.onRefresh;
 
   var _useState3 = useState([]),
     _useState4 = _slicedToArray(_useState3, 2),
@@ -176,6 +188,9 @@ var StrictMatch = function StrictMatch(props) {
     lastValue = _useState6[0],
     setLastValue = _useState6[1];
 
+  var init = field.init,
+    setValue = field.setValue,
+    validate = field.validate;
   useEffect(
     function () {
       var triggerTypes = keys(matchValues).filter(function (type) {
@@ -189,14 +204,6 @@ var StrictMatch = function StrictMatch(props) {
       }
 
       formtMatchValues(matchValues[triggerTypes[0] || MatchType.BRANCHES]);
-      console.log(lastValue, 'lastValue');
-      console.log(
-        _objectSpread(
-          _objectSpread({}, lastValue),
-          matchValues[triggerTypes[0] || MatchType.BRANCHES],
-        ),
-        'lastValue222',
-      );
       setLastValue(
         _objectSpread(
           _objectSpread({}, lastValue),
@@ -306,7 +313,7 @@ var StrictMatch = function StrictMatch(props) {
           style: {
             margin: '16px 0 16px 26px',
             display: 'flex',
-            alignItems: 'flex-end',
+            alignItems: 'flex-start',
           },
         },
         /*#__PURE__*/ React.createElement(
@@ -314,18 +321,9 @@ var StrictMatch = function StrictMatch(props) {
           {
             value: matchLabelKey,
             disabled: disabled,
-            style: {
-              height: 32,
-              lineHeight: '32px',
-            },
+            className: labelKey === PR ? 'branch-radio-pr' : 'branch-radio',
           },
-          /*#__PURE__*/ React.createElement(
-            'span',
-            {
-              className: labelKey === PUSH && matchLabelKey !== 'tags' ? 'trigger-label' : ' ',
-            },
-            MatchTypeCheckedLabel[matchLabelKey],
-          ),
+          MatchTypeCheckedLabel[matchLabelKey],
         ),
         initRadioValue === matchLabelKey &&
           /*#__PURE__*/ React.createElement(
@@ -343,50 +341,23 @@ var StrictMatch = function StrictMatch(props) {
               var sourceValue = get(value, 'source', '');
               var id = get(value, 'id', uniqueId());
               return /*#__PURE__*/ React.createElement(
-                'div',
+                Form,
                 {
-                  style: {
-                    display: 'flex',
-                  },
+                  field: field,
+                  className: 'trigger-form',
                 },
                 matchLabelKey === 'tags'
-                  ? /*#__PURE__*/ React.createElement(Input, {
-                      style: {
-                        width: '100%',
-                      },
-                      placeholder: placeholder,
-                      value: branchValue,
-                      disabled: disabled,
-                      onChange: function onChange(value) {
-                        return onBranchValueChange(checkValues(value, 'target', id), matchLabelKey);
-                      },
-                    })
-                  : /*#__PURE__*/ React.createElement(
-                      'div',
+                  ? /*#__PURE__*/ React.createElement(
+                      Form.Item,
                       {
-                        style: {
-                          flex: 1,
-                          marginRight: 8,
-                        },
+                        className: 'full-width',
+                        labelAlign: 'left',
                       },
-                      labelKey === PR &&
-                        /*#__PURE__*/ React.createElement(
-                          'span',
-                          {
-                            className: 'trigger-label',
-                          },
-                          i18n('ui.trigger.target.branch'),
-                        ),
-                      /*#__PURE__*/ React.createElement(Select, {
-                        style: {
-                          width: '100%',
-                          marginTop: 8,
-                        },
-                        dataSource: branchList,
+                      /*#__PURE__*/ React.createElement(Input, {
+                        className: 'full-width',
                         placeholder: placeholder,
                         value: branchValue,
-                        disabled: disabled || loading,
-                        state: loading ? 'loading' : undefined,
+                        disabled: disabled,
                         onChange: function onChange(value) {
                           return onBranchValueChange(
                             checkValues(value, 'target', id),
@@ -394,25 +365,59 @@ var StrictMatch = function StrictMatch(props) {
                           );
                         },
                       }),
+                    )
+                  : /*#__PURE__*/ React.createElement(
+                      Form.Item,
+                      {
+                        required: true,
+                        labelAlign: 'left',
+                        label: labelKey === PR ? i18n('ui.trigger.target.branch') : '',
+                        className: 'full-width',
+                      },
+                      /*#__PURE__*/ React.createElement(
+                        Select,
+                        _extends(
+                          {
+                            className: 'full-width',
+                          },
+                          init('target', {
+                            props: {
+                              onChange: function onChange(value) {
+                                setValue('target', value);
+                                onBranchValueChange(
+                                  checkValues(value, 'target', id),
+                                  matchLabelKey,
+                                );
+                              },
+                            },
+                            rules: [
+                              {
+                                required: true,
+                                trigger: 'onChange',
+                                message: '分支是必填项',
+                              },
+                            ],
+                          }),
+                          {
+                            dataSource: branchList,
+                            placeholder: placeholder,
+                            value: branchValue,
+                            disabled: disabled || loading,
+                            state: loading ? 'loading' : undefined,
+                          },
+                        ),
+                      ),
                     ),
                 labelKey === PR &&
                   /*#__PURE__*/ React.createElement(
-                    'div',
+                    Form.Item,
                     {
-                      style: {
-                        flex: 1,
-                      },
+                      labelAlign: 'left',
+                      label: i18n('ui.trigger.source.branch'),
+                      className: 'full-width ml-8',
                     },
-                    /*#__PURE__*/ React.createElement(
-                      'span',
-                      null,
-                      i18n('ui.trigger.source.branch'),
-                    ),
                     /*#__PURE__*/ React.createElement(Select, {
-                      style: {
-                        width: '100%',
-                        marginTop: 8,
-                      },
+                      className: 'full-width',
                       dataSource: filterTargetValue(branchValue),
                       placeholder: i18n('ui.trigger.match.source.branch'),
                       value: sourceValue,
@@ -423,6 +428,14 @@ var StrictMatch = function StrictMatch(props) {
                       },
                     }),
                   ),
+                isRefresh &&
+                  matchLabelKey !== 'tags' &&
+                  /*#__PURE__*/ React.createElement(Refresh, {
+                    style: {
+                      height: labelKey === PR ? 94 : 32,
+                    },
+                    onRefresh: onRefresh,
+                  }),
               );
             }),
           ),
@@ -431,109 +444,4 @@ var StrictMatch = function StrictMatch(props) {
   );
 };
 
-var StrictModeTrigger = function StrictModeTrigger(props) {
-  var _useState7 = useState(TriggerType.PUSH),
-    _useState8 = _slicedToArray(_useState7, 2),
-    initRadioValue = _useState8[0],
-    setInitRadio = _useState8[1];
-
-  var value = props.value,
-    _onChange6 = props.onChange,
-    triggerValues = props.triggerValues,
-    _props$disabled = props.disabled,
-    disabled = _props$disabled === void 0 ? false : _props$disabled,
-    _props$loading = props.loading,
-    loading = _props$loading === void 0 ? false : _props$loading,
-    branchList = props.branchList;
-  useEffect(
-    function () {
-      var triggerTypes = keys(triggerValues);
-
-      if (!isEmpty(keys(triggerValues))) {
-        setInitRadio(triggerTypes[0]);
-      } else {
-        setInitRadio(TriggerType.PUSH);
-      }
-    },
-    [triggerValues],
-  );
-
-  var triggerChange = function triggerChange(typeKey) {
-    setInitRadio(typeKey);
-
-    _onChange6(
-      _defineProperty({}, typeKey, {
-        branches: {
-          precise: [],
-        },
-      }),
-    );
-  };
-
-  var activityTypeChange = function activityTypeChange(values) {
-    _onChange6(
-      _defineProperty(
-        {},
-        PR,
-        _objectSpread(
-          _objectSpread({}, get(value, PR, {})),
-          {},
-          {
-            types: values,
-          },
-        ),
-      ),
-    );
-  };
-
-  return /*#__PURE__*/ React.createElement(
-    RadioGroup,
-    {
-      value: initRadioValue,
-      onChange: triggerChange,
-      disabled: disabled,
-      style: {
-        width: '100%',
-      },
-    },
-    map(TriggerTypes, function (labelKey) {
-      return /*#__PURE__*/ React.createElement(
-        'div',
-        {
-          className: 'trigger-content',
-        },
-        /*#__PURE__*/ React.createElement(
-          Radio,
-          {
-            value: labelKey,
-            disabled: disabled,
-          },
-          TriggerTypeCheckedLabel[labelKey],
-        ),
-        labelKey === PR &&
-          labelKey === initRadioValue &&
-          /*#__PURE__*/ React.createElement(ActivityType, {
-            onChange: activityTypeChange,
-            value: get(value, ''.concat(PR, '.types')),
-          }),
-        labelKey === initRadioValue &&
-          /*#__PURE__*/ React.createElement(StrictMatch, {
-            labelKey: labelKey,
-            triggerChecked: labelKey === initRadioValue,
-            matchValues: get(value, labelKey, {}),
-            onChange: function onChange(v) {
-              var values =
-                labelKey === PR ? _objectSpread(_objectSpread({}, get(value, labelKey, {})), v) : v;
-
-              _onChange6(_defineProperty({}, labelKey, values));
-            },
-            disabled: disabled,
-            loading: loading,
-            branchList: branchList,
-          }),
-      );
-    }),
-  );
-};
-
-export default StrictModeTrigger;
+export default StrictMatch;

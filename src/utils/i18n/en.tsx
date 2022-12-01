@@ -48,4 +48,6 @@ export default {
   'ui.notifiy.atUserIds.label': '@designated user',
   'ui.notifiy.atUserIds.tips': 'Multiple users are separated by ,',
   'ui.notifiy.atUserIds.placeholder': 'Enter the user you want to @',
+  'ui.branch.verify.text': 'branch is required',
+  'ui.trigger.activity.type.verify.text': 'Trigger type is required',
 };

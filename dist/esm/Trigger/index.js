@@ -80,12 +80,12 @@ function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
 
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import TriggerType from './TriggerType';
 import { PR, PUSH } from './types';
 import { map, get, noop, isEmpty, keys, uniq, set, omit } from 'lodash';
 import { Field } from '@alicloud/console-components';
-import StrictModeTrigger from './StrictMode';
+import StrictModeTrigger from './strict-mode';
 import { TriggerTypes } from './constants';
 import './index.less';
 
@@ -117,7 +117,7 @@ var uniqOrOmitTriggers = function uniqOrOmitTriggers(trigger, mode) {
   return newTrigger;
 };
 
-var Trigger = function Trigger(props) {
+var Trigger = function Trigger(props, ref) {
   var value = props.value,
     _props$onChange = props.onChange,
     _onChange = _props$onChange === void 0 ? noop : _props$onChange,
@@ -126,14 +126,16 @@ var Trigger = function Trigger(props) {
     _props$disabled = props.disabled,
     disabled = _props$disabled === void 0 ? false : _props$disabled,
     loading = props.loading,
-    branchList = props.branchList;
+    branchList = props.branchList,
+    isRefresh = props.isRefresh,
+    onRefresh = props.onRefresh;
 
   var _useState = useState(
       isEmpty(value)
         ? {
             push: {
               branches: {
-                prefix: [],
+                precise: [],
               },
             },
           }
@@ -169,7 +171,19 @@ var Trigger = function Trigger(props) {
     },
   });
   var init = field.init,
-    setValue = field.setValue;
+    setValue = field.setValue,
+    _validate = field.validate;
+  useImperativeHandle(ref, function () {
+    return {
+      validate: function validate() {
+        return new Promise(function (resolve) {
+          _validate(function (error) {
+            return error ? resolve(false) : resolve(true);
+          });
+        });
+      },
+    };
+  });
   return /*#__PURE__*/ React.createElement(
     React.Fragment,
     null,
@@ -188,6 +202,7 @@ var Trigger = function Trigger(props) {
               key: labelKey,
               disabled: disabled,
               setValue: setValue,
+              field: field,
             },
           ),
         );
@@ -205,10 +220,13 @@ var Trigger = function Trigger(props) {
             disabled: disabled,
             loading: loading,
             branchList: branchList,
+            field: field,
+            isRefresh: isRefresh,
+            onRefresh: onRefresh,
           },
         ),
       ),
   );
 };
 
-export default Trigger;
+export default /*#__PURE__*/ forwardRef(Trigger);

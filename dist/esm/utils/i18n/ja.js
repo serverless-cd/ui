@@ -47,4 +47,6 @@ export default {
   'ui.notifiy.atUserIds.label': '@指定ユーザー',
   'ui.notifiy.atUserIds.tips': '複数のユーザーは , で区切られます',
   'ui.notifiy.atUserIds.placeholder': '@したいユーザーを入力してください',
+  'ui.branch.verify.text': '支店が必要です',
+  'ui.trigger.activity.type.verify.text': 'トリガーの種類は必須です',
 };

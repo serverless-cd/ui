@@ -7,7 +7,7 @@ import { isEmpty, map, get } from 'lodash';
 import ActivityType from './ActivityType';
 
 const TriggerType = (props: TriggerTypeProps) => {
-  const { labelKey, value, onChange, disabled } = props;
+  const { labelKey, value, onChange, disabled, field } = props;
   const [triggerChecked, setTriggerChecked] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const TriggerType = (props: TriggerTypeProps) => {
       {triggerChecked && (
         <>
           {labelKey === PR && (
-            <ActivityType onChange={activityTypeChange} value={get(value, 'types')} />
+            <ActivityType onChange={activityTypeChange} value={get(value, 'types')} field={field} />
           )}
           {map(MatchTypes, (matchLabelKey) => {
             if (labelKey === PR && matchLabelKey === 'tags') return;

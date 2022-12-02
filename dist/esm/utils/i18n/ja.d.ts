@@ -43,5 +43,7 @@ declare const _default: {
   'ui.notifiy.atUserIds.label': string;
   'ui.notifiy.atUserIds.tips': string;
   'ui.notifiy.atUserIds.placeholder': string;
+  'ui.branch.verify.text': string;
+  'ui.trigger.activity.type.verify.text': string;
 };
 export default _default;

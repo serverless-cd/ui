@@ -22,6 +22,7 @@ export interface TriggerTypeProps {
   setValue: Function;
   key?: string;
   disabled?: boolean;
+  field: object;
 }
 export interface TriggersProps {
   value?: object;
@@ -30,6 +31,8 @@ export interface TriggersProps {
   disabled?: boolean;
   branchList?: Array<any>;
   loading?: boolean;
+  isRefresh?: boolean;
+  onRefresh?: Function;
 }
 export interface StrictModeProps {
   triggerValues: object;
@@ -38,6 +41,9 @@ export interface StrictModeProps {
   disabled?: boolean;
   branchList?: Array<any>;
   loading?: boolean;
+  field: object;
+  isRefresh?: boolean;
+  onRefresh?: Function;
 }
 export declare const PR = 'pull_request';
 export declare const PUSH = 'push';

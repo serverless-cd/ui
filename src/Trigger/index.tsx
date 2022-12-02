@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import TriggerType from './TriggerType';
 import { TriggersProps, PR, PUSH } from './types';
 import { map, get, noop, isEmpty, keys, uniq, set, omit } from 'lodash';
 import { Field } from '@alicloud/console-components';
-import StrictModeTrigger from './StrictMode';
+import StrictModeTrigger from './strict-mode';
 import { TriggerTypes } from './constants';
 import './index.less';
 
@@ -31,9 +31,21 @@ const uniqOrOmitTriggers = (trigger, mode) => {
   return newTrigger;
 };
 
-const Trigger = (props: TriggersProps) => {
-  const { value, onChange = noop, mode = 'normal', disabled = false, loading, branchList } = props;
-  const [triggerValues] = useState(isEmpty(value) ? { push: { branches: { prefix: [] } } } : value);
+const Trigger = (props: TriggersProps, ref) => {
+  const {
+    value,
+    onChange = noop,
+    mode = 'normal',
+    disabled = false,
+    loading,
+    branchList,
+    isRefresh,
+    onRefresh,
+  } = props;
+
+  const [triggerValues] = useState(
+    isEmpty(value) ? { push: { branches: { precise: [] } } } : value,
+  );
 
   const field = Field.useField({
     onChange: () => {
@@ -59,7 +71,15 @@ const Trigger = (props: TriggersProps) => {
       onChange(trigger);
     },
   });
-  const { init, setValue } = field;
+  const { init, setValue, validate } = field;
+
+  useImperativeHandle(ref, () => ({
+    validate: () => {
+      return new Promise((resolve) => {
+        validate((error) => (error ? resolve(false) : resolve(true)));
+      });
+    },
+  }));
 
   return (
     <>
@@ -73,6 +93,7 @@ const Trigger = (props: TriggersProps) => {
               key={labelKey}
               disabled={disabled}
               setValue={setValue}
+              field={field}
             />
           );
         })}
@@ -83,10 +104,13 @@ const Trigger = (props: TriggersProps) => {
           disabled={disabled}
           loading={loading}
           branchList={branchList}
+          field={field}
+          isRefresh={isRefresh}
+          onRefresh={onRefresh}
         />
       )}
     </>
   );
 };
 
-export default Trigger;
+export default forwardRef(Trigger);

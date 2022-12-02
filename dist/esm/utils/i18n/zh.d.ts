@@ -20,6 +20,7 @@ declare const _default: {
   'ui.trigger.match.tag.include.value': string;
   'ui.trigger.match.tag.exclude.value': string;
   'ui.trigger.activity.type': string;
+  'ui.trigger.activity.type.verify.text': string;
   'ui.trigger.source.branch': string;
   'ui.notifiy.remindType.needless': string;
   'ui.notifiy.remindType.owner': string;
@@ -43,5 +44,6 @@ declare const _default: {
   'ui.notifiy.atUserIds.label': string;
   'ui.notifiy.atUserIds.tips': string;
   'ui.notifiy.atUserIds.placeholder': string;
+  'ui.branch.verify.text': string;
 };
 export default _default;

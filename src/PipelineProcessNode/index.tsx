@@ -94,8 +94,6 @@ const getData = (nodes: IPipelineProcessNode[], direction: 'horizontal' | 'verti
     newEdges.push(edgeObj);
     lastNode = nodeObj;
   }
-  console.log('newNodes', newNodes);
-  console.log('newEdges', newEdges);
   return { newNodes, newEdges };
 };
 

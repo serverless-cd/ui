@@ -59,6 +59,7 @@ const StrictModeTrigger = (props: StrictModeProps) => {
                 onChange={activityTypeChange}
                 value={get(value, `${PR}.types`)}
                 field={field}
+                disabled={disabled}
               />
             )}
             {labelKey === initRadioValue && (

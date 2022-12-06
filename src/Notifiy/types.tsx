@@ -21,4 +21,5 @@ export interface IProps {
   field: fieldProps;
   initValue?: object;
   className?: object | any;
+  isPreview?: boolean;
 }

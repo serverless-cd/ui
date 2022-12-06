@@ -13,7 +13,7 @@ const dataSource = [
 ];
 
 const Notifiy = (props: IProps) => {
-  const { field, initValue = {}, className = {} } = props;
+  const { field, initValue = {}, className = {}, isPreview } = props;
   const { init, getValue } = field;
 
   const validateWebhook = async (rule, value, callback) => {
@@ -27,7 +27,12 @@ const Notifiy = (props: IProps) => {
   };
 
   return (
-    <Form field={field} className={className} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
+    <Form
+      field={field}
+      isPreview={isPreview}
+      className={className}
+      {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}
+    >
       <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
         <Switch
           {...(init('enable', {
@@ -37,7 +42,7 @@ const Notifiy = (props: IProps) => {
         ></Switch>
       </Form.Item>
       {getValue('enable') && (
-        <Form field={field} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
+        <Form field={field} isPreview={isPreview} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
           <Form.Item label={i18n('ui.notifiy.webhook.label')}>
             <Input
               {...init('webhook', {

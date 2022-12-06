@@ -26,7 +26,8 @@ var CheckboxGroup = Checkbox.Group;
 var ActivityType = function ActivityType(props) {
   var _onChange = props.onChange,
     value = props.value,
-    field = props.field;
+    field = props.field,
+    disabled = props.disabled;
   var init = field.init,
     setValue = field.setValue;
   useEffect(function () {
@@ -79,6 +80,7 @@ var ActivityType = function ActivityType(props) {
           }),
           {
             dataSource: ActivityTypes,
+            disabled: disabled,
           },
         ),
       ),

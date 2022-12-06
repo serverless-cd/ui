@@ -35,7 +35,19 @@ export default () => {
   ]);
 
   const triggerRef = useRef();
-  const initValue = {};
+  const initValue = {
+    pull_request: {
+      branches: {
+        precise: [
+          {
+            target: 'master',
+            source: '',
+          },
+        ],
+      },
+      types: ['merged'],
+    },
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -79,7 +91,7 @@ export default () => {
         {...init('trigger', { initValue })}
         mode={mode}
         loading={loading}
-        disabled={false}
+        disabled={true}
         isRefresh
         onRefresh={onRefresh}
         branchList={branchList}

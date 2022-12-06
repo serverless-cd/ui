@@ -172,6 +172,7 @@ const StrictMatch = (props) => {
                               rules: [
                                 { required: true, trigger: 'onChange', message: '分支是必填项' },
                               ],
+                              initValue: branchValue,
                             })}
                             dataSource={branchList}
                             placeholder={placeholder}

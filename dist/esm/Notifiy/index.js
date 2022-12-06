@@ -521,7 +521,8 @@ var Notifiy = function Notifiy(props) {
     _props$initValue = props.initValue,
     initValue = _props$initValue === void 0 ? {} : _props$initValue,
     _props$className = props.className,
-    className = _props$className === void 0 ? {} : _props$className;
+    className = _props$className === void 0 ? {} : _props$className,
+    isPreview = props.isPreview;
   var init = field.init,
     getValue = field.getValue;
 
@@ -571,6 +572,7 @@ var Notifiy = function Notifiy(props) {
     _extends(
       {
         field: field,
+        isPreview: isPreview,
         className: className,
       },
       FORM_CUSTOM_MIDDLE_LABEL_LEFT,
@@ -595,6 +597,7 @@ var Notifiy = function Notifiy(props) {
         _extends(
           {
             field: field,
+            isPreview: isPreview,
           },
           FORM_CUSTOM_MIDDLE_LABEL_LEFT,
         ),

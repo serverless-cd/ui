@@ -204,6 +204,7 @@ var StrictModeTrigger = function StrictModeTrigger(props) {
             onChange: activityTypeChange,
             value: get(value, ''.concat(PR, '.types')),
             field: field,
+            disabled: disabled,
           }),
         labelKey === initRadioValue &&
           /*#__PURE__*/ React.createElement(StrictMatch, {

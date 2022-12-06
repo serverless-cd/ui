@@ -8,7 +8,7 @@ import './index.less';
 const { Group: CheckboxGroup } = Checkbox;
 
 const ActivityType = (props) => {
-  const { onChange, value, field } = props;
+  const { onChange, value, field, disabled } = props;
   const { init, setValue } = field;
   useEffect(() => {
     if (isEmpty(value)) {
@@ -43,6 +43,7 @@ const ActivityType = (props) => {
             ],
           })}
           dataSource={ActivityTypes}
+          disabled={disabled}
         />
       </Form.Item>
     </Form>

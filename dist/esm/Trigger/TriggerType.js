@@ -192,6 +192,7 @@ var TriggerType = function TriggerType(props) {
             onChange: activityTypeChange,
             value: get(value, 'types'),
             field: field,
+            disabled: disabled,
           }),
         map(MatchTypes, function (matchLabelKey) {
           if (labelKey === PR && matchLabelKey === 'tags') return;

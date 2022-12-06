@@ -237,8 +237,6 @@ var getData = function getData(nodes, direction) {
     lastNode = nodeObj;
   }
 
-  console.log('newNodes', newNodes);
-  console.log('newEdges', newEdges);
   return {
     newNodes: newNodes,
     newEdges: newEdges,

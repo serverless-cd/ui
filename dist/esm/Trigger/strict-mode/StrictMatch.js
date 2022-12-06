@@ -397,6 +397,7 @@ var StrictMatch = function StrictMatch(props) {
                                 message: '分支是必填项',
                               },
                             ],
+                            initValue: branchValue,
                           }),
                           {
                             dataSource: branchList,

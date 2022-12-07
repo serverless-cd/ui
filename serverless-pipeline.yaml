@@ -1,0 +1,52 @@
+steps:
+  - name: install in root
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./
+  # pipeline-ui
+  - name: pipeline-ui install
+    if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./packages/pipeline-ui
+  - name: pipeline-ui build
+    if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
+    run: npm run build
+    working-directory: ./packages/pipeline-ui
+  - name: pipeline-ui publish
+    if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
+    plugin: '@serverless-cd/npm-publish'
+    inputs:
+      registry: //registry.npmjs.org
+      token: ${{ secrets.npm_token }}
+      codeDir: ./packages/pipeline-ui
+  # dingtalk-ui
+  - name: dingtalk-ui install
+    if: ${{contains(git.ref, '@serverless-cd/dingtalk-ui')}}
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./packages/dingtalk-ui
+  - name: dingtalk-ui build
+    if: ${{contains(git.ref, '@serverless-cd/dingtalk-ui')}}
+    run: npm run build
+    working-directory: ./packages/dingtalk-ui
+  - name: dingtalk-ui publish
+    if: ${{contains(git.ref, '@serverless-cd/dingtalk-ui')}}
+    plugin: '@serverless-cd/npm-publish'
+    inputs:
+      registry: //registry.npmjs.org
+      token: ${{ secrets.npm_token }}
+      codeDir: ./packages/dingtalk-ui
+  # trigger-ui
+  - name: trigger-ui install
+    if: ${{contains(git.ref, '@serverless-cd/trigger-ui')}}
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./packages/trigger-ui
+  - name: trigger-ui build
+    if: ${{contains(git.ref, '@serverless-cd/trigger-ui')}}
+    run: npm run build
+    working-directory: ./packages/trigger-ui
+  - name: trigger-ui publish
+    if: ${{contains(git.ref, '@serverless-cd/trigger-ui')}}
+    plugin: '@serverless-cd/npm-publish'
+    inputs:
+      registry: //registry.npmjs.org
+      token: ${{ secrets.npm_token }}
+      codeDir: ./packages/trigger-ui

@@ -26,7 +26,7 @@ steps:
   - name: dingtalk-ui build
     if: ${{contains(git.ref, '@serverless-cd/dingtalk-ui')}}
     run: npm run build
-    working-directory: ./packages/pipeline-ui
+    working-directory: ./packages/dingtalk-ui
   - name: dingtalk-ui publish
     if: ${{contains(git.ref, '@serverless-cd/dingtalk-ui')}}
     plugin: '@serverless-cd/npm-publish'

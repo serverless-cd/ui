@@ -1,12 +1,10 @@
-env:
-  name: serverless-cd
-  age: 30
 steps:
-  - run: echo 'Hi {{ env.name }}'
-  - run: echo 'Hi {{ env.name }}'
-    env:
-      name: Tony
-  - run: echo 'Hi {{ task_id }}'
-  - run: echo 'Hi {{ app.user_name }}'
-  - run: echo 'Hi {{ git.event_name }}'
-  - run: echo 'suceess end'
+  - name: install
+    run: npm install
+    working_directory: ./
+  - name: pipeline-ui install
+    run: npm install
+    working_directory: ./packages/pipeline-ui
+  - name: pipeline-ui build
+    run: npm run build
+    working_directory: ./packages/pipeline-ui

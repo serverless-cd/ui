@@ -1,9 +1,9 @@
 steps:
   - name: install
-    run: npm install
+    run: npm install --registry=https://registry.npmmirror.com
     working_directory: ./
   - name: pipeline-ui install
-    run: npm install
+    run: npm install --registry=https://registry.npmmirror.com
     working_directory: ./packages/pipeline-ui
   - name: pipeline-ui build
     run: npm run build

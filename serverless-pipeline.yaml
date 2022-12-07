@@ -1,15 +1,19 @@
 steps:
-  - run: echo ${{git.ref}}
-  - run: echo "1"
+  - name: install in root
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./
+  - name: pipeline-ui install
     if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
-  - run: echo "2"
-    if: ${{!contains(git.ref, '@serverless-cd/pipeline-ui')}}
-  # - name: install in root
-  #   run: npm install --registry=https://registry.npmmirror.com --force
-  #   working-directory: ./
-  # - name: pipeline-ui install
-  #   run: npm install --registry=https://registry.npmmirror.com --force
-  #   working-directory: ./packages/pipeline-ui
-  # - name: pipeline-ui build
-  #   run: npm run build
-  #   working-directory: ./packages/pipeline-ui
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./packages/pipeline-ui
+  - name: pipeline-ui build
+    if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
+    run: npm run build
+    working-directory: ./packages/pipeline-ui
+  - name: pipeline-ui publish
+    if: ${{contains(git.ref, '@serverless-cd/pipeline-ui')}}
+    plugin: '@serverless-cd/npm-publish'
+    inputs:
+      registry: //registry.npmjs.org
+      token: ${{ secrets.npm_token }}
+      codeDir: ./packages/pipeline-ui

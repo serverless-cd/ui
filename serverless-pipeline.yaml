@@ -1,5 +1,5 @@
 steps:
-  - name: install
+  - name: install in root
     run: npm install --registry=https://registry.npmmirror.com
     working_directory: ./
   - name: pipeline-ui install

@@ -50,3 +50,19 @@ steps:
       registry: //registry.npmjs.org
       token: ${{ secrets.npm_token }}
       codeDir: ./packages/trigger-ui
+  # mse-arc-ui
+  - name: mse-arc-ui install
+    if: ${{contains(git.ref, '@serverless-cd/mse-arc-ui')}}
+    run: npm install --registry=https://registry.npmmirror.com --force
+    working-directory: ./packages/mse-arc-ui
+  - name: mse-arc-ui build
+    if: ${{contains(git.ref, '@serverless-cd/mse-arc-ui')}}
+    run: npm run build
+    working-directory: ./packages/mse-arc-ui
+  - name: mse-arc-ui publish
+    if: ${{contains(git.ref, '@serverless-cd/mse-arc-ui')}}
+    plugin: '@serverless-cd/npm-publish'
+    inputs:
+      registry: //registry.npmjs.org
+      token: ${{ secrets.npm_token }}
+      codeDir: ./packages/mse-arc-ui

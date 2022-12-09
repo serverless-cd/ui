@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72px" height="49px" viewBox="0 0 72 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 4备份 25</title>
+    <defs>
+        <filter x="-25.0%" y="-75.0%" width="150.0%" height="250.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="4" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <filter x="-10.1%" y="-29.5%" width="120.2%" height="159.1%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="1.28" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="53.648288%" id="linearGradient-3">
+            <stop stop-color="#F0F0F0" offset="0%"></stop>
+            <stop stop-color="#DBDBDB" offset="22.2771641%"></stop>
+            <stop stop-color="#F2F2F2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FFFFFF" stop-opacity="0.3" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#C1E4FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#8EC5FE" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="生态图" transform="translate(-612.000000, -438.000000)">
+            <g id="编组-4备份-25" transform="translate(624.000000, 438.000000)">
+                <ellipse id="椭圆形" fill="#000000" opacity="0.04" filter="url(#filter-1)" cx="24" cy="29" rx="24" ry="8"></ellipse>
+                <ellipse id="椭圆形备份-10" fill="#000000" opacity="0.08" filter="url(#filter-2)" cx="24" cy="27.5" rx="19" ry="6.5"></ellipse>
+                <g id="编组-5">
+                    <path d="M0,12 L8.49993944,12.0000223 C12.6816314,10.6701507 18.0914733,10 24,10 C29.9085267,10 35.3183686,10.6701507 39.5000606,12.0000223 L48,12 L48,20 C48,26.627417 37.254834,32 24,32 C10.745166,32 0,26.627417 0,20 L0,12 Z" id="形状结合" fill="url(#linearGradient-3)"></path>
+                    <line x1="39" y1="24" x2="39" y2="27" id="路径-2" stroke="#1E8CFE" stroke-linecap="round"></line>
+                    <line x1="42" y1="22.5" x2="42" y2="25.5" id="路径-2备份" stroke="#1E8CFE" opacity="0.8" stroke-linecap="round"></line>
+                    <path d="M0,12 C0,18.627417 10.745166,24 24,24 C37.254834,24 48,18.627417 48,12" id="椭圆形备份-7" stroke="url(#linearGradient-4)" stroke-width="0.5" opacity="0.75"></path>
+                    <ellipse id="椭圆形" fill="#FBFBFB" cx="24" cy="12" rx="24" ry="12"></ellipse>
+                    <ellipse id="椭圆形备份-9" stroke="url(#linearGradient-5)" fill="#FFFFFF" opacity="0.85" cx="24" cy="11.5" rx="19" ry="9.5"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

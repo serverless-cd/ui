@@ -1,0 +1,154 @@
+.custom-node{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateX(60deg) rotate(45deg);
+    border:1px solid #ccc;
+    border-top: none;
+    border-left: none;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0.10), 0 40px 12px 0 rgba(0,0,0,0.04);
+   
+}
+.custom-node-base{
+    position: absolute;
+    top:50px;
+    left: 40px;
+}
+
+
+.double-node{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateX(60deg) rotate(45deg)  ;
+    border:1px solid #ccc;
+    border-top: none;
+    border-left: none;
+   
+}
+.double-node-base1{
+    position: absolute;
+    top:65px;
+    left: 15px;
+}
+.double-node-base2{
+    position: absolute;
+    top:40px;
+    left: 60px;
+}
+
+
+.four-node{
+    width: 200px;
+    height: 170px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateX(60deg) rotate(45deg);
+    border:1px solid #ccc;
+    border-top: none;
+    border-left: none;
+}
+
+.four-node-base1{
+    position: absolute;
+    top:60px;
+    left: 0px;
+}
+.four-node-base2{
+    position: absolute;
+    top:30px;
+    left:60px;
+}
+.four-node-base3{
+    position: absolute;
+    top:100px;
+    left: 70px;
+}
+.four-node-base4{
+    position: absolute;
+    top:70px;
+    left: 130px;
+}
+
+.node-icon-title{
+    color: #999;
+    font-size: 8px;
+    font-weight: 500;
+    position: absolute;
+    top: -40px;
+    left: -15px;
+    width: 100px;
+    text-align: center;
+}
+
+.node-icon{
+    cursor: pointer;
+    height: 40px;
+    width: 60px;
+    position: absolute;
+    top:-20px;
+    left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.node-icon:hover{
+    animation-name: iconActive;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+
+.node-card{
+    width: 380px;
+    min-height: 150px;
+    padding: 15px;
+    color: #999;
+}
+
+.ant-popover-content{
+    opacity: 0.9;
+}
+
+.base-active{
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    animation-name: baseActive;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.custom-node-title{
+    width: 100px;
+    position: absolute;
+    left: -40px;
+    top: 20px;
+    transform: rotateZ(-30deg);
+    font-size: 12px;
+    color: #4d4d4d;
+    font-weight: 500;
+}
+
+
+@keyframes baseActive {
+    to { top:-3px }
+}
+
+
+@keyframes iconActive {
+    to { top:-23px }
+}

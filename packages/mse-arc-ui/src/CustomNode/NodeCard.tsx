@@ -24,18 +24,18 @@ const NodeCard = ({ source }) => {
     { label: "快速入门", url: overviewUrl },
   ];
 
-  // const getGitHubInfo = () => {
-  //   fetch(apiUrl)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setStarCount(data.stargazers_count);
-  //       setForkCount(data.forks_count);
-  //     });
-  // };
+  const getGitHubInfo = () => {
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        setStarCount(data.stargazers_count);
+        setForkCount(data.forks_count);
+      });
+  };
 
-  // useEffect(() => {
-  //   getGitHubInfo();
-  // }, []);
+  useEffect(() => {
+    getGitHubInfo();
+  }, []);
 
   return (
     <div className="node-card">

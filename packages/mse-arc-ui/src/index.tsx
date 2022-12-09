@@ -240,8 +240,9 @@ const X6Page = () => {
       background: {
         color: '#e5f1fe',
       },
-      mousewheel: false,
+      mousewheel: true,
       autoResize: true,
+      panning:	{ enabled: true, eventTypes: ['leftMouseDown'],}
     });
     graph.fromJSON(dataSource);
   }, [dataSource]);

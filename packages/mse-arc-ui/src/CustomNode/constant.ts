@@ -66,7 +66,19 @@ export const IconMap = {
       overviewUrl: 'https://dubbo.apache.org/zh/overview/',
       apiUrl: '//api.github.com/repos/alibaba/dubbo',
     },
-    { url: SvgSource.SpringJava, name: 'Spring Cloud Alibaba' },
+    {
+      url: SvgSource.SpringJava,
+      name: 'Spring Cloud Alibaba',
+      describe:
+        'Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。',
+      githubUrl: ' https://github.com/alibaba/spring-cloud-alibaba',
+      tags: ['分布式事务', '消息驱动能力'],
+      apiUrl: '//api.github.com/repos/alibaba/spring-cloud-alibaba',
+      websiteUrl: 'https://spring.io/projects/spring-cloud-alibaba',
+      overviewUrl: 'https://spring.io/projects/spring-cloud-alibaba#overview',
+      latestVersionUrl:
+        'https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E',
+    },
   ],
   middle4: [
     {
@@ -81,7 +93,19 @@ export const IconMap = {
       overviewUrl: 'https://dubbo.apache.org/zh/overview/',
       apiUrl: '//api.github.com/repos/alibaba/dubbo',
     },
-    { url: SvgSource.SpringJava, name: 'Spring Cloud Alibaba' },
+    {
+      url: SvgSource.SpringJava,
+      name: 'Spring Cloud Alibaba',
+      describe:
+        'Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。',
+      githubUrl: ' https://github.com/alibaba/spring-cloud-alibaba',
+      tags: ['分布式事务', '消息驱动能力'],
+      apiUrl: '//api.github.com/repos/alibaba/spring-cloud-alibaba',
+      websiteUrl: 'https://spring.io/projects/spring-cloud-alibaba',
+      overviewUrl: 'https://spring.io/projects/spring-cloud-alibaba#overview',
+      latestVersionUrl:
+        'https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E',
+    },
   ],
   middle5: [{ url: SvgSource.Database, name: '', visible: false }],
   right1: [
@@ -94,7 +118,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/apache/rocketmq',
       latestVersionUrl: 'https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.0.0',
       overviewUrl: 'https://rocketmq.apache.org/zh/docs/quickStart/02quickstart',
-      apiUrl: '//api.github.com/repos/alibaba/rocketmq',
+      apiUrl: '//api.github.com/repos/apache/rocketmq',
     },
   ],
   right2: [
@@ -121,7 +145,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/apache/skywalking',
       latestVersionUrl: 'https://github.com/apache/skywalking/releases/tag/v9.3.0',
       overviewUrl: 'https://skywalking.apache.org/docs/skywalking-showcase/latest/readme/',
-      apiUrl: '//api.github.com/repos/alibaba/skywalking',
+      apiUrl: '//api.github.com/repos/apache/skywalking',
     },
   ],
   left1: [
@@ -146,7 +170,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/opensergo/opensergo-specification',
       latestVersionUrl: 'https://github.com/opensergo/opensergo-java-sdk/releases/tag/v0.1.0-beta1',
       overviewUrl: 'https://opensergo.io/zh-cn/docs/quick-start/opensergo-control-plane/',
-      apiUrl: '//api.github.com/repos/alibaba/opensergo',
+      apiUrl: '//api.github.com/repos/opensergo/opensergo-specification',
     },
     {
       url: SvgSource.ChaosBlade,
@@ -157,18 +181,21 @@ export const IconMap = {
       githubUrl: 'https://github.com/chaosblade-io/chaosblade',
       latestVersionUrl: 'https://github.com/chaosblade-io/chaosblade/releases/tag/v1.7.0',
       overviewUrl: 'https://chaosblade.io/docs',
-      apiUrl: '//api.github.com/repos/alibaba/chaosblade',
+      apiUrl: '//api.github.com/repos/chaosblade-io/chaosblade',
     },
     {
       url: SvgSource.AppActive,
       name: 'AppActive',
-      //   describe:
-      //     "⼀个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。",
-      //   tags: ["配置管理", "服务发现", "服务管理"],
-      //   websiteUrl: "https://nacos.io/",
-      //   githubUrl: "https://github.com/alibaba/nacos",
-      //   latestVersionUrl: "https://github.com/alibaba/nacos/releases/tag/2.1.2",
-      //   overviewUrl: "https://nacos.io/zh-cn/docs/v2/quickstart/quick-start.html",
+      describe:
+        'AppActive，是一个面向业务应用构建云原生高可用多活容灾架构的开源中间件。它提供了应用多活容灾架构的标准、实现和 Demo，适用于丰富的业务场景（单 AZ、单 Region、单云、多 AZ、多 Region、多云、自建 IDC等）。',
+      tags: ['应用多活', '容灾容错','精准控制'],
+      websiteUrl: 'https://github.com/alibaba/Appactive',
+      githubUrl: 'https://github.com/alibaba/Appactive',
+      latestVersionUrl:
+        'https://github.com/alibaba/Appactive/blob/main/docs/cn/details/change_log.md',
+      apiUrl: '//api.github.com/repos/alibaba/Appactive',
+      overviewUrl:
+        'https://github.com/alibaba/Appactive/blob/main/docs/cn/details/developer_guide_nacos.md',
     },
   ],
   left2: [
@@ -182,7 +209,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/kubevela/kubevela',
       latestVersionUrl: 'https://github.com/kubevela/kubevela/releases/tag/v1.6.4',
       overviewUrl: 'https://kubevela.io/zh/docs/quick-start',
-      apiUrl: '//api.github.com/repos/alibaba/kubevela',
+      apiUrl: '//api.github.com/repos/kubevela/kubevela',
     },
     {
       url: SvgSource.Kubernetes,
@@ -207,7 +234,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/seata/seata',
       latestVersionUrl: 'https://github.com/seata/seata/releases/tag/v1.5.2',
       overviewUrl: 'https://seata.io/zh-cn/docs/ops/deploy-guide-beginner.html',
-      apiUrl: '//api.github.com/repos/alibaba/seata',
+      apiUrl: '//api.github.com/repos/seata/seata',
     },
   ],
 };

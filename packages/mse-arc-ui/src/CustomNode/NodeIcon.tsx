@@ -45,7 +45,7 @@ const NodeIcon = ({ iconSource, hasBase = true }) => {
           onOpenChange={handleOpenChange}
         >
           <div
-            className="node-icon"
+            className="node-icon "
             onMouseEnter={onMouseEnterIcon}
             onMouseLeave={onMouseLeaveIcon}
           >
@@ -53,7 +53,11 @@ const NodeIcon = ({ iconSource, hasBase = true }) => {
           </div>
         </Popover>
       ) : (
-        <div className="node-icon" onMouseEnter={onMouseEnterIcon} onMouseLeave={onMouseLeaveIcon}>
+        <div
+          className="node-icon node-icon-no-base"
+          onMouseEnter={onMouseEnterIcon}
+          onMouseLeave={onMouseLeaveIcon}
+        >
           <img src={iconSource.url} alt="" />
         </div>
       )}

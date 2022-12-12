@@ -69,15 +69,13 @@ export const IconMap = {
     {
       url: SvgSource.SpringJava,
       name: 'Spring Cloud Alibaba',
-      describe:
-        'Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。',
+      describe: '一站式的分布式应用开发框架。',
+      tags: ['应用框架', '微服务'],
       githubUrl: ' https://github.com/alibaba/spring-cloud-alibaba',
-      tags: ['分布式事务', '消息驱动能力'],
       apiUrl: '//api.github.com/repos/alibaba/spring-cloud-alibaba',
       websiteUrl: 'https://spring.io/projects/spring-cloud-alibaba',
-      overviewUrl: 'https://spring.io/projects/spring-cloud-alibaba#overview',
-      latestVersionUrl:
-        'https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E',
+      overviewUrl: 'https://github.com/alibaba/spring-cloud-alibaba/blob/2021.x/README-zh.md',
+      latestVersionUrl: 'https://github.com/alibaba/spring-cloud-alibaba/releases/tag/2021.0.4.0',
     },
   ],
   middle4: [
@@ -96,15 +94,13 @@ export const IconMap = {
     {
       url: SvgSource.SpringJava,
       name: 'Spring Cloud Alibaba',
-      describe:
-        'Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。',
+      describe: '一站式的分布式应用开发框架。',
+      tags: ['应用框架', '微服务'],
       githubUrl: ' https://github.com/alibaba/spring-cloud-alibaba',
-      tags: ['分布式事务', '消息驱动能力'],
       apiUrl: '//api.github.com/repos/alibaba/spring-cloud-alibaba',
       websiteUrl: 'https://spring.io/projects/spring-cloud-alibaba',
-      overviewUrl: 'https://spring.io/projects/spring-cloud-alibaba#overview',
-      latestVersionUrl:
-        'https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E',
+      overviewUrl: 'https://github.com/alibaba/spring-cloud-alibaba/blob/2021.x/README-zh.md',
+      latestVersionUrl: 'https://github.com/alibaba/spring-cloud-alibaba/releases/tag/2021.0.4.0',
     },
   ],
   middle5: [{ url: SvgSource.Database, name: '', visible: false }],
@@ -186,16 +182,13 @@ export const IconMap = {
     {
       url: SvgSource.AppActive,
       name: 'AppActive',
-      describe:
-        'AppActive，是一个面向业务应用构建云原生高可用多活容灾架构的开源中间件。它提供了应用多活容灾架构的标准、实现和 Demo，适用于丰富的业务场景（单 AZ、单 Region、单云、多 AZ、多 Region、多云、自建 IDC等）。',
-      tags: ['应用多活', '容灾容错','精准控制'],
-      websiteUrl: 'https://github.com/alibaba/Appactive',
+      describe: '一款标准、通用且功能强大的，致力于构建应用多活架构的开源中间件。',
+      tags: ['多活容灾', '高可用', '稳定性'],
+      websiteUrl: 'https://doc.appactive.io/',
       githubUrl: 'https://github.com/alibaba/Appactive',
-      latestVersionUrl:
-        'https://github.com/alibaba/Appactive/blob/main/docs/cn/details/change_log.md',
+      latestVersionUrl: 'https://github.com/alibaba/Appactive/releases/tag/v0.2.1',
+      overviewUrl: 'https://doc.appactive.io/docs/cn/README_CN.html/',
       apiUrl: '//api.github.com/repos/alibaba/Appactive',
-      overviewUrl:
-        'https://github.com/alibaba/Appactive/blob/main/docs/cn/details/developer_guide_nacos.md',
     },
   ],
   left2: [

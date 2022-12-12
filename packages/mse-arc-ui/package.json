@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/mse-arc-ui",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

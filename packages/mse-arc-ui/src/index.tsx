@@ -219,7 +219,7 @@ const X6Page = () => {
 
   useEffect(() => {
     const graph = new Graph({
-      container: document.getElementById('container'),
+      container: document.getElementById('serverless-map-container'),
       // width: 200,
       // height: 300,
       // scroller: true,
@@ -238,7 +238,7 @@ const X6Page = () => {
     graph.fromJSON(data);
   }, []);
 
-  return <div id="container"></div>;
+  return <div id="serverless-map-container"></div>;
 };
 
 export default X6Page;

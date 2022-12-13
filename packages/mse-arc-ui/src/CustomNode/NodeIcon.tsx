@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Popover } from 'antd';
-import Base from '../../icon/Base.svg';
 import NodeCard from './NodeCard';
-import Active from '../../icon/Active.svg';
 import './index.less';
+
+const Base =
+  'https://img.alicdn.com/imgextra/i2/O1CN01uk4pyc1Hf7Jj1MMc9_!!6000000000784-55-tps-72-49.svg';
+const Active =
+  'https://img.alicdn.com/imgextra/i1/O1CN01xf1t2a1QDTxbMruxa_!!6000000001942-55-tps-60-30.svg';
 
 const NodeIcon = ({ iconSource, hasBase = true }) => {
   const [open, setOpen] = useState(false);
@@ -23,7 +26,7 @@ const NodeIcon = ({ iconSource, hasBase = true }) => {
   return (
     <React.Fragment>
       {hasBase && (
-        <div>
+        <div className="node-base">
           <img src={Base} alt="" style={{ width: 70 }} />
           {active && (
             <div className="base-active">
@@ -42,7 +45,7 @@ const NodeIcon = ({ iconSource, hasBase = true }) => {
           onOpenChange={handleOpenChange}
         >
           <div
-            className="node-icon"
+            className="node-icon "
             onMouseEnter={onMouseEnterIcon}
             onMouseLeave={onMouseLeaveIcon}
           >
@@ -50,7 +53,11 @@ const NodeIcon = ({ iconSource, hasBase = true }) => {
           </div>
         </Popover>
       ) : (
-        <div className="node-icon" onMouseEnter={onMouseEnterIcon} onMouseLeave={onMouseLeaveIcon}>
+        <div
+          className="node-icon node-icon-no-base"
+          onMouseEnter={onMouseEnterIcon}
+          onMouseLeave={onMouseLeaveIcon}
+        >
           <img src={iconSource.url} alt="" />
         </div>
       )}

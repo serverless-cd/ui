@@ -14,9 +14,11 @@ const defaultNodes = [
   {
     label: <div>代码源</div>,
     enable: true,
+    validate: false,
   },
   {
     label: <div>前置检查</div>,
+    validate: false,
   },
   {
     label: <div>构建部署(Build/Deploy)</div>,

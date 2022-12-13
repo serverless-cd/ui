@@ -14,6 +14,7 @@ export interface IPipelineInitNode {
   label: React.ReactNode;
   enable?: boolean;
   selected?: boolean;
+  validate?: boolean;
   selectable?: boolean;
   [key: string]: any;
 }
@@ -46,7 +47,7 @@ const getData = (nodes: IPipelineInitNode[]) => {
       position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
       draggable: false,
       connectable: false,
-      className: `${node.enable ? 'enable' : ''}`,
+      className: `${node.enable ? 'enable' : ''} ${node.validate === false ? 'check-failed' : ''}`,
       ...node,
     };
     if (index === '0') {

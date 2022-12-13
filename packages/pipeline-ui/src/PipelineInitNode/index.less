@@ -21,14 +21,24 @@
       }
     }
     border: 1px solid #ccc;
-    &.enable {
+
+    &.enable:not(.check-failed) {
       border: 1px solid #0070cc;
     }
-    &.selected {
+    &.selected:not(.check-failed) {
       font-weight: bold;
       background: #ebf4fb;
       border: 1px solid #0070cc;
       box-shadow: 0 0 0 0.5px #0070cc !important;
+    }
+    &.selected.check-failed {
+      font-weight: bold;
+      background: #ebf4fb;
+    }
+    &.check-failed {
+      color: #c80000;
+      border: 1px solid #c80000;
+      box-shadow: unset !important;
     }
   }
   .react-flow__attribution {

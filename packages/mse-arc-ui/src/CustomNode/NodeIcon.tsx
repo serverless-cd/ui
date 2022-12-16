@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Popover } from 'antd';
 import NodeCard from './NodeCard';
-import './index.less';
+import './index.css';
 
 const Base =
   'https://img.alicdn.com/imgextra/i2/O1CN01uk4pyc1Hf7Jj1MMc9_!!6000000000784-55-tps-72-49.svg';

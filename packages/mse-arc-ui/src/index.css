@@ -2,9 +2,10 @@
   width: 100% !important;
   height: 100vh !important;
 
-  @keyframes ant-line {
-    to {
-      stroke-dashoffset: -1000;
-    }
+ 
+}
+@keyframes ant-line {
+  to {
+    stroke-dashoffset: -1000;
   }
 }

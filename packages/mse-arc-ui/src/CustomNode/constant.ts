@@ -31,6 +31,35 @@ const SvgSource = {
     'https://img.alicdn.com/imgextra/i3/O1CN01CPTOAs21f5cQLspak_!!6000000007011-55-tps-24-34.svg',
 };
 
+const CompleteSvgSource = {
+  SpringJava:
+    'https://img.alicdn.com/imgextra/i3/O1CN01mtnd5Y1pOo9J8nnMX_!!6000000005351-55-tps-200-36.svg',
+  Skywalking:
+    'https://img.alicdn.com/imgextra/i2/O1CN01TwMGAB1JBSuJs89IV_!!6000000000990-55-tps-200-36.svg',
+  Sentinel:
+    'https://img.alicdn.com/imgextra/i4/O1CN01MOPC3d26x1CW2bKow_!!6000000007727-55-tps-200-36.svg',
+  Seata:
+    'https://img.alicdn.com/imgextra/i3/O1CN01RYYGIS1M97jPdoxvS_!!6000000001391-55-tps-200-36.svg',
+  RocketMQ:
+    'https://img.alicdn.com/imgextra/i1/O1CN01M4UwIV1eCTiSBhioa_!!6000000003835-55-tps-200-36.svg',
+  OpenSergo:
+    'https://img.alicdn.com/imgextra/i2/O1CN01syKCmL26AvcDuGjki_!!6000000007622-55-tps-200-36.svg',
+  Nacos:
+    'https://img.alicdn.com/imgextra/i4/O1CN011jCRlz22FGuMYgt1w_!!6000000007090-55-tps-200-36.svg',
+  KubeVela:
+    'https://img.alicdn.com/imgextra/i4/O1CN01tpHsxw1KDaMHBTj0J_!!6000000001130-55-tps-200-36.svg',
+  Kubernetes:
+    'https://img.alicdn.com/imgextra/i1/O1CN018g3SFB1cVb10sxwJc_!!6000000003606-55-tps-201-37.svg',
+  Higress:
+    'https://img.alicdn.com/imgextra/i2/O1CN01oZ8maS1diFZgFZOiX_!!6000000003769-55-tps-200-36.svg',
+  Dubbo:
+    'https://img.alicdn.com/imgextra/i3/O1CN01JUoVCT1I0BXNas0nd_!!6000000000830-55-tps-200-36.svg',
+  ChaosBlade:
+    'https://img.alicdn.com/imgextra/i4/O1CN01QmiFs01FsjrmkMBeL_!!6000000000543-55-tps-200-36.svg',
+  AppActive:
+    'https://img.alicdn.com/imgextra/i1/O1CN019dTRNx1b6ZlBZBptH_!!6000000003416-55-tps-200-43.svg',
+};
+
 export const IconMap = {
   middle1: [
     {
@@ -42,6 +71,7 @@ export const IconMap = {
   middle2: [
     {
       url: SvgSource.Higress,
+      completeUrl: CompleteSvgSource.Higress,
       name: 'Higress',
       describe:
         '⼀个遵循开源Ingress/Gateway API标准，提供流量调度、服务治理、安全防护三合⼀的高集成、易使用、易扩展、热更新的下⼀代云原生网关。',
@@ -56,6 +86,7 @@ export const IconMap = {
   middle3: [
     {
       url: SvgSource.Dubbo,
+      completeUrl: CompleteSvgSource.Dubbo,
       name: 'Dubbo',
       describe:
         'Apache Dubbo是⼀款微服务框架，为⼤规模微服务 实践提供⾼性能RPC通信、流量治理、可观测性等解决⽅案，涵盖Java、Golang等多种语⾔SDK实现。',
@@ -68,6 +99,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.SpringJava,
+      completeUrl: CompleteSvgSource.SpringJava,
       name: 'Spring Cloud Alibaba',
       describe: '一站式的分布式应用开发框架。',
       tags: ['应用框架', '微服务'],
@@ -81,6 +113,7 @@ export const IconMap = {
   middle4: [
     {
       url: SvgSource.Dubbo,
+      completeUrl: CompleteSvgSource.Dubbo,
       name: 'Dubbo',
       describe:
         'Apache Dubbo是⼀款微服务框架，为⼤规模微服务 实践提供⾼性能RPC通信、流量治理、可观测性等解决⽅案，涵盖Java、Golang等多种语⾔SDK实现。',
@@ -93,6 +126,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.SpringJava,
+      completeUrl: CompleteSvgSource.SpringJava,
       name: 'Spring Cloud Alibaba',
       describe: '一站式的分布式应用开发框架。',
       tags: ['应用框架', '微服务'],
@@ -107,6 +141,7 @@ export const IconMap = {
   right1: [
     {
       url: SvgSource.RocketMQ,
+      completeUrl: CompleteSvgSource.RocketMQ,
       name: 'RocketMQ',
       describe: '云原生“消息、事件、流”实时数据处理平台，覆盖云边端⼀体化数据处理场景。',
       tags: ['消息', '事件', '流'],
@@ -120,6 +155,7 @@ export const IconMap = {
   right2: [
     {
       url: SvgSource.Nacos,
+      completeUrl: CompleteSvgSource.Nacos,
       name: 'Nacos',
       describe: '⼀个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。',
       tags: ['配置管理', '服务发现', '服务管理'],
@@ -133,6 +169,7 @@ export const IconMap = {
   right3: [
     {
       url: SvgSource.Skywalking,
+      completeUrl: CompleteSvgSource.Skywalking,
       name: 'Skywalking',
       describe:
         '⼀款用于分布式系统的应用程序性能监视工具，尤其是面向微服务、云原生和基于容器(Kubernetes)架构设计。',
@@ -147,6 +184,7 @@ export const IconMap = {
   left1: [
     {
       url: SvgSource.Sentinel,
+      completeUrl: CompleteSvgSource.Sentinel,
       name: 'Sentinel',
       describe: 'Sentinel是⼀款面向分布式、多语言异构化服务架构的流量治理组件。',
       tags: ['高可用', '流量治理', '流量防护'],
@@ -158,6 +196,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.OpenSergo,
+      completeUrl: CompleteSvgSource.OpenSergo,
       name: 'OpenSergo',
       describe:
         'OpenSergo是⼀套开放通用的、面向云原生服务、覆盖微服务及上下游关联组件的微服务治理标准。',
@@ -170,6 +209,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.ChaosBlade,
+      completeUrl: CompleteSvgSource.ChaosBlade,
       name: 'ChaosBlade',
       describe: 'ChaosBlade是⼀个云原生混沌工程平台，支持多种环境、集群和语言。',
       tags: ['高可用', '云原生', '混沌工程'],
@@ -181,6 +221,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.AppActive,
+      completeUrl: CompleteSvgSource.AppActive,
       name: 'AppActive',
       describe: '一款标准、通用且功能强大的，致力于构建应用多活架构的开源中间件。',
       tags: ['多活容灾', '高可用', '稳定性'],
@@ -194,6 +235,7 @@ export const IconMap = {
   left2: [
     {
       url: SvgSource.KubeVela,
+      completeUrl: CompleteSvgSource.KubeVela,
       name: 'KubeVela',
       describe:
         '是⼀个现代化的软件交付平台，它可以让你的应用交付在当今流行的混合、多云环境中变得更加简单、高效、可靠。',
@@ -206,6 +248,7 @@ export const IconMap = {
     },
     {
       url: SvgSource.Kubernetes,
+      completeUrl: CompleteSvgSource.Kubernetes,
       name: 'Kubernetes',
       describe: 'Kubernetes是⼀个开源的容器编排引擎，用来对容器化应用进行自动化部署、扩缩和管理。',
       tags: ['容器编排', '应用管理', '发布部署'],
@@ -219,6 +262,7 @@ export const IconMap = {
   left3: [
     {
       url: SvgSource.Seata,
+      completeUrl: CompleteSvgSource.Seata,
       name: 'Seata',
       describe:
         'Seata是⼀款开源的分布式事务解决方案，致力于在微服务架构下提供高性能和简单易用的分布式事务服务。',

@@ -6,6 +6,7 @@ import 'whatwg-fetch';
 const NodeCard = ({ source }) => {
   const {
     url,
+    completeUrl,
     describe,
     tags = [],
     websiteUrl,
@@ -68,10 +69,14 @@ const NodeCard = ({ source }) => {
           alignItems: 'center',
         }}
       >
-        <img src={url} alt="" />
+        <img src={completeUrl} alt="" style={{ width: 150 }} />
         <div>
           {tags.map((tag) => {
-            return <Tag color="processing">{tag}</Tag>;
+            return (
+              <Tag color="processing" style={{ marginBottom: 4 }}>
+                {tag}
+              </Tag>
+            );
           })}
         </div>
       </div>

@@ -3,7 +3,7 @@ import SingleNode from "./SingleNode";
 import DoubleNode from "./DoubleNode";
 import FourNode from "./FourNode";
 import { IconMap } from "./constant";
-import "./index.less";
+import "./index.css";
 
 const NodeTitleEnum = {
   middle1:'loT/PC/Moblie',

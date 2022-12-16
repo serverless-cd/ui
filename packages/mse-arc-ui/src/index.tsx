@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Graph } from '@antv/x6';
 import { register } from '@antv/x6-react-shape';
 import CustomNode from './CustomNode/index';
-import './index.less';
+import './index.css';
 
 const X6Page = () => {
   register({

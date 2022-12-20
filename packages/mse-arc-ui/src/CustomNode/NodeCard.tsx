@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Divider, Tag, Col, Row } from 'antd';
+import Divider from 'antd/es/divider';
+import Tag from 'antd/es/tag';
+import { Col, Row } from 'antd/es/grid';
 import { StarOutlined, ApartmentOutlined } from '@ant-design/icons';
 import 'whatwg-fetch';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Popover } from 'antd';
+import Popover from 'antd/es/popover';
 import NodeCard from './NodeCard';
 import './index.css';
 

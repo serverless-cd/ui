@@ -12,10 +12,12 @@ import './index.less';
 
 export interface IPipelineInitNode {
   label: React.ReactNode;
-  enable?: boolean;
-  selected?: boolean;
-  validate?: boolean;
+  selected?: boolean; // 蓝色边框表示配置中
   selectable?: boolean;
+  // error: 红色边框表示配置有误
+  // success: 绿色边框表示配置正确
+  // wait: 灰色边框表示未配置
+  status: 'wait' | 'success' | 'error';
   [key: string]: any;
 }
 export interface IPipelineInitNodeProps {
@@ -27,28 +29,22 @@ const getData = (nodes: IPipelineInitNode[]) => {
   const newNodes = [];
   const newEdges = [];
   let gap = 0;
-  let lastNode = {} as IPipelineInitNode;
   for (const index in nodes) {
     const node = nodes[index];
     // node
     if (index !== '0') {
-      gap +=
-        lastNode.className === 'circle'
-          ? 110
-          : typeof lastNode.style?.width === 'number'
-          ? lastNode.style?.width + 50
-          : 200;
+      gap += index === '1' ? 140 : 160;
     }
     const nodeObj: IPipelineInitNode = {
       id: index,
       data: {
         label: node.label,
       },
-      position: { x: gap, y: node.className === 'circle' ? -10 : 0 },
+      position: { x: gap, y: 0 },
       draggable: false,
       connectable: false,
-      className: `${node.enable ? 'enable' : ''} ${node.validate === false ? 'check-failed' : ''}`,
       ...node,
+      className: ['start', 'end'].includes(node.key) ? node.key : `status-${node.status || 'wait'}`,
     };
     if (index === '0') {
       nodeObj.type = 'input';
@@ -66,13 +62,11 @@ const getData = (nodes: IPipelineInitNode[]) => {
       id: index,
       source: index,
       target: String(Number(index) + 1),
-      animated: true,
       markerEnd: {
         type: MarkerType.ArrowClosed,
       },
     };
     newEdges.push(edgeObj);
-    lastNode = nodeObj;
   }
   return { newNodes, newEdges };
 };

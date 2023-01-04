@@ -9,36 +9,65 @@ import { PipelineInitNode } from '@serverless-cd/pipeline-ui';
 const defaultNodes = [
   {
     label: <div>开始</div>,
-    className: 'circle',
+    selectable: false,
+    key: 'start',
   },
   {
-    label: <div>代码源</div>,
-    enable: true,
-    validate: false,
+    label: (
+      <>
+        <div>代码源</div>
+        <div>Code source</div>
+      </>
+    ),
+    key: 'code',
+    status: 'error',
   },
   {
-    label: <div>前置检查</div>,
-    validate: false,
+    label: (
+      <>
+        <div>前置检查</div>
+        <div>Plan</div>
+      </>
+    ),
+    status: 'success',
   },
   {
-    label: <div>构建部署(Build/Deploy)</div>,
-    style: {
-      width: 160,
-    },
-    enable: true,
+    label: (
+      <>
+        <div>构建与部署</div>
+        <div>Build&Deploy</div>
+      </>
+    ),
+    selected: true,
   },
   {
-    label: <div>灰度</div>,
+    label: (
+      <>
+        <div>灰度</div>
+        <div>Canary</div>
+      </>
+    ),
   },
   {
-    label: <div>审批</div>,
+    label: (
+      <>
+        <div>审批</div>
+        <div>Approve</div>
+      </>
+    ),
   },
   {
-    label: <div>发布</div>,
+    label: (
+      <>
+        <div>发布</div>
+        <div>Release</div>
+      </>
+    ),
   },
   {
     label: <div>结束</div>,
-    className: 'circle',
+    selectable: false,
+    key: 'end',
   },
 ];
 
@@ -52,6 +81,20 @@ export default () => {
       <PipelineInitNode nodes={nodes} onClick={onClick} />
       <button onClick={() => setNodes(nodes.map((node) => ({ ...node, selected: false })))}>
         取消选中
+      </button>
+      <button
+        onClick={() =>
+          setNodes(
+            nodes.map((node) => {
+              if (node.key === 'code') {
+                node.status = 'success';
+              }
+              return node;
+            }),
+          )
+        }
+      >
+        代码源配置成功
       </button>
     </>
   );

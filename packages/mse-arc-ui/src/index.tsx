@@ -242,7 +242,7 @@ if (IS_SAFARI || IS_Mobile) {
     background: {
       color: '#e5f1fe',
     },
-    mousewheel: true,
+    mousewheel: false,
     autoResize: false,
     panning: { enabled: true, eventTypes: ['leftMouseDown'] },
   });

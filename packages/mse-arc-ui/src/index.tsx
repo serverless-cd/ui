@@ -9,6 +9,11 @@ register({
   effect: ['color'],
   component: CustomNode,
 });
+const IS_SAFARI = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+
+const IS_Mobile = navigator.userAgent.match(
+  /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
+);
 
 const commonAttrs = {
   line: {
@@ -216,21 +221,30 @@ const data = {
   ],
 };
 
-const graph = new Graph({
-  container: document.getElementById('mse-arc-container'),
-  // width: 200,
-  // height: 300,
-  // scroller: true,
-  interacting: false,
-  grid: {
-    size: 20,
-    visible: true,
-  },
-  background: {
-    color: '#e5f1fe',
-  },
-  mousewheel: true,
-  autoResize: true,
-  panning: { enabled: true, eventTypes: ['leftMouseDown'] },
-});
-graph.fromJSON(data);
+if (IS_SAFARI || IS_Mobile) {
+  const MseBox = document.getElementById('mse-arc-container');
+  const ImgBox = document.createElement('img');
+  ImgBox.src =
+    '//img.alicdn.com/imgextra/i2/O1CN01mFrO8X1EYIZp0DMnv_!!6000000000363-2-tps-2880-1512.png';
+  ImgBox.style.width = '100%';
+  MseBox.appendChild(ImgBox);
+} else {
+  const MseBox = document.getElementById('mse-arc-container');
+  const graph = new Graph({
+    container: MseBox,
+    height: 700,
+    // scroller: true,
+    interacting: false,
+    grid: {
+      size: 20,
+      visible: true,
+    },
+    background: {
+      color: '#e5f1fe',
+    },
+    mousewheel: false,
+    autoResize: false,
+    panning: { enabled: true, eventTypes: ['leftMouseDown'] },
+  });
+  graph.fromJSON(data);
+}

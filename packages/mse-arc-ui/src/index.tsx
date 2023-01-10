@@ -9,6 +9,9 @@ register({
   effect: ['color'],
   component: CustomNode,
 });
+
+let timer = null;
+
 const IS_SAFARI = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 
 const IS_Mobile = navigator.userAgent.match(
@@ -221,30 +224,39 @@ const data = {
   ],
 };
 
-if (IS_SAFARI || IS_Mobile) {
+const showMseArc = () => {
   const MseBox = document.getElementById('mse-arc-container');
-  const ImgBox = document.createElement('img');
-  ImgBox.src =
-    '//img.alicdn.com/imgextra/i2/O1CN01mFrO8X1EYIZp0DMnv_!!6000000000363-2-tps-2880-1512.png';
-  ImgBox.style.width = '100%';
-  MseBox.appendChild(ImgBox);
-} else {
-  const MseBox = document.getElementById('mse-arc-container');
-  const graph = new Graph({
-    container: MseBox,
-    height: 700,
-    // scroller: true,
-    interacting: false,
-    grid: {
-      size: 20,
-      visible: true,
-    },
-    background: {
-      color: '#e5f1fe',
-    },
-    mousewheel: false,
-    autoResize: false,
-    panning: { enabled: true, eventTypes: ['leftMouseDown'] },
-  });
-  graph.fromJSON(data);
-}
+  if (MseBox) {
+    if (IS_SAFARI || IS_Mobile) {
+      const ImgBox = document.createElement('img');
+      ImgBox.src =
+        '//img.alicdn.com/imgextra/i2/O1CN01mFrO8X1EYIZp0DMnv_!!6000000000363-2-tps-2880-1512.png';
+      ImgBox.style.width = '100%';
+      MseBox.appendChild(ImgBox);
+    } else {
+      const graph = new Graph({
+        container: MseBox,
+        height: 700,
+        // scroller: true,
+        interacting: false,
+        grid: {
+          size: 20,
+          visible: true,
+        },
+        background: {
+          color: '#e5f1fe',
+        },
+        mousewheel: false,
+        autoResize: false,
+        panning: { enabled: true, eventTypes: ['leftMouseDown'] },
+      });
+      graph.fromJSON(data);
+    }
+    timer && clearTimeout(timer);
+  }else{
+    timer = setTimeout(() => {
+      showMseArc()
+    }, 500);
+  }
+};
+showMseArc();

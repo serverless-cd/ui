@@ -21,6 +21,7 @@ export default {
   'ui.notifiy.atMobiles.placeholder': '请填写被@人的手机号,例如135xxxxxxxx',
   'ui.notifiy.atUserIds.label': '通过用户名@',
   'ui.notifiy.atUserIds.tips': '多个用户之间以,分隔',
+  'ui.notifiy.atUserIds.placeholder': '请填写被@人的用户名,例如mydingding',
   'ui.notifiy.help.webhook.text': '获取钉钉机器人Webhook的方法可以参考',
   'ui.notifiy.help.webhook.link.label': '钉钉自定义机器人接入文档',
   'ui.notifiy.help.secret.text': '为保障自定义机器人安全，推荐您配置该选项，具体内容可以参考',

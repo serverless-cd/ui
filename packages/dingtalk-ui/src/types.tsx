@@ -23,3 +23,11 @@ export interface IProps {
   className?: object | any;
   isPreview?: boolean;
 }
+
+export enum HELP_TYPE {
+  WEBHOOK = 'webhook',
+  SECRET = 'secret',
+  MESSAGE_CONTENT = 'messageContent',
+  AT_MOBILES = 'atMobiles',
+  AT_USER_IDS = 'atUserIds',
+}

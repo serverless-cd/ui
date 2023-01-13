@@ -17,7 +17,7 @@ export interface IPipelineInitNode {
   // error: 红色边框表示配置有误
   // success: 绿色边框表示配置正确
   // wait: 灰色边框表示未配置
-  status: 'wait' | 'success' | 'error';
+  status?: 'wait' | 'success' | 'error';
   [key: string]: any;
 }
 export interface IPipelineInitNodeProps {
@@ -43,6 +43,7 @@ const getData = (nodes: IPipelineInitNode[]) => {
       position: { x: gap, y: 0 },
       draggable: false,
       connectable: false,
+      selectable: ['start', 'end'].includes(node.key) ? false : node.selectable,
       ...node,
       className: ['start', 'end'].includes(node.key) ? node.key : `status-${node.status || 'wait'}`,
     };
@@ -80,6 +81,12 @@ export const PipelineInitNode: FC<IPipelineInitNodeProps> = (props) => {
     setNodes(newNodes);
     setEdges(newEdges);
   }, [originNodes]);
+
+  const onNodeClick = (node: Node<any>) => {
+    if (node.selectable === false) return;
+    onClick && onClick(node);
+  };
+
   return (
     <ReactFlow
       className="serverless-cd-pipeline-init-container"
@@ -91,7 +98,7 @@ export const PipelineInitNode: FC<IPipelineInitNodeProps> = (props) => {
       panOnScroll={false}
       nodes={nodes}
       edges={edges}
-      onNodeClick={(e, node) => onClick && onClick(node)}
+      onNodeClick={(e, node) => onNodeClick(node)}
       fitView
     >
       <Background color="#aaa" gap={16} />

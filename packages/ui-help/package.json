@@ -1,0 +1,28 @@
+{
+  "name": "@serverless-cd/ui-help",
+  "version": "0.0.1",
+  "description": "ui help library",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --testTimeout 10000",
+    "prepub": "npm run build",
+    "pub": "npm publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.5",
+    "@types/lodash": "^4.14.191",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.4"
+  }
+}

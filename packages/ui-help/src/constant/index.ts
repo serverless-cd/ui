@@ -27,7 +27,7 @@ export const SERVICES = [
     label: "容器镜像服务 CR",
     value: "容器镜像服务 CR",
     url: "https://cr.console.aliyun.com",
-    product: "cr",
+    product: "acr",
   },
   {
     label: "专有网络 VPC",
@@ -39,7 +39,7 @@ export const SERVICES = [
     label: "事件总线 EventBridge",
     value: "事件总线 EventBridge",
     url: "https://eventbridge.console.aliyun.com",
-    product: "evnetbridge",
+    product: "eventbridge",
   },
   {
     label: "表格存储 Tablestore",
@@ -87,7 +87,7 @@ export const SERVICES = [
     label: "媒体处理",
     value: "媒体处理",
     url: "https://mps.console.aliyun.com",
-    product: "mps",
+    product: "mts",
   },
   {
     label: "低代码音视频工厂",

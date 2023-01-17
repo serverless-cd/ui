@@ -28,6 +28,7 @@ type Props = PropsWithChildren & {
   onCreate?: () => void;
   createButtonDisabled?: boolean;
   isWebApp?: boolean;
+  activeTab?: `${NavKey}`;
 };
 
 const AliReadme: FC<Props> = (props) => {
@@ -38,6 +39,7 @@ const AliReadme: FC<Props> = (props) => {
     onCreate,
     createButtonDisabled,
     isWebApp = false,
+    activeTab,
   } = props;
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -182,7 +184,7 @@ const AliReadme: FC<Props> = (props) => {
         customFooter={renderFooter()}
       >
         <div className="serverless-cd__alireadme-wrapper">
-          <Nav />
+          <Nav activeTab={activeTab} />
           <div className="pt-24">
             {readmeInfo.logo && <img src={readmeInfo.logo} style={{ height: 30 }} />}
             {readmeInfo.description && <div>{readmeInfo.description}</div>}

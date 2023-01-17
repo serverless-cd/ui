@@ -12,7 +12,7 @@ import AliReadme from '@serverless-cd/ali-readme';
 
 export default () => {
   return (
-    <AliReadme appName="png-compress" onCreate={() => {}}>
+    <AliReadme appName="png-compress" onCreate={() => {}} activeTab="local_experience">
       <Button className="m-200" type="primary">
         查看详情
       </Button>

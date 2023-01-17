@@ -1,0 +1,47 @@
+{
+  "name": "@serverless-cd/ali-readme",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "build": "father build",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "module": "dist/esm/index.js",
+  "typings": "dist/esm/index.d.ts",
+  "dependencies": {
+    "@alicloud/console-components-slide-panel": "^2.2.14",
+    "@serverless-cd/ui-help": "^0.0.2",
+    "axios": "^1.2.2",
+    "qs": "^6.11.0",
+    "react-markdown": "^8.0.4",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-raw": "^6.1.1",
+    "remark-gfm": "^3.0.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0",
+    "@alicloud/console-components": "^1.5.10",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "styled-components": "^5.3.6"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.7",
+    "dumi": "^1.1.0",
+    "father": "^4.0.0-rc.2"
+  }
+}

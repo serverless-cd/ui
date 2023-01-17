@@ -41,7 +41,7 @@ const AliReadme: FC<Props> = (props) => {
     isWebApp = false,
     activeTab,
   } = props;
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [readmeInfo, setReadmeInfo] = useState<any>({});
 

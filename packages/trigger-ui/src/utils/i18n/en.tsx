@@ -50,4 +50,18 @@ export default {
   'ui.notifiy.atUserIds.placeholder': 'Enter the user you want to @',
   'ui.branch.verify.text': 'branch is required',
   'ui.trigger.activity.type.verify.text': 'Trigger type is required',
+  'ui.strict.on.push.label': 'Push to the specified branch trigger',
+  'ui.strict.on.tag.label': 'Tag/Realese event',
+  'ui.strict.on.pr.label': 'Merge/Pull Request event',
+  'ui.strict.on.push.help':
+    'When the code is pushed to the current branch, the pipeline is triggered',
+  'ui.strict.on.tag.help':
+    'This type of event is represented by Release in Github and Tag in Gitlab',
+  'ui.strict.on.pr.help':
+    'This type of event is represented by Pull Request in Github and Merge Request in Gitlab',
+  'ui.strict.on.pr.type.label': 'Types of',
+  'ui.strict.on.pr.branch.help': 'Promoting Pr/Mr to this branch will trigger the pipeline',
+  'ui.strict.on.pr.source.help':
+    'Only when Pr/Mr is raised to the target branch through this branch will the pipeline be triggered',
+  'ui.strict.branch.list.null.help': 'Failed to get the branch list, please enter the branch name',
 };

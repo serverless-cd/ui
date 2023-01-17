@@ -1,5 +1,41 @@
 import { i18n } from './utils';
 
+export enum STRICT_TYPE {
+  PUSH = 'push',
+  TAG = 'tag',
+  PUSH_REQUEST = 'pull_request',
+}
+
+export const STRICT_MATCH_LABEL = {
+  [STRICT_TYPE.PUSH]: i18n('ui.strict.on.push.label'),
+  [STRICT_TYPE.TAG]: i18n('ui.strict.on.tag.label'),
+  [STRICT_TYPE.PUSH_REQUEST]: i18n('ui.strict.on.pr.label'),
+};
+
+export const STRICT_MATCH_HELP = {
+  [STRICT_TYPE.PUSH]: i18n('ui.strict.on.push.help'),
+  [STRICT_TYPE.TAG]: i18n('ui.strict.on.tag.help'),
+  [STRICT_TYPE.PUSH_REQUEST]: i18n('ui.strict.on.pr.help'),
+};
+
+export const STRICT_TRIGGER_TYPES = [
+  {
+    value: STRICT_TYPE.PUSH,
+    label: STRICT_MATCH_LABEL[STRICT_TYPE.PUSH],
+    help: STRICT_MATCH_HELP[STRICT_TYPE.PUSH],
+  },
+  {
+    value: STRICT_TYPE.TAG,
+    label: STRICT_MATCH_LABEL[STRICT_TYPE.TAG],
+    help: STRICT_MATCH_HELP[STRICT_TYPE.TAG],
+  },
+  {
+    value: STRICT_TYPE.PUSH_REQUEST,
+    label: STRICT_MATCH_LABEL[STRICT_TYPE.PUSH_REQUEST],
+    help: STRICT_MATCH_HELP[STRICT_TYPE.PUSH_REQUEST],
+  },
+];
+
 export const MatchRuleDataSource = [
   {
     label: i18n('ui.trigger.match.rule.type.prefix'),

@@ -8,7 +8,7 @@ mode： normal strict
 import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field, Button } from '@alicloud/console-components';
-import Trigger from '@serverless-cd/trigger-ui';
+import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
 
 // 使用方式1
 // 1. 接收 value 和 onChange
@@ -30,24 +30,12 @@ export default () => {
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
   const [branchList, setBranchList] = useState([
-    { label: 'master', value: 'master' },
-    { label: 'main', value: 'main' },
+    // { label: 'master', value: 'master' },
+    // { label: 'main', value: 'main' },
   ]);
 
   const triggerRef = useRef();
-  const initValue = {
-    pull_request: {
-      branches: {
-        precise: [
-          {
-            target: 'master',
-            source: '',
-          },
-        ],
-      },
-      types: ['merged'],
-    },
-  };
+  const initValue = {};
 
   useEffect(() => {
     setTimeout(() => {
@@ -57,6 +45,7 @@ export default () => {
 
   useEffect(() => {
     console.log(getValue('trigger'), 'trigger');
+    // setValue('trigger', valuesFormat(getValue('trigger')))
   }, [getValue('trigger')]);
 
   const onClick = (mode) => {
@@ -91,7 +80,7 @@ export default () => {
         {...init('trigger', { initValue })}
         mode={mode}
         loading={loading}
-        disabled={true}
+        disabled={false}
         isRefresh
         onRefresh={onRefresh}
         branchList={branchList}

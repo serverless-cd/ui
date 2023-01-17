@@ -39,15 +39,15 @@ export interface TriggersProps {
 }
 
 export interface StrictModeProps {
-  triggerValues: object;
   value?: object | any;
-  onChange: Function;
+  onChange?: Function;
+  initValue?: object | any;
   disabled?: boolean;
   branchList?: Array<any>;
   loading?: boolean;
-  field: object;
   isRefresh?: boolean;
   onRefresh?: Function;
+  ref?: any;
 }
 
 export const PR = 'pull_request';

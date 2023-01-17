@@ -46,7 +46,7 @@ const DingTalk = (props: IProps) => {
           <Form.Item
             label={i18n('ui.notifiy.webhook.label')}
             required
-            help={HELP_RENDER[HELP_TYPE.WEBHOOK]}
+            extra={HELP_RENDER[HELP_TYPE.WEBHOOK]}
           >
             <Input
               {...init('webhook', {

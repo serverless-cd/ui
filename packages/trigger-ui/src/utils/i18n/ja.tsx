@@ -49,4 +49,20 @@ export default {
   'ui.notifiy.atUserIds.placeholder': '@したいユーザーを入力してください',
   'ui.branch.verify.text': '支店が必要です',
   'ui.trigger.activity.type.verify.text': 'トリガーの種類は必須です',
+  'ui.strict.on.push.label': '指定した分岐トリガーにプッシュ',
+  'ui.strict.on.tag.label': 'タグ/リアルイベント',
+  'ui.strict.on.pr.label': 'マージ/プル リクエスト イベント',
+  'ui.strict.on.push.help':
+    'コードが現在のブランチにプッシュされると、パイプラインがトリガーされます',
+  'ui.strict.on.tag.help':
+    'このタイプのイベントは、Github ではリリース、Gitlab ではタグで表されます。',
+  'ui.strict.on.pr.help':
+    'このタイプのイベントは、Github のプル リクエストと Gitlab のマージ リクエストによって表されます。',
+  'ui.strict.on.pr.type.label': 'の種類',
+  'ui.strict.on.pr.branch.help':
+    'Pr/Mr をこのブランチに昇格させると、パイプラインがトリガーされます',
+  'ui.strict.on.pr.source.help':
+    'Pr/Mr がこのブランチを介してターゲット ブランチに上げられた場合にのみ、パイプラインがトリガーされます。',
+  'ui.strict.branch.list.null.help':
+    'ブランチ リストの取得に失敗しました。ブランチ名を入力してください',
 };

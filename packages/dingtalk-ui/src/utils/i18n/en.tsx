@@ -31,8 +31,8 @@ export default {
   'ui.notifiy.help.secret.text':
     'In order to ensure the security of custom robots, it is recommended that you configure this option. For details, please refer to',
   'ui.notifiy.help.secret.link.label': 'DingTalk custom robot security settings document',
-  'ui.notifiy.help.messageContent.text': `Supports defining messages through variables, including: application name {{.appName}}, environment name {{.envName}}, deployment version {{.versionId}}, current execution task name {{.taskName}}, current execution task Details {{.currentTask}}, whether the task execution is successful {{.success}}, task failure information {{.error}}.
-</br>*For example: the execution result of the application "{{.appName}}" in {{.envName}} is {{.success }}, the current task details are {{.currentTask}}, and the failure information is {{ .error }}`,
+  'ui.notifiy.help.messageContent.text': `Supports defining messages through variables, including: application name {{ .appName }}, environment name {{ .envName }}, deployment version {{ .versionId }}, current execution task name {{ .taskName }}, current execution task Details {{ .currentTask }}, whether the task execution is successful {{ .success }}, task failure information {{ .error }}.
+</br>*For example: the execution result of the application "{{ .appName }}" in {{ .envName }} is {{ .success }}, the current task details are {{ .currentTask }}, and the failure information is {{ .error }}`,
   'ui.notifiy.help.atMobiles.text':
     'If you need @multiple users, you can use English comma "," to split, for example: 135xxxxxxxx, 132xxxxxxxx',
   'ui.notifiy.help.atUserIds.text':

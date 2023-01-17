@@ -31,8 +31,8 @@ export default {
   'ui.notifiy.help.secret.text':
     'カスタム ロボットのセキュリティを確保するために、このオプションを構成することをお勧めします。詳細については、 を参照してください。',
   'ui.notifiy.help.secret.link.label': 'DingTalk カスタム ロボット セキュリティ設定ドキュメント',
-  'ui.notifiy.help.messageContent.text': `アプリケーション名 {{.appName}}、環境名 {{.envName}}、デプロイメント バージョン {{.versionId}}、現在の実行タスク名 {{.taskName}}、現在の実行タスクの詳細など、変数によるメッセージの定義をサポートします。 {{.currentTask}}、タスクの実行が成功したかどうか {{.success}}、タスクの失敗情報 {{.error}}。
-</br>*例: {{.envName}} 内のアプリケーション「{{.appName}}」の実行結果は {{.success }}、現在のタスクの詳細は {{.currentTask}}、障害情報は {{ .error }} です`,
+  'ui.notifiy.help.messageContent.text': `アプリケーション名 {{ .appName }}、環境名 {{ .envName }}、デプロイメント バージョン {{ .versionId }}、現在の実行タスク名 {{ .taskName }}、現在の実行タスクの詳細など、変数によるメッセージの定義をサポートします。 {{ .currentTask }}、タスクの実行が成功したかどうか {{ .success }}、タスクの失敗情報 {{ .error }}。
+</br>*例: {{ .envName }} 内のアプリケーション「{{ .appName }}」の実行結果は {{ .success }}、現在のタスクの詳細は {{ .currentTask }}、障害情報は {{ .error }} です`,
   'ui.notifiy.help.atMobiles.text':
     '@複数のユーザーが必要な場合は、英語のコンマ「,」を使用して分割できます。例: 135xxxxxxxx, 132xxxxxxxx',
   'ui.notifiy.help.atUserIds.text':

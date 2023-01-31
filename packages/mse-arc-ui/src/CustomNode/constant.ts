@@ -256,7 +256,7 @@ export const IconMap = {
       githubUrl: 'https://github.com/kubernetes/kubernetes',
       latestVersionUrl: 'https://github.com/kubernetes/kubernetes/releases/tag/v1.23.14',
       overviewUrl: 'https://kubernetes.io/zh-cn/docs/setup/',
-      apiUrl: '//api.github.com/repos/alibaba/kubernetes',
+      apiUrl: '//api.github.com/repos/kubernetes/kubernetes',
     },
   ],
   left3: [

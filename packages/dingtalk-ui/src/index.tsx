@@ -1,8 +1,8 @@
 import React from 'react';
 import { isEmpty } from 'lodash';
-import { Form, Input, Switch, Select } from '@alicloud/console-components';
-import TextWithBalloon from './TextWithBalloon';
-import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps } from './types';
+import { Form, Input, Switch, Select, Button } from '@alicloud/console-components';
+import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps, HELP_TYPE } from './types';
+import { HELP_RENDER } from './constants';
 import './index.less';
 import { i18n } from './utils';
 
@@ -43,7 +43,11 @@ const DingTalk = (props: IProps) => {
       </Form.Item>
       {getValue('enable') && (
         <Form field={field} isPreview={isPreview} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
-          <Form.Item label={i18n('ui.notifiy.webhook.label')}>
+          <Form.Item
+            label={i18n('ui.notifiy.webhook.label')}
+            required
+            extra={HELP_RENDER[HELP_TYPE.WEBHOOK]}
+          >
             <Input
               {...init('webhook', {
                 initValue: initValue['webhook'],
@@ -53,16 +57,7 @@ const DingTalk = (props: IProps) => {
               className="full-width"
             />
           </Form.Item>
-          <Form.Item
-            label={
-              <TextWithBalloon
-                color="color-light-black"
-                align="tr"
-                text={i18n('ui.notifiy.secret.label')}
-                tips={i18n('ui.notifiy.secret.tips')}
-              />
-            }
-          >
+          <Form.Item label={i18n('ui.notifiy.secret.label')} help={HELP_RENDER[HELP_TYPE.SECRET]}>
             <Input
               {...init('secret', { initValue: initValue['secret'] })}
               placeholder={i18n('ui.notifiy.secret.placeholder')}
@@ -77,7 +72,10 @@ const DingTalk = (props: IProps) => {
               }) as {})}
             ></Switch>
           </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.messageContent.label')}>
+          <Form.Item
+            label={i18n('ui.notifiy.messageContent.label')}
+            help={HELP_RENDER[HELP_TYPE.MESSAGE_CONTENT]}
+          >
             <Input.TextArea
               {...init('messageContent', { initValue: initValue['messageContent'] })}
               placeholder={i18n('ui.notifiy.messageContent.placeholder')}
@@ -97,14 +95,8 @@ const DingTalk = (props: IProps) => {
           {getValue('remindType') === 'appoint' && (
             <>
               <Form.Item
-                label={
-                  <TextWithBalloon
-                    color="color-light-black"
-                    align="tr"
-                    text={i18n('ui.notifiy.atMobiles.label')}
-                    tips={i18n('ui.notifiy.atMobiles.tips')}
-                  />
-                }
+                label={i18n('ui.notifiy.atMobiles.label')}
+                help={HELP_RENDER[HELP_TYPE.AT_MOBILES]}
               >
                 <Input
                   {...init('atMobiles', { initValue: initValue['atMobiles'] })}
@@ -114,14 +106,8 @@ const DingTalk = (props: IProps) => {
                 />
               </Form.Item>
               <Form.Item
-                label={
-                  <TextWithBalloon
-                    color="color-light-black"
-                    align="tr"
-                    text={i18n('ui.notifiy.atUserIds.label')}
-                    tips={i18n('ui.notifiy.atUserIds.tips')}
-                  />
-                }
+                label={i18n('ui.notifiy.atUserIds.label')}
+                help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
               >
                 <Input
                   {...init('atUserIds', { initValue: initValue['atUserIds'] })}

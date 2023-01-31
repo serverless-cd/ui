@@ -1,47 +1,47 @@
 .serverless-cd-pipeline-init-container {
   min-height: 200px;
   .react-flow__node {
-    &.circle {
+    width: 120px;
+    height: 56px;
+    border: 2px solid #1a192b;
+    &.start,
+    &.end {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
-      height: 60px;
-      color: white;
+      width: 100px;
+      height: 56px;
       font-weight: 700;
-      background: #2b6cb0;
-      border: 1px solid #1a192b;
-      border-radius: 50%;
+      background: #ddd;
+      border-radius: 30px;
       cursor: unset;
-      &.selected {
-        color: white;
-        background: #2b6cb0;
-        border: 1px solid #1a192b;
-        box-shadow: unset !important;
-      }
     }
-    border: 1px solid #ccc;
 
-    &.enable:not(.check-failed) {
-      border: 1px solid #0070cc;
+    &.status-success:not(.selected) {
+      border: 2px solid #52c41a;
     }
-    &.selected:not(.check-failed) {
-      font-weight: bold;
-      background: #ebf4fb;
-      border: 1px solid #0070cc;
-      box-shadow: 0 0 0 0.5px #0070cc !important;
+    &.status-error:not(.selected) {
+      border: 2px solid #c80000;
     }
-    &.selected.check-failed {
-      font-weight: bold;
-      background: #ebf4fb;
+    &.status-wait:not(.selected) {
+      border: 2px solid #1a192b;
     }
-    &.check-failed {
-      color: #c80000;
-      border: 1px solid #c80000;
-      box-shadow: unset !important;
+    &.selected {
+      background: #40a9ff40;
+      border: 2px solid #07c;
     }
+
+    .react-flow__handle {
+      visibility: hidden;
+    }
+  }
+  .react-flow__edge-path {
+    stroke-width: 2px;
   }
   .react-flow__attribution {
     display: none;
+  }
+  .react-flow__node-default.selectable.selected {
+    box-shadow: unset;
   }
 }

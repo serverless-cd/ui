@@ -1,82 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import { StrictModeProps, PR } from '../types';
-import { map, get, isEmpty, keys } from 'lodash';
-import { Radio } from '@alicloud/console-components';
-import { TriggerTypes, TriggerTypeCheckedLabel, TriggerType } from '../constants';
-import ActivityType from '../ActivityType';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { StrictModeProps } from '../types';
+import { map, noop } from 'lodash';
+import { Radio, Field } from '@alicloud/console-components';
+import { STRICT_TYPE, STRICT_TRIGGER_TYPES } from '../constants';
 import StrictMatch from './StrictMatch';
 import '../index.less';
 
 const RadioGroup = Radio.Group;
 
-const StrictModeTrigger = (props: StrictModeProps) => {
-  const [initRadioValue, setInitRadio] = useState(TriggerType.PUSH);
+const StrictModeTrigger = (props: StrictModeProps, ref) => {
   const {
-    value,
-    onChange,
-    triggerValues,
     disabled = false,
     loading = false,
     branchList,
-    field,
     isRefresh,
     onRefresh,
+    initValue,
+    onChange = noop,
   } = props;
 
+  const [newBranchList, setNewBranchList] = useState(branchList);
+  const field = Field.useField({
+    onChange: () => {
+      onChange(getValues());
+    },
+  });
+  const { init, getValue, validate, getValues } = field;
+
   useEffect(() => {
-    const triggerTypes = keys(triggerValues);
-    if (!isEmpty(keys(triggerValues))) {
-      setInitRadio(triggerTypes[0]);
-    } else {
-      setInitRadio(TriggerType.PUSH);
-    }
-  }, [triggerValues]);
+    setNewBranchList(branchList);
+  }, [JSON.stringify(branchList)]);
 
-  const triggerChange = (typeKey) => {
-    setInitRadio(typeKey);
-    onChange({ [typeKey]: { branches: { precise: [] } } });
-  };
-
-  const activityTypeChange = (values) => {
-    onChange({ [PR]: { ...get(value, PR, {}), types: values } });
-  };
+  useImperativeHandle(ref, () => ({
+    validate,
+  }));
 
   return (
     <RadioGroup
-      value={initRadioValue}
-      onChange={triggerChange}
+      itemDirection="ver"
+      {...init('triggerType', {
+        initValue: initValue['triggerType'] || STRICT_TYPE.PUSH,
+      })}
       disabled={disabled}
-      style={{ width: '100%' }}
+      className="strict-mode-radio-Group full-width"
     >
-      {map(TriggerTypes, (labelKey) => {
+      {map(STRICT_TRIGGER_TYPES, ({ value, label, help }) => {
         return (
-          <div className="trigger-content">
-            <Radio value={labelKey} disabled={disabled}>
-              {TriggerTypeCheckedLabel[labelKey]}
-            </Radio>
-            {labelKey === PR && labelKey === initRadioValue && (
-              <ActivityType
-                onChange={activityTypeChange}
-                value={get(value, `${PR}.types`)}
-                field={field}
-                disabled={disabled}
-              />
-            )}
-            {labelKey === initRadioValue && (
+          <div style={{ marginBottom: 20 }}>
+            <Radio value={value}>{label}</Radio>
+            {getValue('triggerType') === value && (
               <StrictMatch
-                labelKey={labelKey}
-                triggerChecked={labelKey === initRadioValue}
-                matchValues={get(value, labelKey, {})}
-                onChange={(v) => {
-                  const values = labelKey === PR ? { ...get(value, labelKey, {}), ...v } : v;
-                  onChange({ [labelKey]: values });
-                }}
-                disabled={disabled}
+                type={value}
                 loading={loading}
+                help={help}
                 field={field}
-                branchList={branchList}
+                disabled={disabled}
+                initValue={initValue}
                 isRefresh={isRefresh}
                 onRefresh={onRefresh}
+                branchList={newBranchList}
+                setBranchList={setNewBranchList}
               />
             )}
           </div>
@@ -86,4 +69,4 @@ const StrictModeTrigger = (props: StrictModeProps) => {
   );
 };
 
-export default StrictModeTrigger;
+export default forwardRef(StrictModeTrigger);

@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/ali-readme",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -30,10 +30,8 @@
   "peerDependencies": {
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0",
-    "@alicloud/console-components": "^1.5.10",
-    "lodash": "^4.17.21",
-    "moment": "^2.29.4",
-    "styled-components": "^5.3.6"
+    "@alicloud/console-components": ">=1.0.0",
+    "lodash": ">=4.17.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

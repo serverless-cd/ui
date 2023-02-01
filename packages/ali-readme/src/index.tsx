@@ -32,10 +32,10 @@ type Props = PropsWithChildren & {
 };
 
 const AliReadme: FC<Props> = (props) => {
+  const { appName: name } = props;
   const {
     children,
-    title = 'title',
-    appName: name,
+    title = name,
     onCreate,
     createButtonDisabled,
     isWebApp = false,
@@ -167,7 +167,7 @@ const AliReadme: FC<Props> = (props) => {
   };
   const renderBody = () => {
     if (loading) {
-      return <Loading visible={loading} inline={false} style={{ minHeight: 500 }} />;
+      return <Loading visible={loading} inline={false} style={{ minHeight: 400 }} />;
     }
     return (
       <div className="serverless-cd__alireadme-wrapper">
@@ -432,8 +432,12 @@ const AliReadme: FC<Props> = (props) => {
           <div
             dangerouslySetInnerHTML={{ __html: i18n('ui.application.center.disclaimer.content') }}
           />
-          <h1 className="mt-20">{i18n('ui.disclaimer.for.current.application')}</h1>
-          <ReactMarkdown text={readmeInfo.disclaimers} />
+          {readmeInfo.disclaimers && (
+            <>
+              <h1 className="mt-20">{i18n('ui.disclaimer.for.current.application')}</h1>
+              <ReactMarkdown text={readmeInfo.disclaimers} />
+            </>
+          )}
         </div>
       </div>
     );

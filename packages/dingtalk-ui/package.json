@@ -21,11 +21,10 @@
     "js-cookie": "^3.0.1"
   },
   "peerDependencies": {
-    "@alicloud/console-components": "^1.5.10",
-    "moment": "^2.29.4",
-    "react": "16 || 17 || 18",
-    "react-dom": "16 || 17 || 18",
-    "lodash": "^4.17.21"
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0",
+    "@alicloud/console-components": ">=1.0.0",
+    "lodash": ">=4.17.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

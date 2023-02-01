@@ -32,10 +32,10 @@ type Props = PropsWithChildren & {
 };
 
 const AliReadme: FC<Props> = (props) => {
+  const { appName: name } = props;
   const {
     children,
-    title = 'title',
-    appName: name,
+    title = name,
     onCreate,
     createButtonDisabled,
     isWebApp = false,

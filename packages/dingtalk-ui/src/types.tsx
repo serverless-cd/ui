@@ -30,4 +30,5 @@ export enum HELP_TYPE {
   MESSAGE_CONTENT = 'messageContent',
   AT_MOBILES = 'atMobiles',
   AT_USER_IDS = 'atUserIds',
+  ENABLE = 'enable',
 }

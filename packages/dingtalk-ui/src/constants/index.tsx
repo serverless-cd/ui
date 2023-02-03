@@ -27,6 +27,9 @@ const HELP_PARMAS = {
   [HELP_TYPE.AT_USER_IDS]: {
     text: i18n('ui.notifiy.help.atUserIds.text'),
   },
+  [HELP_TYPE.ENABLE]: {
+    text: i18n('ui.notifiy.help.enable.text'),
+  },
 };
 
 export const HELP_RENDER = {
@@ -35,4 +38,5 @@ export const HELP_RENDER = {
   [HELP_TYPE.MESSAGE_CONTENT]: <TelpText {...HELP_PARMAS[HELP_TYPE.MESSAGE_CONTENT]} />,
   [HELP_TYPE.AT_MOBILES]: <TelpText {...HELP_PARMAS[HELP_TYPE.AT_MOBILES]} />,
   [HELP_TYPE.AT_USER_IDS]: <TelpText {...HELP_PARMAS[HELP_TYPE.AT_USER_IDS]} />,
+  [HELP_TYPE.ENABLE]: <TelpText {...HELP_PARMAS[HELP_TYPE.ENABLE]} />,
 };

@@ -30,14 +30,18 @@ export default () => {
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
   const [branchList, setBranchList] = useState([
-    // { label: 'master', value: 'master' },
-    // { label: 'main', value: 'main' },
+    { label: 'master', value: 'master' },
+    { label: 'main', value: 'main' },
   ]);
 
   const triggerRef = useRef();
   const initValue = {};
 
   useEffect(() => {
+    setValue('trigger', {
+      triggerType: 'push',
+      pushValue: 'master',
+    });
     setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -45,7 +49,6 @@ export default () => {
 
   useEffect(() => {
     console.log(getValue('trigger'), 'trigger');
-    // setValue('trigger', valuesFormat(getValue('trigger')))
   }, [getValue('trigger')]);
 
   const onClick = (mode) => {
@@ -77,7 +80,7 @@ export default () => {
         <Button onClick={verifyTrigger}>校验</Button>
       </div>
       <Trigger
-        {...init('trigger', { initValue })}
+        {...init('trigger')}
         mode={mode}
         loading={loading}
         disabled={false}

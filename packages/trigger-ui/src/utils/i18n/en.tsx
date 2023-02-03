@@ -51,8 +51,8 @@ export default {
   'ui.branch.verify.text': 'branch is required',
   'ui.trigger.activity.type.verify.text': 'Trigger type is required',
   'ui.strict.on.push.label': 'Push to the specified branch trigger',
-  'ui.strict.on.tag.label': 'Tag/Realese event',
-  'ui.strict.on.pr.label': 'Merge/Pull Request event',
+  'ui.strict.on.tag.label': 'Tag / Release event',
+  'ui.strict.on.pr.label': 'Merge / Pull Request event',
   'ui.strict.on.push.help':
     'When the code is pushed to the current branch, the pipeline is triggered',
   'ui.strict.on.tag.help':

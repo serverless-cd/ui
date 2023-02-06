@@ -7,8 +7,8 @@ import { cloneDeep, noop } from 'lodash';
 
 type Props = {
   formLayoutProps?: IFormLayoutProps;
-  value?: any;
-  onChange?: () => void;
+  value?: Record<string, any>;
+  onChange?: (value: Record<string, any>, form: Form) => void;
   children: (form: Form) => ReactNode;
 };
 
@@ -28,7 +28,7 @@ const AuthSetting: FC<Props> = (props) => {
         validateFirst: true,
         initialValues: value,
         effects: () => {
-          onFormValuesChange(({ values }) => onChange(cloneDeep(values)));
+          onFormValuesChange(({ values }) => onChange(cloneDeep(values), form));
         },
       }),
     [],

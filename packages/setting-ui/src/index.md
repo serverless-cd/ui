@@ -7,7 +7,7 @@ Demo:
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/auth-setting';
+import AuthSetting from '@serverless-cd/setting-ui';
 import { Button } from '@alicloud/console-components';
 
 export default () => {
@@ -24,7 +24,7 @@ export default () => {
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/auth-setting';
+import AuthSetting from '@serverless-cd/setting-ui';
 
 export default () => {
   return <AuthSetting value={{ aa: '111', bb: '初始化默认值' }} onChange={console.log} />;
@@ -37,7 +37,7 @@ export default () => {
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field } from '@alicloud/console-components';
-import AuthSetting from '@serverless-cd/auth-setting';
+import AuthSetting from '@serverless-cd/setting-ui';
 
 export default () => {
   const field = Field.useField();
@@ -57,10 +57,12 @@ export default () => {
 
 ### 校验
 
+> form 实例可通过 children 的第一个参数或者 onChange 第二个参数 得到。
+
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/auth-setting';
+import AuthSetting from '@serverless-cd/setting-ui';
 import { Button } from '@alicloud/console-components';
 
 export default () => {

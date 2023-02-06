@@ -1,5 +1,5 @@
 {
-  "name": "@serverless-cd/auth-setting",
+  "name": "@serverless-cd/setting-ui",
   "version": "0.0.1",
   "scripts": {
     "start": "dumi dev",

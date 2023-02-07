@@ -37,7 +37,7 @@ export const valuesFormat = (values) => {
     newValues = {
       push: {
         branches: {
-          precise: [get(values, `${triggerType}Value`)],
+          precise: getTriggerValue(values, triggerType),
         },
       },
     };
@@ -45,22 +45,22 @@ export const valuesFormat = (values) => {
     newValues = {
       push: {
         tags: {
-          prefix: [get(values, `${triggerType}Value`)],
+          prefix: getTriggerValue(values, triggerType),
         },
       },
     };
-  } else {
+  } else if (triggerType === STRICT_TYPE.PUSH_REQUEST) {
     newValues = {
       pull_request: {
         branches: {
           precise: [
             {
-              target: get(values, `${triggerType}Target`),
+              target: get(values, `${triggerType}Target`, ''),
               source: get(values, `${triggerType}Source`, ''),
             },
           ],
         },
-        types: get(values, `${triggerType}Types`),
+        types: get(values, `${triggerType}Types`, ['merged']),
       },
     };
   }
@@ -99,6 +99,10 @@ const againstParseValues = (values) => {
     }
   }
   return newValues;
+};
+
+const getTriggerValue = (values, triggerType) => {
+  return get(values, `${triggerType}Value`) ? [get(values, `${triggerType}Value`)] : [];
 };
 
 const Trigger = (props: TriggersProps, ref) => {

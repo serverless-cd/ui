@@ -31,6 +31,7 @@ const uniqOrOmitTriggers = (trigger, mode) => {
 };
 // 数据转化为推荐格式
 export const valuesFormat = (values) => {
+  if (!get(values, 'triggerType')) return values;
   const { triggerType } = values;
   let newValues = {};
   if (triggerType === STRICT_TYPE.PUSH) {
@@ -99,10 +100,8 @@ const againstParseValues = (values) => {
     }
   } else if (triggerType === STRICT_TYPE.TAG) {
     const tags = get(currentTriggerValue, 'tags.prefix', []);
-    if (!isEmpty(tags)) {
-      set(newValues, 'triggerType', STRICT_TYPE.TAG);
-      set(newValues, `${STRICT_TYPE.TAG}Value`, get(tags, '[0]'));
-    }
+    set(newValues, 'triggerType', STRICT_TYPE.TAG);
+    set(newValues, `${STRICT_TYPE.TAG}Value`, get(tags, '[0]', ''));
   }
   return newValues;
 };

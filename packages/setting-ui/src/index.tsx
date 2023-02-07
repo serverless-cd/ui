@@ -1,8 +1,10 @@
 import React, { FC, useMemo, ReactNode } from 'react';
 import { createForm, onFormValuesChange, Form } from '@formily/core';
 import { FormProvider, createSchemaField } from '@formily/react';
-import { FormItem, FormLayout, Input, Select, IFormLayoutProps } from '@formily/next';
+import { FormItem, FormLayout, Input, IFormLayoutProps } from '@formily/next';
 import schema from './schema';
+import AsyncSelect from './components/async-select';
+import Select from './components/select';
 import { cloneDeep, noop } from 'lodash';
 
 type Props = {
@@ -17,10 +19,11 @@ const SchemaField = createSchemaField({
     Input,
     FormItem,
     Select,
+    AsyncSelect,
   },
 });
 
-const AuthSetting: FC<Props> = (props) => {
+const SettingUi: FC<Props> = (props) => {
   const { formLayoutProps, value, onChange = noop, children } = props;
   const form = useMemo(
     () =>
@@ -46,4 +49,4 @@ const AuthSetting: FC<Props> = (props) => {
   );
 };
 
-export default AuthSetting;
+export default SettingUi;

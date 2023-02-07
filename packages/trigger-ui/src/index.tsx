@@ -73,7 +73,11 @@ const againstParseValues = (values) => {
   let triggerType;
   let currentTriggerValue = {};
   forEach(keys(values), (key) => {
-    triggerType = key;
+    if (values[key]['tags']) {
+      triggerType = 'tag';
+    } else {
+      triggerType = key;
+    }
     currentTriggerValue = values[key];
   });
 
@@ -90,10 +94,12 @@ const againstParseValues = (values) => {
     }
   } else if (triggerType === STRICT_TYPE.PUSH) {
     const push = get(currentTriggerValue, 'branches.precise', []);
-    const tags = get(currentTriggerValue, 'tags.prefix', []);
     if (!isEmpty(push)) {
       set(newValues, `${triggerType}Value`, get(push, '[0]'));
-    } else if (!isEmpty(tags)) {
+    }
+  } else if (triggerType === STRICT_TYPE.TAG) {
+    const tags = get(currentTriggerValue, 'tags.prefix', []);
+    if (!isEmpty(tags)) {
       set(newValues, 'triggerType', STRICT_TYPE.TAG);
       set(newValues, `${STRICT_TYPE.TAG}Value`, get(tags, '[0]'));
     }

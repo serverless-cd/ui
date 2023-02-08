@@ -1,9 +1,9 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
-import TriggerType from './TriggerType';
+import React, { useState, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
 import { TriggersProps, PR, PUSH } from './types';
-import { map, get, noop, isEmpty, keys, uniq, set, omit, forEach } from 'lodash';
+import { map, get, noop, isEmpty, keys, uniq, set, omit, forEach, find, includes } from 'lodash';
 import { Field } from '@alicloud/console-components';
 import StrictModeTrigger from './strict-mode';
+import NormalModeTrigger from './normal-mode';
 import { TriggerTypes, STRICT_TYPE } from './constants';
 import './index.less';
 const uniqOrOmitTriggers = (trigger, mode) => {
@@ -105,6 +105,12 @@ const againstParseValues = (values) => {
   }
   return newValues;
 };
+// 数据转为标准的数据结构
+const againstParseNormalValues = (values) => {
+  const findValue = find(values, (v, key) => includes(['push-enable', 'pull_request-enable'], key));
+  if (findValue) return values;
+  if (isEmpty(values)) return { 'push-enable': true, 'push-branchesEnable': true };
+};
 
 const getTriggerValue = (values, triggerType) => {
   return get(values, `${triggerType}Value`) ? [get(values, `${triggerType}Value`)] : [];
@@ -121,31 +127,28 @@ const Trigger = (props: TriggersProps, ref) => {
     isRefresh,
     onRefresh,
   } = props;
-
-  const [triggerValues] = useState(
-    isEmpty(value) ? { push: { branches: { precise: [] } } } : value,
-  );
-
+  const mode2 = mode;
   const strictRef = useRef(null);
 
   const field = Field.useField({
-    onChange: () => {
+    onChange: (name) => {
       let trigger = {};
-      if (mode === 'normal') {
-        const push = field.getValue(PUSH);
-        const pr = field.getValue(PR);
+      if (name === 'normal') {
+        trigger = field.getValue('normal');
+        // const pr = field.getValue(PR);
 
-        if (!isEmpty(push)) {
-          trigger[PUSH] = push;
-        }
-        if (!isEmpty(pr)) {
-          trigger[PR] = pr;
-        }
-        trigger = uniqOrOmitTriggers(trigger, mode);
+        // if (!isEmpty(push)) {
+        //   trigger[PUSH] = push;
+        // }
+        // if (!isEmpty(pr)) {
+        //   trigger[PR] = pr;
+        // }
+        // trigger = uniqOrOmitTriggers(trigger, mode);
       }
-      if (mode === 'strict') {
+      if (name === 'strict') {
         trigger = field.getValue('strict');
       }
+      console.log(name, 'name');
       onChange(trigger);
     },
   });
@@ -163,20 +166,34 @@ const Trigger = (props: TriggersProps, ref) => {
 
   return (
     <>
-      {mode === 'normal' &&
-        map(TriggerTypes, (labelKey) => {
-          const initValue = get(triggerValues, labelKey, {});
-          return (
-            <TriggerType
-              {...init(labelKey, { initValue })}
-              labelKey={labelKey}
-              key={labelKey}
-              disabled={disabled}
-              setValue={setValue}
-              field={field}
-            />
-          );
-        })}
+      {
+        mode === 'normal' && (
+          <NormalModeTrigger
+            {...init('normal')}
+            initValue={againstParseNormalValues(value)}
+            disabled={disabled}
+            // {...init(labelKey, { initValue })}
+            // labelKey={labelKey}
+            // key={labelKey}
+            // disabled={disabled}
+            // setValue={setValue}
+            // field={field}
+          />
+        )
+        // map(TriggerTypes, (labelKey) => {
+        //   const initValue = get(triggerValues, labelKey, {});
+        //   return (
+        //     <NormalModeTrigger
+        //       {...init(labelKey, { initValue })}
+        //       labelKey={labelKey}
+        //       key={labelKey}
+        //       disabled={disabled}
+        //       setValue={setValue}
+        //       field={field}
+        //     />
+        //   );
+        // })
+      }
       {mode === 'strict' && (
         <StrictModeTrigger
           {...init('strict')}

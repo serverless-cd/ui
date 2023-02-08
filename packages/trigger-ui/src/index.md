@@ -36,9 +36,40 @@ import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
 // "push-branchesEnable": true
 // }
 
+// {
+//     "push": {
+//         "branches": {
+//             "precise": [
+//                 "1"
+//             ],
+//             "prefix": [
+//                 "3"
+//             ]
+//         },
+//         "tags": {
+//             "prefix": [
+//                 "1"
+//             ]
+//         }
+//     },
+//     "pull_request": {
+//         "branches": {
+//             "prefix": [
+//                 {
+//                     "target": "1",
+//                     "source": "1"
+//                 }
+//             ]
+//         },
+//         "types": [
+//             "merged"
+//         ]
+//     }
+// }
+
 export default () => {
   const field = Field.useField();
-  const [mode, setMode] = useState('strict');
+  const [mode, setMode] = useState('normal');
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
   const [branchList, setBranchList] = useState([
@@ -96,7 +127,21 @@ export default () => {
         </Button>
       </div>
       <Trigger
-        {...init('trigger', { initValue: {} })}
+        {...init('trigger', {
+          initValue: {
+            pull_request: {
+              branches: {
+                prefix: [
+                  {
+                    target: '1',
+                    source: '1',
+                  },
+                ],
+              },
+              types: ['merged', 'closed'],
+            },
+          },
+        })}
         mode={mode}
         loading={loading}
         disabled={false}

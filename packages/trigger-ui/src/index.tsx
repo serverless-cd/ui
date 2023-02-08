@@ -1,35 +1,45 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef, useEffect } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { TriggersProps, PR, PUSH } from './types';
-import { map, get, noop, isEmpty, keys, uniq, set, omit, forEach, find, includes } from 'lodash';
+import {
+  map,
+  get,
+  noop,
+  isEmpty,
+  keys,
+  set,
+  forEach,
+  find,
+  includes,
+  filter,
+  uniq,
+  uniqWith,
+  isEqual,
+} from 'lodash';
 import { Field } from '@alicloud/console-components';
 import StrictModeTrigger from './strict-mode';
 import NormalModeTrigger from './normal-mode';
-import { TriggerTypes, STRICT_TYPE } from './constants';
+import { STRICT_TYPE } from './constants';
 import './index.less';
-const uniqOrOmitTriggers = (trigger, mode) => {
-  const newTrigger = {};
-  map(['push.branches', 'push.tags', 'pull_request.branches', 'pull_request.types'], (item) => {
-    let matchType = get(trigger, item, {});
-    if (!isEmpty(matchType)) {
-      if (item === 'pull_request.types') {
-        set(newTrigger, item, matchType);
-      } else {
-        map(keys(matchType), (matchKey) => {
-          if (matchType[matchKey].length > 1) {
-            matchType[matchKey] = uniq(matchType[matchKey]);
-          }
 
-          if (isEmpty(matchType[matchKey]) && matchKey !== 'prefix' && mode === 'normal') {
-            matchType = omit(matchType, [matchKey]);
-          }
-        });
-        set(newTrigger, item, matchType);
-      }
-    }
-  });
-  return newTrigger;
-};
-// 数据转化为推荐格式
+const NormalDataFormats = [
+  {
+    type: STRICT_TYPE.PUSH,
+    formatKey: 'push.branches',
+    branchType: 'branches',
+  },
+  {
+    type: STRICT_TYPE.PUSH,
+    formatKey: 'push.tags',
+    branchType: 'tags',
+  },
+  {
+    type: STRICT_TYPE.PUSH_REQUEST,
+    formatKey: 'pull_request.branches',
+    branchType: 'branches',
+  },
+];
+
+// 严格模式 数据转化为推荐格式
 export const valuesFormat = (values) => {
   if (!get(values, 'triggerType')) return values;
   const { triggerType } = values;
@@ -67,6 +77,36 @@ export const valuesFormat = (values) => {
   }
   return newValues;
 };
+
+//标准模式 数据转化为推荐格式
+export const normalValuesFormat = (values) => {
+  const findValue = filter(values, (v, key) =>
+    includes(['push-enable', 'pull_request-enable'], key),
+  );
+  if (isEmpty(findValue)) return values;
+  let newValue = {};
+  forEach(keys(values), (key) => {
+    if (key === 'push-enable' && values[key]) {
+      const branchValues = get(values, 'push-branchesValues');
+      const tagsValues = get(values, 'push-tagsValues');
+      if (get(values, 'push-branchesEnable') && !isEmpty(branchValues)) {
+        set(newValue, 'push.branches', againstAnalysisValue(branchValues, 'push'));
+      }
+      if (get(values, 'push-tagsEnable') && !isEmpty(tagsValues)) {
+        set(newValue, 'push.tags', againstAnalysisValue(tagsValues, 'push'));
+      }
+    } else if (key === 'pull_request-enable' && values[key]) {
+      const branchValues = get(values, 'pull_request-branchesValues');
+      const typesValues = get(values, 'pull_request-types');
+      if (get(values, 'pull_request-branchesEnable') && !isEmpty(branchValues)) {
+        set(newValue, `pull_request.branches`, againstAnalysisValue(branchValues, 'pull_request'));
+        set(newValue, `pull_request.types`, typesValues);
+      }
+    }
+  });
+  return newValue;
+};
+
 // 数据转为严格模式的数据结构
 const againstParseValues = (values) => {
   if (get(values, 'triggerType')) return values;
@@ -110,10 +150,49 @@ const againstParseNormalValues = (values) => {
   const findValue = find(values, (v, key) => includes(['push-enable', 'pull_request-enable'], key));
   if (findValue) return values;
   if (isEmpty(values)) return { 'push-enable': true, 'push-branchesEnable': true };
+  let newValues = {};
+  map(NormalDataFormats, ({ type, formatKey, branchType }) => {
+    const triggerValue = get(values, formatKey);
+    if (!isEmpty(triggerValue)) {
+      set(newValues, `${type}-enable`, true);
+      set(newValues, `${type}-${branchType}Enable`, true);
+      set(newValues, `${type}-${branchType}Values`, analysisValue(triggerValue, type));
+      if (type === PR) {
+        set(newValues, `${type}-types`, get(values, 'pull_request.types'));
+      }
+    }
+  });
+  return newValues;
 };
 
 const getTriggerValue = (values, triggerType) => {
   return get(values, `${triggerType}Value`) ? [get(values, `${triggerType}Value`)] : [];
+};
+
+const analysisValue = (value = {}, type) => {
+  let newValue = [];
+  forEach(keys(value), (key) => {
+    newValue = newValue.concat(
+      map(value[key], (v) => {
+        if (type === PUSH) {
+          return { type: key, target: v };
+        } else {
+          return { type: key, target: v.target, source: v.source };
+        }
+      }),
+    );
+  });
+  return newValue;
+};
+
+const againstAnalysisValue = (value = [], triggerType) => {
+  let newValue = {};
+  forEach(value, ({ type, target, source }) => {
+    const lastValue = get(newValue, `${type}`, []);
+    lastValue.push(triggerType === PUSH ? target : { target, source });
+    set(newValue, `${type}`, triggerType === PUSH ? uniq(lastValue) : uniqWith(lastValue, isEqual));
+  });
+  return newValue;
 };
 
 const Trigger = (props: TriggersProps, ref) => {
@@ -127,38 +206,29 @@ const Trigger = (props: TriggersProps, ref) => {
     isRefresh,
     onRefresh,
   } = props;
-  const mode2 = mode;
   const strictRef = useRef(null);
+  const normalRef = useRef(null);
 
   const field = Field.useField({
     onChange: (name) => {
       let trigger = {};
       if (name === 'normal') {
-        trigger = field.getValue('normal');
-        // const pr = field.getValue(PR);
-
-        // if (!isEmpty(push)) {
-        //   trigger[PUSH] = push;
-        // }
-        // if (!isEmpty(pr)) {
-        //   trigger[PR] = pr;
-        // }
-        // trigger = uniqOrOmitTriggers(trigger, mode);
+        trigger = normalValuesFormat(field.getValue('normal'));
       }
       if (name === 'strict') {
         trigger = field.getValue('strict');
       }
-      console.log(name, 'name');
       onChange(trigger);
     },
   });
 
-  const { init, setValue, validate } = field;
+  const { init } = field;
 
   useImperativeHandle(ref, () => ({
     validate: () => {
       return new Promise((resolve) => {
-        const triggerValidate = mode === 'strict' ? strictRef.current.validate : validate;
+        const triggerValidate =
+          mode === 'strict' ? strictRef.current.validate : normalRef.current.validate;
         triggerValidate((error) => (error ? resolve(false) : resolve(true)));
       });
     },
@@ -166,34 +236,14 @@ const Trigger = (props: TriggersProps, ref) => {
 
   return (
     <>
-      {
-        mode === 'normal' && (
-          <NormalModeTrigger
-            {...init('normal')}
-            initValue={againstParseNormalValues(value)}
-            disabled={disabled}
-            // {...init(labelKey, { initValue })}
-            // labelKey={labelKey}
-            // key={labelKey}
-            // disabled={disabled}
-            // setValue={setValue}
-            // field={field}
-          />
-        )
-        // map(TriggerTypes, (labelKey) => {
-        //   const initValue = get(triggerValues, labelKey, {});
-        //   return (
-        //     <NormalModeTrigger
-        //       {...init(labelKey, { initValue })}
-        //       labelKey={labelKey}
-        //       key={labelKey}
-        //       disabled={disabled}
-        //       setValue={setValue}
-        //       field={field}
-        //     />
-        //   );
-        // })
-      }
+      {mode === 'normal' && (
+        <NormalModeTrigger
+          {...init('normal')}
+          initValue={againstParseNormalValues(value)}
+          disabled={disabled}
+          ref={normalRef}
+        />
+      )}
       {mode === 'strict' && (
         <StrictModeTrigger
           {...init('strict')}

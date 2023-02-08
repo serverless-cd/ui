@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Checkbox } from '@alicloud/console-components';
 import { MatchTypeCheckedLabel } from '../constants';
 import MatchTypeValue from './MatchTypeValue';
@@ -6,6 +6,7 @@ import MatchTypeValue from './MatchTypeValue';
 const MatchType = (props) => {
   const { labelKey, disabled, triggerType, field, initValue } = props;
   const { init, getValue } = field;
+  const validateRef = useRef(null);
 
   return (
     <div style={{ padding: '16px 0 16px 26px' }}>
@@ -19,11 +20,21 @@ const MatchType = (props) => {
         {MatchTypeCheckedLabel[labelKey]}
       </Checkbox>
       <MatchTypeValue
-        {...init(`${triggerType}-${labelKey}Values`)}
-        initValue={initValue[`${triggerType}-${labelKey}Values`]}
+        {...init(`${triggerType}-${labelKey}Values`, {
+          initValue: initValue[`${triggerType}-${labelKey}Values`],
+          rules: [
+            {
+              validator: (rule, value, callback) => {
+                const validate = validateRef.current.validate;
+                validate((error) => (error ? callback('error') : callback()));
+              },
+            },
+          ],
+        })}
         triggerTypeChecked={getValue(`${triggerType}-${labelKey}Enable`)}
         disabled={disabled}
         triggerType={triggerType}
+        ref={validateRef}
         labelKey={labelKey}
       />
     </div>

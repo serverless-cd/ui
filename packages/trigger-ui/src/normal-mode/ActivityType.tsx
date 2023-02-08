@@ -19,7 +19,7 @@ const ActivityType = (props) => {
       >
         <CheckboxGroup
           {...init(`${STRICT_TYPE.PUSH_REQUEST}-types`, {
-            initValue: initValue['types'] || ['merged'],
+            initValue: initValue[`${STRICT_TYPE.PUSH_REQUEST}-types`] || ['merged'],
             rules: [
               {
                 required: true,

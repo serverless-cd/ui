@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useImperativeHandle, forwardRef } from 'react';
 import { Field } from '@alicloud/console-components';
 import { map, keys, includes } from 'lodash';
 import { TriggerTypes } from '../constants';
@@ -11,8 +11,20 @@ type IProps = {
   initValue: any;
 };
 
-const NormalModeTrigger = (props: IProps) => {
+const NormalModeTrigger = (props: IProps, ref) => {
   const { disabled, onChange, initValue } = props;
+
+  const field = Field.useField({
+    onChange: () => {
+      onChange(getValues());
+    },
+  });
+  const { getValues, validate } = field;
+
+  useImperativeHandle(ref, () => ({
+    validate,
+  }));
+
   const getTypeInitValue = (labelKey) => {
     let newValues = {};
     map(keys(initValue), (key) => {
@@ -22,12 +34,6 @@ const NormalModeTrigger = (props: IProps) => {
     });
     return newValues;
   };
-  const field = Field.useField({
-    onChange: () => {
-      onChange(getValues());
-    },
-  });
-  const { getValues } = field;
 
   return (
     <>
@@ -46,4 +52,4 @@ const NormalModeTrigger = (props: IProps) => {
   );
 };
 
-export default NormalModeTrigger;
+export default forwardRef(NormalModeTrigger);

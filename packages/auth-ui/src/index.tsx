@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
-import { Form, Input, Switch, Select, Button } from '@alicloud/console-components';
-import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps, HELP_TYPE } from './types';
-import { HELP_RENDER } from './constants';
+import { Field, Form, Input, Button } from '@alicloud/console-components';
+import { IProps, AUTH_COMPONENT, AUTH_TYPE } from './types';
 import './index.less';
 import { i18n } from './utils';
 
@@ -12,116 +11,139 @@ const dataSource = [
   { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
 ];
 
-const DingTalk = (props: IProps) => {
-  const { field, initValue = {}, className = {}, isPreview } = props;
-  const { init, getValue } = field;
+const Auth = (props: IProps) => {
+  const { className = {}, children, title, value, style, titleStyle } = props;
+  const field = Field.useField();
+  const { init, getValue, validate } = field;
 
-  const validateWebhook = async (rule, value, callback) => {
-    if (!getValue('enable')) return callback();
-    if (isEmpty(value)) {
-      return callback(i18n('ui.notifiy.webhook.tip'));
-    }
-    /^((https|http)?:\/\/)[^\s]+/.test(value)
-      ? callback()
-      : callback(i18n('ui.notifiy.webhook.correct.tip'));
+  const { credentialProvider, tripartiteProvider = [], layout, labelTextAlign } = value;
+  const { credentials = {}, onSubmit } = credentialProvider;
+
+  const validateUsername = (rule, value) => {
+    const regex = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g;
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        reject([new Error('请输入正确格式，不支持中文')]);
+      } else if (/\s/g.test(value)) {
+        reject([new Error('请输入正确格式，不支持空格')]);
+      } else {
+        resolve(value);
+      }
+    });
   };
 
+  const validatePassword = (rule, value) => {
+    const regex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,18}');
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        resolve(value);
+      } else {
+        reject([new Error('密码中必须包含字母、数字、特称字符，至少6个字符，最多18个字符')]);
+      }
+    });
+  };
+
+  const validateEmail = (rule, value) => {
+    const regex = new RegExp('^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$');
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        resolve(value);
+      } else {
+        reject([new Error('邮箱格式中必须包含@，及.com、.cn、.net等后缀名')]);
+      }
+    });
+  };
+
+  const RenderComponent = (component, obj) => {
+    if (component === AUTH_COMPONENT['INPUT']) {
+      return (
+        <Form.Item label={obj.label} required={obj.required}>
+          <Input
+            {...init(obj.type, {
+              rules: [
+                {
+                  validator: obj.type === AUTH_TYPE['EMAIL'] ? validateEmail : validateUsername,
+                },
+              ],
+            })}
+            innerBefore={<div className="admin-icon">{obj.icon}</div>}
+            className="admin-public-width"
+            placeholder={obj.placeholder}
+          />
+        </Form.Item>
+      );
+    }
+    if (component === AUTH_COMPONENT['PASSWORD']) {
+      return (
+        <Form.Item label={obj.label} required={obj.required}>
+          <Input.Password
+            {...init(obj.type, {
+              rules: [
+                {
+                  validator: validatePassword,
+                },
+              ],
+            })}
+            innerBefore={<div className="admin-icon">{obj.icon}</div>}
+            className="admin-public-width"
+            placeholder={obj.placeholder}
+          />
+        </Form.Item>
+      );
+    }
+    if (component === AUTH_COMPONENT['BUTTON']) {
+      return (
+        <Form.Item label={`${obj.type === AUTH_TYPE['LOGIN'] ? '' : ' '}`}>
+          <Button className="admin-public-width" type="primary" onClick={handleSubmit}>
+            {obj.label}
+          </Button>
+        </Form.Item>
+      );
+    }
+  };
+
+  const handleTripartiteProviderUrl = (url) => {
+    // 跳转第三方登录
+    window.location.href = url;
+  };
+
+  const handleSubmit = () => {
+    validate((error, values) => {
+      if (error) return;
+      onSubmit(values);
+    });
+  };
   return (
     <Form
       field={field}
-      isPreview={isPreview}
-      className={className}
-      {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}
+      className={`${className}`}
+      style={{ width: '100%', ...style }}
+      labelTextAlign={labelTextAlign}
+      {...layout}
     >
-      <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
-        <Switch
-          {...(init('enable', {
-            valueName: 'checked',
-            initValue: initValue['enable'],
-          }) as {})}
-        ></Switch>
-      </Form.Item>
-      {getValue('enable') && (
-        <Form field={field} isPreview={isPreview} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
-          <Form.Item
-            label={i18n('ui.notifiy.webhook.label')}
-            required
-            extra={HELP_RENDER[HELP_TYPE.WEBHOOK]}
-          >
-            <Input
-              {...init('webhook', {
-                initValue: initValue['webhook'],
-                rules: [{ validator: validateWebhook }],
-              })}
-              placeholder={i18n('ui.notifiy.webhook.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.secret.label')} help={HELP_RENDER[HELP_TYPE.SECRET]}>
-            <Input
-              {...init('secret', { initValue: initValue['secret'] })}
-              placeholder={i18n('ui.notifiy.secret.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')}>
-            <Switch
-              {...(init('skipOnSuccess', {
-                valueName: 'checked',
-                initValue: initValue['skipOnSuccess'],
-              }) as {})}
-            ></Switch>
-          </Form.Item>
-          <Form.Item
-            label={i18n('ui.notifiy.messageContent.label')}
-            help={HELP_RENDER[HELP_TYPE.MESSAGE_CONTENT]}
-          >
-            <Input.TextArea
-              {...init('messageContent', { initValue: initValue['messageContent'] })}
-              placeholder={i18n('ui.notifiy.messageContent.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.remindType.label')}>
-            <Select
-              placeholder={i18n('ui.notifiy.remindType.placeholder')}
-              {...(init('remindType', {
-                initValue: initValue['remindType'] || 'needless',
-              }) as {})}
-              dataSource={dataSource}
-              className="full-width"
-            />
-          </Form.Item>
-          {getValue('remindType') === 'appoint' && (
-            <>
-              <Form.Item
-                label={i18n('ui.notifiy.atMobiles.label')}
-                help={HELP_RENDER[HELP_TYPE.AT_MOBILES]}
-              >
-                <Input
-                  {...init('atMobiles', { initValue: initValue['atMobiles'] })}
-                  placeholder={i18n('ui.notifiy.atMobiles.placeholder')}
-                  className="full-width"
-                  disabled={getValue('isAtAll')}
-                />
-              </Form.Item>
-              <Form.Item
-                label={i18n('ui.notifiy.atUserIds.label')}
-                help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
-              >
-                <Input
-                  {...init('atUserIds', { initValue: initValue['atUserIds'] })}
-                  placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
-                  className="full-width"
-                  disabled={getValue('isAtAll')}
-                />
-              </Form.Item>
-            </>
-          )}
-        </Form>
+      <Form.Item style={{ ...titleStyle }}>{title}</Form.Item>
+      {Object.getOwnPropertyNames(credentials).map((key) => {
+        return RenderComponent(credentials[key]['x-component'], credentials[key]);
+      })}
+      {
+        // 自定义内容
+        children
+      }
+      {!isEmpty(tripartiteProvider) && (
+        <Form.Item className="admin-public-width">
+          <div className="admin-tripartite-provider">
+            {tripartiteProvider.map((item) => {
+              return (
+                <div className="icon" onClick={() => handleTripartiteProviderUrl(item.url)}>
+                  {item.icon}
+                </div>
+              );
+            })}
+          </div>
+        </Form.Item>
       )}
     </Form>
   );
 };
 
-export default DingTalk;
+export default Auth;

@@ -12,16 +12,28 @@ export const FORM_CUSTOM_MIDDLE_LABEL_LEFT = {
   labelTextAlign: 'left' as Align,
 };
 
-interface fieldProps {
-  init: Function;
-  getValue: Function;
-}
+export const FORM_CUSTOM_MIDDLE_LABEL_LEFT_ADMIN = {
+  labelCol: {
+    span: 4,
+    offset: 4,
+  },
+
+  wrapperCol: {
+    span: 12,
+  },
+
+  labelTextAlign: 'left' as Align,
+};
 
 export interface IProps {
-  field: fieldProps;
   initValue?: object;
   className?: object | any;
   isPreview?: boolean;
+  title?: string;
+  value?: object | any;
+  children?: object;
+  style?: object;
+  titleStyle?: object;
 }
 
 export enum HELP_TYPE {
@@ -30,4 +42,44 @@ export enum HELP_TYPE {
   MESSAGE_CONTENT = 'messageContent',
   AT_MOBILES = 'atMobiles',
   AT_USER_IDS = 'atUserIds',
+}
+
+export enum LOGIN_TYPE {
+  LOGIN = 'login',
+  REMEMBER = 'remember',
+  REGISTER = 'register',
+}
+
+export type LOGIN_TYPE_VALUE = `${LOGIN_TYPE}`;
+
+export enum LOGIN_TEXT {
+  account = '请输入账号',
+  password = '请输入密码',
+  operate = '登录',
+}
+export enum REMEMBER_TEXT {
+  account = '请输入账号',
+  password = '请输入新密码',
+  reconfirm = '请确认新密码',
+  operate = '确认密码',
+}
+
+export enum REGISTER_TEXT {
+  account = '请输入账号',
+  password = '请输入密码',
+  operate = '注册',
+}
+
+export enum AUTH_COMPONENT {
+  INPUT = 'Input',
+  PASSWORD = 'Password',
+  BUTTON = 'Button',
+}
+
+export enum AUTH_TYPE {
+  USERNAME = 'username',
+  PASSWORD = 'password',
+  EMAIL = 'email',
+  LOGIN = 'login',
+  REGISITER = 'register',
 }

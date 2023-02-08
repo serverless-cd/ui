@@ -31,10 +31,12 @@ export default {
   'ui.notifiy.help.secret.text':
     'In order to ensure the security of custom robots, it is recommended that you configure this option. For details, please refer to',
   'ui.notifiy.help.secret.link.label': 'DingTalk custom robot security settings document',
-  'ui.notifiy.help.messageContent.text': `Supports defining messages through variables, including: application name {{ .appName }}, environment name {{ .envName }}, deployment version {{ .versionId }}, current execution task name {{ .taskName }}, current execution task Details {{ .currentTask }}, whether the task execution is successful {{ .success }}, task failure information {{ .error }}.
-</br>*For example: the execution result of the application "{{ .appName }}" in {{ .envName }} is {{ .success }}, the current task details are {{ .currentTask }}, and the failure information is {{ .error }}`,
+  'ui.notifiy.help.messageContent.text': `Supports defining messages through variables, including: application name <span class="code-text">{{ .appName }}</span>, environment name <span class="code-text">{{ .envName }} </span>, deployment version <span class="code-text">{{ .versionId }}</span>, currently executing task name <span class="code-text">{{ .taskName }}</span> span>, the current execution task details <span class="code-text">{{ .currentTask }}</span>, whether the task execution is successful <span class="code-text">{{ .success }}</span> span> , task failure message <span class="code-text">{{ .error }}</span> .
+</br>*Example: Apply "<span class="code-text">{{ .appName }}</span>" in <span class="code-text">{{ .envName }}</span The execution result in > is <span class="code-text">{{ .success }}</span>, and the current task details are <span class="code-text">{{ .currentTask }}</span> , the failure message is <span class="code-text">{{ .error }}</span>`,
   'ui.notifiy.help.atMobiles.text':
     'If you need @multiple users, you can use English comma "," to split, for example: 135xxxxxxxx, 132xxxxxxxx',
   'ui.notifiy.help.atUserIds.text':
     'If you need @multiple users, you can use English comma "," to split, for example: dfounderliu, mydingding',
+  'ui.notifiy.help.enable.text':
+    'After the DingTalk robot needs to be activated and configured here, the DingTalk robot notifications in each process of the pipeline will take effect.',
 };

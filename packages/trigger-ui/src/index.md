@@ -24,14 +24,57 @@ import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
 //   return <Trigger {...init('trigger')} />;
 // };
 
+// {
+
+// "push-enable": true,
+// "push-branchesValues": [
+//     {
+//         "type": "precise",
+//         "target": "1"
+//     }
+// ],
+// "push-branchesEnable": true
+// }
+
+// {
+//     "push": {
+//         "branches": {
+//             "precise": [
+//                 "1"
+//             ],
+//             "prefix": [
+//                 "3"
+//             ]
+//         },
+//         "tags": {
+//             "prefix": [
+//                 "1"
+//             ]
+//         }
+//     },
+//     "pull_request": {
+//         "branches": {
+//             "prefix": [
+//                 {
+//                     "target": "1",
+//                     "source": "1"
+//                 }
+//             ]
+//         },
+//         "types": [
+//             "merged"
+//         ]
+//     }
+// }
+
 export default () => {
   const field = Field.useField();
-  const [mode, setMode] = useState('strict');
+  const [mode, setMode] = useState('normal');
   const { init, getValue, setValue } = field;
   const [loading, setLoading] = useState(true);
   const [branchList, setBranchList] = useState([
-    // { label: 'master', value: 'master' },
-    // { label: 'main', value: 'main' },
+    { label: 'master', value: 'master' },
+    { label: 'main', value: 'main' },
   ]);
 
   const triggerRef = useRef();
@@ -43,12 +86,7 @@ export default () => {
     }, 3000);
   }, []);
 
-  useEffect(() => {
-    console.log(getValue('trigger'), 'trigger');
-    // setValue('trigger', valuesFormat(getValue('trigger')))
-  }, [getValue('trigger')]);
-
-  const onClick = (mode) => {
+  const onClick2 = (mode) => {
     setValue('trigger', {});
     setMode(mode);
   };
@@ -70,14 +108,40 @@ export default () => {
   return (
     <div>
       <div style={{ marginBottom: 20 }}>
-        <Button style={{ marginRight: 20 }} onClick={() => onClick('strict')}>
+        <Button style={{ marginRight: 20 }} onClick={() => onClick2('strict')}>
           strict
         </Button>
-        <Button onClick={() => onClick('normal')}>normal</Button>
-        <Button onClick={verifyTrigger}>校验</Button>
+        <Button style={{ marginRight: 20 }} onClick={() => onClick2('normal')}>
+          normal
+        </Button>
+        <Button style={{ marginRight: 20 }} onClick={verifyTrigger}>
+          校验
+        </Button>
+        <Button
+          style={{ marginRight: 20 }}
+          onClick={() => {
+            console.log(getValue('trigger'), 'trigger');
+          }}
+        >
+          Submit
+        </Button>
       </div>
       <Trigger
-        {...init('trigger', { initValue })}
+        {...init('trigger', {
+          initValue: {
+            pull_request: {
+              branches: {
+                prefix: [
+                  {
+                    target: '1',
+                    source: '1',
+                  },
+                ],
+              },
+              types: ['merged', 'closed'],
+            },
+          },
+        })}
         mode={mode}
         loading={loading}
         disabled={false}

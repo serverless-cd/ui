@@ -33,7 +33,11 @@ const DingTalk = (props: IProps) => {
       className={className}
       {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}
     >
-      <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
+      <Form.Item
+        label={i18n('ui.notifiy.enable.label')}
+        className="switch-baseline"
+        help={HELP_RENDER[HELP_TYPE.ENABLE]}
+      >
         <Switch
           {...(init('enable', {
             valueName: 'checked',
@@ -64,7 +68,7 @@ const DingTalk = (props: IProps) => {
               className="full-width"
             />
           </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')}>
+          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')} className="switch-center">
             <Switch
               {...(init('skipOnSuccess', {
                 valueName: 'checked',

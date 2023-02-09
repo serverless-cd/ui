@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
-import { isEmpty } from 'lodash';
-import { Field, Form, Input, Button } from '@alicloud/console-components';
-import { IProps, AUTH_COMPONENT, AUTH_TYPE } from './types';
+import { Field, Form, Input, Button, Icon } from '@alicloud/console-components';
+import {
+  IProps,
+  LOGIN_TYPE,
+  LOGIN_TYPE_VALUE,
+  LOGIN_TEXT,
+  LOGIN_EMAIL_TEXT,
+  REMEMBER_TEXT,
+  REGISTER_TEXT,
+} from './types';
 import './index.less';
+import './icon.less';
 import { i18n } from './utils';
 
 const dataSource = [
@@ -11,14 +19,43 @@ const dataSource = [
   { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
 ];
 
-const Auth = (props: IProps) => {
-  const { className = {}, children, title, value, style, titleStyle } = props;
+const Register = (props: any) => {
+  const {
+    className = {},
+    title,
+    singIn = () => {},
+    rememberMe = () => {},
+    signUp = () => {},
+    githubUrl,
+    giteeUrl,
+    type,
+    children,
+    style,
+    titleStyle,
+  } = props;
   const field = Field.useField();
-  const { init, getValue, validate } = field;
+  const { init, validate } = field;
 
-  const { credentialProvider, tripartiteProvider = [], layout, labelTextAlign } = value;
-  const { credentials = {}, onSubmit } = credentialProvider;
+  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGIN);
 
+  const Store_Account_Information: any = {
+    [LOGIN_TYPE.LOGIN]: {
+      ...LOGIN_TEXT,
+      operateFunc: singIn,
+    },
+    [LOGIN_TYPE.LOGINEMAIL]: {
+      ...LOGIN_EMAIL_TEXT,
+      operateFunc: singIn,
+    },
+    [LOGIN_TYPE.REMEMBER]: {
+      ...REMEMBER_TEXT,
+      operateFunc: rememberMe,
+    },
+    [LOGIN_TYPE.REGISTER]: {
+      ...REGISTER_TEXT,
+      operateFunc: signUp,
+    },
+  };
   const validateUsername = (rule, value) => {
     const regex = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g;
     return new Promise((resolve, reject) => {
@@ -54,96 +91,168 @@ const Auth = (props: IProps) => {
     });
   };
 
-  const RenderComponent = (component, obj) => {
-    if (component === AUTH_COMPONENT['INPUT']) {
-      return (
-        <Form.Item label={obj.label} required={obj.required}>
+  const handleTripartiteProviderUrl = (url) => {
+    // 跳转第三方登录
+    window.open(url);
+  };
+
+  const handleLogin = () => {
+    validate((error, values) => {
+      if (error) return;
+      Store_Account_Information[adminStatus].operateFunc(values);
+    });
+  };
+
+  return (
+    <Form field={field} className={className} style={style}>
+      <Form.Item className="admin-title" style={{ ...titleStyle }}>
+        {title}
+      </Form.Item>
+      {adminStatus !== LOGIN_TYPE.LOGINEMAIL && (
+        <Form.Item className="admin-public-width">
           <Input
-            {...init(obj.type, {
+            {...init('username', {
               rules: [
                 {
-                  validator: obj.type === AUTH_TYPE['EMAIL'] ? validateEmail : validateUsername,
+                  validator: validateUsername,
                 },
               ],
             })}
-            innerBefore={<div className="admin-icon">{obj.icon}</div>}
+            innerBefore={<Icon className="admin-icon" type="account" />}
             className="admin-public-width"
-            placeholder={obj.placeholder}
+            placeholder={Store_Account_Information[adminStatus].account}
           />
         </Form.Item>
-      );
-    }
-    if (component === AUTH_COMPONENT['PASSWORD']) {
-      return (
-        <Form.Item label={obj.label} required={obj.required}>
-          <Input.Password
-            {...init(obj.type, {
+      )}
+      {adminStatus === LOGIN_TYPE.LOGINEMAIL && (
+        <Form.Item label={Store_Account_Information[adminStatus]['label_email']}>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
+          />
+        </Form.Item>
+      )}
+      <Form.Item
+        className="admin-public-width"
+        label={Store_Account_Information[adminStatus]['label_password']}
+      >
+        <Input
+          {...(init('password', {
+            rules: [
+              {
+                validator: validatePassword,
+              },
+            ],
+          }) as {})}
+          innerBefore={<Icon className="admin-icon" type="lock" />}
+          style={{ width: '100%' }}
+          placeholder={Store_Account_Information[adminStatus].password}
+        />
+      </Form.Item>
+      {adminStatus === LOGIN_TYPE.REMEMBER && (
+        <Form.Item className="admin-public-width" required>
+          <Input
+            {...(init('confirm_password', {
               rules: [
                 {
                   validator: validatePassword,
                 },
               ],
-            })}
-            innerBefore={<div className="admin-icon">{obj.icon}</div>}
-            className="admin-public-width"
-            placeholder={obj.placeholder}
+            }) as {})}
+            innerBefore={<Icon className="admin-icon" type="lock" />}
+            style={{ width: '100%' }}
+            placeholder={Store_Account_Information[adminStatus].reconfirm}
           />
         </Form.Item>
-      );
-    }
-    if (component === AUTH_COMPONENT['BUTTON']) {
-      return (
-        <Form.Item label={`${obj.type === AUTH_TYPE['LOGIN'] ? '' : ' '}`}>
-          <Button className="admin-public-width" type="primary" onClick={handleSubmit}>
-            {obj.label}
-          </Button>
+      )}
+      {(adminStatus === LOGIN_TYPE.REMEMBER || adminStatus === LOGIN_TYPE.REGISTER) && (
+        <Form.Item>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
+          />
         </Form.Item>
-      );
-    }
-  };
+      )}
 
-  const handleTripartiteProviderUrl = (url) => {
-    // 跳转第三方登录
-    window.location.href = url;
-  };
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('phone', {})}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe8ad;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].phone}
+          />
+        </Form.Item>
+      )}
 
-  const handleSubmit = () => {
-    validate((error, values) => {
-      if (error) return;
-      onSubmit(values);
-    });
-  };
-  return (
-    <Form
-      field={field}
-      className={`${className}`}
-      style={{ width: '100%', ...style }}
-      labelTextAlign={labelTextAlign}
-      {...layout}
-    >
-      <Form.Item style={{ ...titleStyle }}>{title}</Form.Item>
-      {Object.getOwnPropertyNames(credentials).map((key) => {
-        return RenderComponent(credentials[key]['x-component'], credentials[key]);
-      })}
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('address', {})}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe63e;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].address}
+          />
+        </Form.Item>
+      )}
+
+      <Form.Item className="admin-public-width">
+        <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
+          {Store_Account_Information[adminStatus].operate}
+        </Button>
+      </Form.Item>
       {
         // 自定义内容
         children
       }
-      {!isEmpty(tripartiteProvider) && (
-        <Form.Item className="admin-public-width">
-          <div className="admin-tripartite-provider">
-            {tripartiteProvider.map((item) => {
-              return (
-                <div className="icon" onClick={() => handleTripartiteProviderUrl(item.url)}>
-                  {item.icon}
-                </div>
-              );
-            })}
-          </div>
-        </Form.Item>
-      )}
+      <Form.Item className="admin-public-width">
+        <div className="admin-tripartite-provider">
+          {githubUrl && (
+            <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
+              <i className="iconfont">&#xe50e;</i>
+            </div>
+          )}
+          {giteeUrl && (
+            <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
+              <i className="iconfont">&#xe60c;</i>
+            </div>
+          )}
+        </div>
+      </Form.Item>
     </Form>
   );
 };
 
-export default Auth;
+export default Register;

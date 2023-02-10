@@ -1,9 +1,16 @@
-import React from 'react';
-import { isEmpty } from 'lodash';
-import { Form, Input, Switch, Select, Button } from '@alicloud/console-components';
-import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps, HELP_TYPE } from './types';
-import { HELP_RENDER } from './constants';
+import React, { useState } from 'react';
+import { Field, Form, Input, Button, Icon } from '@alicloud/console-components';
+import {
+  IProps,
+  LOGIN_TYPE,
+  LOGIN_TYPE_VALUE,
+  LOGIN_TEXT,
+  LOGIN_EMAIL_TEXT,
+  REMEMBER_TEXT,
+  REGISTER_TEXT,
+} from './types';
 import './index.less';
+import './icon.less';
 import { i18n } from './utils';
 
 const dataSource = [
@@ -12,116 +19,240 @@ const dataSource = [
   { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
 ];
 
-const DingTalk = (props: IProps) => {
-  const { field, initValue = {}, className = {}, isPreview } = props;
-  const { init, getValue } = field;
+const Register = (props: any) => {
+  const {
+    className = {},
+    title,
+    singIn = () => {},
+    rememberMe = () => {},
+    signUp = () => {},
+    githubUrl,
+    giteeUrl,
+    type,
+    children,
+    style,
+    titleStyle,
+  } = props;
+  const field = Field.useField();
+  const { init, validate } = field;
 
-  const validateWebhook = async (rule, value, callback) => {
-    if (!getValue('enable')) return callback();
-    if (isEmpty(value)) {
-      return callback(i18n('ui.notifiy.webhook.tip'));
-    }
-    /^((https|http)?:\/\/)[^\s]+/.test(value)
-      ? callback()
-      : callback(i18n('ui.notifiy.webhook.correct.tip'));
+  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGIN);
+
+  const Store_Account_Information: any = {
+    [LOGIN_TYPE.LOGIN]: {
+      ...LOGIN_TEXT,
+      operateFunc: singIn,
+    },
+    [LOGIN_TYPE.LOGINEMAIL]: {
+      ...LOGIN_EMAIL_TEXT,
+      operateFunc: singIn,
+    },
+    [LOGIN_TYPE.REMEMBER]: {
+      ...REMEMBER_TEXT,
+      operateFunc: rememberMe,
+    },
+    [LOGIN_TYPE.REGISTER]: {
+      ...REGISTER_TEXT,
+      operateFunc: signUp,
+    },
+  };
+  const validateUsername = (rule, value) => {
+    const regex = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g;
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        reject([new Error('请输入正确格式，不支持中文')]);
+      } else if (/\s/g.test(value)) {
+        reject([new Error('请输入正确格式，不支持空格')]);
+      } else {
+        resolve(value);
+      }
+    });
+  };
+
+  const validatePassword = (rule, value) => {
+    const regex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,18}');
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        resolve(value);
+      } else {
+        reject([new Error('密码中必须包含字母、数字、特称字符，至少6个字符，最多18个字符')]);
+      }
+    });
+  };
+
+  const validateEmail = (rule, value) => {
+    const regex = new RegExp('^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$');
+    return new Promise((resolve, reject) => {
+      if (regex.test(value)) {
+        resolve(value);
+      } else {
+        reject([new Error('邮箱格式中必须包含@，及.com、.cn、.net等后缀名')]);
+      }
+    });
+  };
+
+  const handleTripartiteProviderUrl = (url) => {
+    // 跳转第三方登录
+    window.open(url);
+  };
+
+  const handleLogin = () => {
+    validate((error, values) => {
+      if (error) return;
+      Store_Account_Information[adminStatus].operateFunc(values);
+    });
   };
 
   return (
-    <Form
-      field={field}
-      isPreview={isPreview}
-      className={className}
-      {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}
-    >
-      <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
-        <Switch
-          {...(init('enable', {
-            valueName: 'checked',
-            initValue: initValue['enable'],
-          }) as {})}
-        ></Switch>
+    <Form field={field} className={className} style={style}>
+      <Form.Item className="admin-title" style={{ ...titleStyle }}>
+        {title}
       </Form.Item>
-      {getValue('enable') && (
-        <Form field={field} isPreview={isPreview} {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}>
-          <Form.Item
-            label={i18n('ui.notifiy.webhook.label')}
-            required
-            extra={HELP_RENDER[HELP_TYPE.WEBHOOK]}
-          >
-            <Input
-              {...init('webhook', {
-                initValue: initValue['webhook'],
-                rules: [{ validator: validateWebhook }],
-              })}
-              placeholder={i18n('ui.notifiy.webhook.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.secret.label')} help={HELP_RENDER[HELP_TYPE.SECRET]}>
-            <Input
-              {...init('secret', { initValue: initValue['secret'] })}
-              placeholder={i18n('ui.notifiy.secret.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')}>
-            <Switch
-              {...(init('skipOnSuccess', {
-                valueName: 'checked',
-                initValue: initValue['skipOnSuccess'],
-              }) as {})}
-            ></Switch>
-          </Form.Item>
-          <Form.Item
-            label={i18n('ui.notifiy.messageContent.label')}
-            help={HELP_RENDER[HELP_TYPE.MESSAGE_CONTENT]}
-          >
-            <Input.TextArea
-              {...init('messageContent', { initValue: initValue['messageContent'] })}
-              placeholder={i18n('ui.notifiy.messageContent.placeholder')}
-              className="full-width"
-            />
-          </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.remindType.label')}>
-            <Select
-              placeholder={i18n('ui.notifiy.remindType.placeholder')}
-              {...(init('remindType', {
-                initValue: initValue['remindType'] || 'needless',
-              }) as {})}
-              dataSource={dataSource}
-              className="full-width"
-            />
-          </Form.Item>
-          {getValue('remindType') === 'appoint' && (
-            <>
-              <Form.Item
-                label={i18n('ui.notifiy.atMobiles.label')}
-                help={HELP_RENDER[HELP_TYPE.AT_MOBILES]}
-              >
-                <Input
-                  {...init('atMobiles', { initValue: initValue['atMobiles'] })}
-                  placeholder={i18n('ui.notifiy.atMobiles.placeholder')}
-                  className="full-width"
-                  disabled={getValue('isAtAll')}
-                />
-              </Form.Item>
-              <Form.Item
-                label={i18n('ui.notifiy.atUserIds.label')}
-                help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
-              >
-                <Input
-                  {...init('atUserIds', { initValue: initValue['atUserIds'] })}
-                  placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
-                  className="full-width"
-                  disabled={getValue('isAtAll')}
-                />
-              </Form.Item>
-            </>
-          )}
-        </Form>
+      {adminStatus !== LOGIN_TYPE.LOGINEMAIL && (
+        <Form.Item className="admin-public-width">
+          <Input
+            {...init('username', {
+              rules: [
+                {
+                  validator: validateUsername,
+                },
+              ],
+            })}
+            innerBefore={<Icon className="admin-icon" type="account" />}
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].account}
+          />
+        </Form.Item>
       )}
+      {adminStatus === LOGIN_TYPE.LOGINEMAIL && (
+        <Form.Item label={Store_Account_Information[adminStatus]['label_email']}>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
+          />
+        </Form.Item>
+      )}
+      <Form.Item
+        className="admin-public-width"
+        label={Store_Account_Information[adminStatus]['label_password']}
+      >
+        <Input
+          {...(init('password', {
+            rules: [
+              {
+                validator: validatePassword,
+              },
+            ],
+          }) as {})}
+          innerBefore={<Icon className="admin-icon" type="lock" />}
+          style={{ width: '100%' }}
+          placeholder={Store_Account_Information[adminStatus].password}
+        />
+      </Form.Item>
+      {adminStatus === LOGIN_TYPE.REMEMBER && (
+        <Form.Item className="admin-public-width" required>
+          <Input
+            {...(init('confirm_password', {
+              rules: [
+                {
+                  validator: validatePassword,
+                },
+              ],
+            }) as {})}
+            innerBefore={<Icon className="admin-icon" type="lock" />}
+            style={{ width: '100%' }}
+            placeholder={Store_Account_Information[adminStatus].reconfirm}
+          />
+        </Form.Item>
+      )}
+      {(adminStatus === LOGIN_TYPE.REMEMBER || adminStatus === LOGIN_TYPE.REGISTER) && (
+        <Form.Item>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
+          />
+        </Form.Item>
+      )}
+
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('phone', {})}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe8ad;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].phone}
+          />
+        </Form.Item>
+      )}
+
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('address', {})}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe63e;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].address}
+          />
+        </Form.Item>
+      )}
+
+      <Form.Item className="admin-public-width">
+        <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
+          {Store_Account_Information[adminStatus].operate}
+        </Button>
+      </Form.Item>
+      {
+        // 自定义内容
+        children
+      }
+      <Form.Item className="admin-public-width">
+        <div className="admin-tripartite-provider">
+          {githubUrl && (
+            <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
+              <i className="iconfont">&#xe50e;</i>
+            </div>
+          )}
+          {giteeUrl && (
+            <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
+              <i className="iconfont">&#xe60c;</i>
+            </div>
+          )}
+        </div>
+      </Form.Item>
     </Form>
   );
 };
 
-export default DingTalk;
+export default Register;

@@ -264,9 +264,9 @@ const AliReadme: FC<Props> = (props) => {
                 trigger={
                   <code
                     className="cursor-pointer"
-                    onClick={() => copy('npm install @serverlesss-devs -g')}
+                    onClick={() => copy('npm install @serverless-devs/s -g')}
                   >
-                    npm install @serverlesss-devs -g
+                    npm install @serverless-devs/s -g
                   </code>
                 }
               >

@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, noop } from 'lodash';
 import { Form, Input, Switch, Select, Field } from '@alicloud/console-components';
 import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps, HELP_TYPE } from './types';
 import { HELP_RENDER } from './constants';
@@ -13,7 +13,7 @@ const dataSource = [
 ];
 
 const DingTalk = (props: IProps, ref) => {
-  const { value, onChange, className = {}, isPreview } = props;
+  const { value = {}, onChange = noop, className = {}, isPreview } = props;
   const field = Field.useField({
     onChange: () => {
       onChange(getValues());

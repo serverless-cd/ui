@@ -1,4 +1,4 @@
-## AuthSetting
+## SettingUi
 
 Demo:
 
@@ -7,13 +7,13 @@ Demo:
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/setting-ui';
+import SettingUi from '@serverless-cd/setting-ui';
 import { Button } from '@alicloud/console-components';
 
 export default () => {
   return (
     <>
-      <AuthSetting onChange={console.log} />
+      <SettingUi onChange={console.log} />
     </>
   );
 };
@@ -24,10 +24,10 @@ export default () => {
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/setting-ui';
+import SettingUi from '@serverless-cd/setting-ui';
 
 export default () => {
-  return <AuthSetting value={{ aa: '111', bb: '初始化默认值' }} onChange={console.log} />;
+  return <SettingUi value={{ region: 'cn-hangzhou', bb: '初始化默认值' }} onChange={console.log} />;
 };
 ```
 
@@ -37,15 +37,15 @@ export default () => {
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field } from '@alicloud/console-components';
-import AuthSetting from '@serverless-cd/setting-ui';
+import SettingUi from '@serverless-cd/setting-ui';
 
 export default () => {
   const field = Field.useField();
   const { init } = field;
   return (
-    <AuthSetting
+    <SettingUi
       {...init('data', {
-        initValue: { aa: '222', bb: 'Field 用法' },
+        initValue: { region: 'cn-hangzhou', bb: 'Field 用法' },
         props: {
           onChange: console.log,
         },
@@ -62,7 +62,7 @@ export default () => {
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import AuthSetting from '@serverless-cd/setting-ui';
+import SettingUi from '@serverless-cd/setting-ui';
 import { Button } from '@alicloud/console-components';
 
 export default () => {
@@ -72,13 +72,36 @@ export default () => {
   };
   return (
     <>
-      <AuthSetting onChange={console.log}>
+      <SettingUi onChange={console.log}>
         {(form) => (
           <Button type="primary" onClick={() => onSubmit(form)}>
             校验
           </Button>
         )}
-      </AuthSetting>
+      </SettingUi>
+    </>
+  );
+};
+```
+
+### formLayoutProps
+
+```tsx
+import React from 'react';
+import '@alicloud/console-components/dist/wind.css';
+import SettingUi from '@serverless-cd/setting-ui';
+import { Button } from '@alicloud/console-components';
+
+const formLayout = {
+  labelCol: 6,
+  wrapperCol: 18,
+  labelAlign: 'right',
+};
+
+export default () => {
+  return (
+    <>
+      <SettingUi formLayoutProps={formLayout} onChange={console.log} />
     </>
   );
 };

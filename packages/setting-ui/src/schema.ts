@@ -1,19 +1,22 @@
+import { fetchOss } from './services';
+import { REGION } from './constants';
+
 export default {
   type: 'object',
   properties: {
-    aa: {
+    [REGION]: {
       type: 'string',
       required: true,
-      title: 'AA',
+      title: 'Region',
       'x-decorator': 'FormItem',
       enum: [
         {
-          label: '111',
-          value: '111',
+          label: '杭州',
+          value: 'cn-hangzhou',
         },
         {
-          label: '222',
-          value: '222',
+          label: '成都',
+          value: 'cn-chengdu',
         },
       ],
       'x-component': 'Select',
@@ -25,6 +28,25 @@ export default {
       type: 'string',
       required: true,
       title: 'BB',
+      'x-decorator': 'FormItem',
+      'x-component': 'AsyncSelect',
+      'x-component-props': {
+        fetchData: fetchOss,
+        dependencies: [REGION],
+      },
+      'x-reactions': {
+        dependencies: [`.${REGION}`],
+        fulfill: {
+          schema: {
+            [`x-component-props.${REGION}`]: '{{$deps[0]}}',
+          },
+        },
+      },
+    },
+    cc: {
+      type: 'string',
+      required: true,
+      title: 'CC',
       'x-decorator': 'FormItem',
       'x-component': 'Input',
       pattern: '^[a-zA-Z0-9-_]{1,128}$',

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { isEmpty } from 'lodash';
-import { Form, Input, Switch, Select, Button } from '@alicloud/console-components';
+import { Form, Input, Switch, Select, Field } from '@alicloud/console-components';
 import { FORM_CUSTOM_MIDDLE_LABEL_LEFT, IProps, HELP_TYPE } from './types';
 import { HELP_RENDER } from './constants';
 import './index.less';
@@ -12,9 +12,19 @@ const dataSource = [
   { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
 ];
 
-const DingTalk = (props: IProps) => {
-  const { field, initValue = {}, className = {}, isPreview } = props;
-  const { init, getValue } = field;
+const DingTalk = (props: IProps, ref) => {
+  const { value, onChange, className = {}, isPreview } = props;
+  const field = Field.useField({
+    onChange: () => {
+      onChange(getValues());
+    },
+  });
+
+  const { init, getValue, getValues, validate } = field;
+
+  useImperativeHandle(ref, () => ({
+    validate,
+  }));
 
   const validateWebhook = async (rule, value, callback) => {
     if (!getValue('enable')) return callback();
@@ -33,11 +43,15 @@ const DingTalk = (props: IProps) => {
       className={className}
       {...FORM_CUSTOM_MIDDLE_LABEL_LEFT}
     >
-      <Form.Item label={i18n('ui.notifiy.enable.label')} className="switch-center">
+      <Form.Item
+        label={i18n('ui.notifiy.enable.label')}
+        className="switch-baseline"
+        help={HELP_RENDER[HELP_TYPE.ENABLE]}
+      >
         <Switch
           {...(init('enable', {
             valueName: 'checked',
-            initValue: initValue['enable'],
+            initValue: value['enable'],
           }) as {})}
         ></Switch>
       </Form.Item>
@@ -50,7 +64,7 @@ const DingTalk = (props: IProps) => {
           >
             <Input
               {...init('webhook', {
-                initValue: initValue['webhook'],
+                initValue: value['webhook'],
                 rules: [{ validator: validateWebhook }],
               })}
               placeholder={i18n('ui.notifiy.webhook.placeholder')}
@@ -59,16 +73,16 @@ const DingTalk = (props: IProps) => {
           </Form.Item>
           <Form.Item label={i18n('ui.notifiy.secret.label')} help={HELP_RENDER[HELP_TYPE.SECRET]}>
             <Input
-              {...init('secret', { initValue: initValue['secret'] })}
+              {...init('secret', { initValue: value['secret'] })}
               placeholder={i18n('ui.notifiy.secret.placeholder')}
               className="full-width"
             />
           </Form.Item>
-          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')}>
+          <Form.Item label={i18n('ui.notifiy.skipOnSuccess.label')} className="switch-center">
             <Switch
               {...(init('skipOnSuccess', {
                 valueName: 'checked',
-                initValue: initValue['skipOnSuccess'],
+                initValue: value['skipOnSuccess'],
               }) as {})}
             ></Switch>
           </Form.Item>
@@ -77,7 +91,7 @@ const DingTalk = (props: IProps) => {
             help={HELP_RENDER[HELP_TYPE.MESSAGE_CONTENT]}
           >
             <Input.TextArea
-              {...init('messageContent', { initValue: initValue['messageContent'] })}
+              {...init('messageContent', { initValue: value['messageContent'] })}
               placeholder={i18n('ui.notifiy.messageContent.placeholder')}
               className="full-width"
             />
@@ -86,7 +100,7 @@ const DingTalk = (props: IProps) => {
             <Select
               placeholder={i18n('ui.notifiy.remindType.placeholder')}
               {...(init('remindType', {
-                initValue: initValue['remindType'] || 'needless',
+                initValue: value['remindType'] || 'needless',
               }) as {})}
               dataSource={dataSource}
               className="full-width"
@@ -99,10 +113,9 @@ const DingTalk = (props: IProps) => {
                 help={HELP_RENDER[HELP_TYPE.AT_MOBILES]}
               >
                 <Input
-                  {...init('atMobiles', { initValue: initValue['atMobiles'] })}
+                  {...init('atMobiles', { initValue: value['atMobiles'] })}
                   placeholder={i18n('ui.notifiy.atMobiles.placeholder')}
                   className="full-width"
-                  disabled={getValue('isAtAll')}
                 />
               </Form.Item>
               <Form.Item
@@ -110,10 +123,9 @@ const DingTalk = (props: IProps) => {
                 help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
               >
                 <Input
-                  {...init('atUserIds', { initValue: initValue['atUserIds'] })}
+                  {...init('atUserIds', { initValue: value['atUserIds'] })}
                   placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
                   className="full-width"
-                  disabled={getValue('isAtAll')}
                 />
               </Form.Item>
             </>
@@ -124,4 +136,4 @@ const DingTalk = (props: IProps) => {
   );
 };
 
-export default DingTalk;
+export default forwardRef(DingTalk);

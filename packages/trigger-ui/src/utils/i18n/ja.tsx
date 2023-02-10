@@ -50,7 +50,7 @@ export default {
   'ui.branch.verify.text': '支店が必要です',
   'ui.trigger.activity.type.verify.text': 'トリガーの種類は必須です',
   'ui.strict.on.push.label': '指定した分岐トリガーにプッシュ',
-  'ui.strict.on.tag.label': 'タグ/リアルイベント',
+  'ui.strict.on.tag.label': 'Tag / Release イベント',
   'ui.strict.on.pr.label': 'マージ/プル リクエスト イベント',
   'ui.strict.on.push.help':
     'コードが現在のブランチにプッシュされると、パイプラインがトリガーされます',

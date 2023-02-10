@@ -26,10 +26,12 @@ export default {
   'ui.notifiy.help.webhook.link.label': '钉钉自定义机器人接入文档',
   'ui.notifiy.help.secret.text': '为保障自定义机器人安全，推荐您配置该选项，具体内容可以参考',
   'ui.notifiy.help.secret.link.label': '钉钉自定义机器人安全设置文档',
-  'ui.notifiy.help.messageContent.text': `支持通过变量进行定义消息，包括:应用名{{ .appName }}，环境名{{ .envName }}，部署版本{{ .versionId }}，当前执行任务名{{ .taskName }}，当前执行任务详情{{ .currentTask }}，任务执行是否成功{{ .success }} ，任务失败信息{{ .error }} 。
-</br>*例如:应用“{{ .appName }}”在{{ .envName }}中执行结果为{{ .success }}，当前任务详情为{{ .currentTask }}，失败信息为{{ .error }}`,
+  'ui.notifiy.help.messageContent.text': `支持通过变量进行定义消息，包括:应用名<span class="code-text">{{ .appName }}</span>，环境名<span class="code-text">{{ .envName }}</span>，部署版本<span class="code-text">{{ .versionId }}</span>，当前执行任务名<span class="code-text">{{ .taskName }}</span>，当前执行任务详情<span class="code-text">{{ .currentTask }}</span>，任务执行是否成功<span class="code-text">{{ .success }}</span> ，任务失败信息<span class="code-text">{{ .error }}</span> 。
+</br>*例如:应用“<span class="code-text">{{ .appName }}</span>”在<span class="code-text">{{ .envName }}</span>中执行结果为<span class="code-text">{{ .success }}</span>，当前任务详情为<span class="code-text">{{ .currentTask }}</span>，失败信息为<span class="code-text">{{ .error }}</span>`,
   'ui.notifiy.help.atMobiles.text':
     '如果需要@多个用户,可以用英文逗号“,”进行分割,例如:135xxxxxxxx,132xxxxxxxx',
   'ui.notifiy.help.atUserIds.text':
     '如果需要@多个用户,可以用英文逗号“,”进行分割,例如:dfounderliu, mydingding',
+  'ui.notifiy.help.enable.text':
+    '需要在此处开通并配置钉钉机器人后，流水线各个流程中的钉钉机器人通知才会生效。',
 };

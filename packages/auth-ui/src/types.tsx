@@ -82,6 +82,7 @@ export enum REGISTER_TEXT {
   phone = '请输入电话',
   address = '请输入地址',
   operate = '注册',
+  reconfirm = '请确认密码',
 }
 
 export enum AUTH_COMPONENT {

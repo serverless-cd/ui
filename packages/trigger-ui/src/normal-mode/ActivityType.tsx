@@ -1,23 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Checkbox, Form } from '@alicloud/console-components';
-import { ActivityTypes } from './constants';
-import { i18n } from './utils';
-import { isEmpty } from 'lodash';
-import './index.less';
+import { ActivityTypes, STRICT_TYPE } from '../constants';
+import { i18n } from '../utils';
+import '../index.less';
 
 const { Group: CheckboxGroup } = Checkbox;
 
 const ActivityType = (props) => {
-  const { onChange, value, field, disabled } = props;
-  const { init, setValue } = field;
-  useEffect(() => {
-    if (isEmpty(value)) {
-      setValue('types', ['merged']);
-      onChange(['merged']);
-    } else {
-      setValue('types', value);
-    }
-  }, []);
+  const { field, initValue, disabled } = props;
+  const { init } = field;
 
   return (
     <Form field={field} className="trigger-form" style={{ padding: '16px 0 0 38px' }}>
@@ -27,13 +18,8 @@ const ActivityType = (props) => {
         style={{ display: 'flex', alignItems: 'flex-start' }}
       >
         <CheckboxGroup
-          {...init('types', {
-            props: {
-              onChange: (value) => {
-                setValue('types', value);
-                onChange(value);
-              },
-            },
+          {...init(`${STRICT_TYPE.PUSH_REQUEST}-types`, {
+            initValue: initValue[`${STRICT_TYPE.PUSH_REQUEST}-types`] || ['merged'],
             rules: [
               {
                 required: true,

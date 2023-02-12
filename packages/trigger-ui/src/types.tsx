@@ -6,6 +6,7 @@ export interface MatchTypeProps {
   onChange?: Function;
   key?: string;
   disabled?: boolean;
+  field: any;
 }
 
 export interface MatchTypeValuesProps {
@@ -24,7 +25,7 @@ export interface TriggerTypeProps {
   setValue: Function;
   key?: string;
   disabled?: boolean;
-  field: object;
+  field: any;
 }
 
 export interface TriggersProps {

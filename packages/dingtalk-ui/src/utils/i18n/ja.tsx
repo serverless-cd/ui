@@ -31,10 +31,12 @@ export default {
   'ui.notifiy.help.secret.text':
     'カスタム ロボットのセキュリティを確保するために、このオプションを構成することをお勧めします。詳細については、 を参照してください。',
   'ui.notifiy.help.secret.link.label': 'DingTalk カスタム ロボット セキュリティ設定ドキュメント',
-  'ui.notifiy.help.messageContent.text': `アプリケーション名 {{ .appName }}、環境名 {{ .envName }}、デプロイメント バージョン {{ .versionId }}、現在の実行タスク名 {{ .taskName }}、現在の実行タスクの詳細など、変数によるメッセージの定義をサポートします。 {{ .currentTask }}、タスクの実行が成功したかどうか {{ .success }}、タスクの失敗情報 {{ .error }}。
-</br>*例: {{ .envName }} 内のアプリケーション「{{ .appName }}」の実行結果は {{ .success }}、現在のタスクの詳細は {{ .currentTask }}、障害情報は {{ .error }} です`,
+  'ui.notifiy.help.messageContent.text': `アプリケーション名 <span class="code-text">{{ .appName }}</span>、環境名 <span class="code-text">{{ .envName }} < などの変数によるメッセージの定義をサポート/span>、デプロイ バージョン <span class="code-text">{{ .versionId }}</span>、現在実行中のタスク名 <span class="code-text">{{ .taskName }}</span > span>、現在の実行タスクの詳細 <span class="code-text">{{ .currentTask }}</span>、タスクの実行が成功したかどうか <span class="code-text">{{ .success }}</span> span> 、タスク失敗メッセージ <span class="code-text">{{ .error }}</span> .
+</br>*例: <span class="code-text">{{ .envName }}</span に "<span class="code-text">{{ .appName }}</span>" を適用します。 > の実行結果は <span class="code-text">{{ .success }}</span> で、現在のタスクの詳細は <span class="code-text">{{ .currentTask }}< です。 /span> 、失敗メッセージは <span class="code-text">{{ .error }}</span> です`,
   'ui.notifiy.help.atMobiles.text':
     '@複数のユーザーが必要な場合は、英語のコンマ「,」を使用して分割できます。例: 135xxxxxxxx, 132xxxxxxxx',
   'ui.notifiy.help.atUserIds.text':
     '@複数のユーザーが必要な場合は、英語のカンマ「,」を使用して分割できます。例: dfounderliu, mydingding',
+  'ui.notifiy.help.enable.text':
+    'ここで DingTalk ロボットをアクティブ化して構成する必要があると、パイプラインの各プロセスでの DingTalk ロボット通知が有効になります。',
 };

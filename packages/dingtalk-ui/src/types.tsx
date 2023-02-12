@@ -18,8 +18,8 @@ interface fieldProps {
 }
 
 export interface IProps {
-  field: fieldProps;
-  initValue?: object;
+  value?: object;
+  onChange?: Function;
   className?: object | any;
   isPreview?: boolean;
 }
@@ -30,4 +30,5 @@ export enum HELP_TYPE {
   MESSAGE_CONTENT = 'messageContent',
   AT_MOBILES = 'atMobiles',
   AT_USER_IDS = 'atUserIds',
+  ENABLE = 'enable',
 }

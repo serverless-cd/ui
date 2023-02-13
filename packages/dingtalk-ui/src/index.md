@@ -5,7 +5,7 @@ Demo:
 ```tsx
 import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
+import { Field, Button, Loading } from '@alicloud/console-components';
 import DingTalk from '@serverless-cd/dingtalk-ui';
 
 // 使用方式
@@ -14,7 +14,9 @@ import DingTalk from '@serverless-cd/dingtalk-ui';
 export default () => {
   const field = Field.useField();
   const { init, getValue, setValue, getValues, validate } = field;
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+  const [visible, setVisible] = useState(false);
+
   const values = getValues();
   const dingdingRef = useRef(null);
   const onVerify = () => {
@@ -34,6 +36,14 @@ export default () => {
     console.log(getValue('dingding'), 'dingding');
   };
 
+  const onAsync = () => {
+    setVisible(true);
+    setTimeout(() => {
+      setVisible(false);
+      setValue('dingding', { ...initValue, webhook: 'https://111.com' });
+    }, [1000]);
+  };
+
   const initValue = {
     webhook: 'https://xxxxx.com',
     enable: true,
@@ -46,9 +56,11 @@ export default () => {
   };
 
   return (
-    <>
+    <Loading visible={visible}>
       <DingTalk
-        {...init('dingding', { initValue })}
+        {...init('dingding', {
+          initValue: {},
+        })}
         isPreview={disabled}
         initValue={initValue}
         ref={dingdingRef}
@@ -56,7 +68,8 @@ export default () => {
       <Button onClick={onVerify}>校验</Button>
       <Button onClick={onEdit}>{disabled ? '编辑' : '保存'}</Button>
       <Button onClick={onSubmit}>提交</Button>
-    </>
+      <Button onClick={onAsync}>异步回填数据</Button>
+    </Loading>
   );
 };
 ```

@@ -39,4 +39,5 @@ export default {
     '@複数のユーザーが必要な場合は、英語のカンマ「,」を使用して分割できます。例: dfounderliu, mydingding',
   'ui.notifiy.help.enable.text':
     'ここで DingTalk ロボットをアクティブ化して構成する必要があると、パイプラインの各プロセスでの DingTalk ロボット通知が有効になります。',
+  'ui.notifiy.help.message.text': 'カスタム メッセージが必要です',
 };

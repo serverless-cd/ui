@@ -34,4 +34,5 @@ export default {
     '如果需要@多个用户,可以用英文逗号“,”进行分割,例如:dfounderliu, mydingding',
   'ui.notifiy.help.enable.text':
     '需要在此处开通并配置钉钉机器人后，流水线各个流程中的钉钉机器人通知才会生效。',
+  'ui.notifiy.help.message.text': '自定义消息是必填项',
 };

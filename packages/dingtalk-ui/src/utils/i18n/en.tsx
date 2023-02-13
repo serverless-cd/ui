@@ -39,4 +39,5 @@ export default {
     'If you need @multiple users, you can use English comma "," to split, for example: dfounderliu, mydingding',
   'ui.notifiy.help.enable.text':
     'After the DingTalk robot needs to be activated and configured here, the DingTalk robot notifications in each process of the pipeline will take effect.',
+  'ui.notifiy.help.message.text': 'A custom message is required',
 };

@@ -13,7 +13,7 @@ const dataSource = [
 ];
 
 const DingTalk = (props: IProps, ref) => {
-  const { value = {}, onChange = noop, className = {}, isPreview } = props;
+  const { value = {}, onChange = noop, className = {}, isPreview, messageHelp = '' } = props;
   const field = Field.useField({
     onChange: () => {
       onChange(getValues());
@@ -88,10 +88,21 @@ const DingTalk = (props: IProps, ref) => {
           </Form.Item>
           <Form.Item
             label={i18n('ui.notifiy.messageContent.label')}
-            help={HELP_RENDER[HELP_TYPE.MESSAGE_CONTENT]}
+            extra={
+              <span
+                style={{ display: 'inline-block', textAlign: 'justify' }}
+                dangerouslySetInnerHTML={{
+                  __html: messageHelp,
+                }}
+              ></span>
+            }
+            required
           >
             <Input.TextArea
-              {...init('messageContent', { initValue: value['messageContent'] })}
+              {...init('messageContent', {
+                initValue: value['messageContent'],
+                rules: [{ required: true, message: i18n('ui.notifiy.help.message.text') }],
+              })}
               placeholder={i18n('ui.notifiy.messageContent.placeholder')}
               className="full-width"
             />

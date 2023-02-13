@@ -10,63 +10,6 @@ import '@alicloud/console-components/dist/wind.css';
 import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
 
-// 使用方式1
-// 1. 接收 value 和 onChange
-
-// export default () => {
-//   return <Trigger value={} onChange={} />;
-// };
-
-// 如果1是ok的，那么2也是支持的
-// 2. 组件可以被field接管。。 https://csr632.gitee.io/alibabacloud-console-components/base-components/field#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E6%8E%A5%E5%85%A5field%E6%A0%87%E5%87%86
-
-// export default () => {
-//   return <Trigger {...init('trigger')} />;
-// };
-
-// {
-
-// "push-enable": true,
-// "push-branchesValues": [
-//     {
-//         "type": "precise",
-//         "target": "1"
-//     }
-// ],
-// "push-branchesEnable": true
-// }
-
-// {
-//     "push": {
-//         "branches": {
-//             "precise": [
-//                 "1"
-//             ],
-//             "prefix": [
-//                 "3"
-//             ]
-//         },
-//         "tags": {
-//             "prefix": [
-//                 "1"
-//             ]
-//         }
-//     },
-//     "pull_request": {
-//         "branches": {
-//             "prefix": [
-//                 {
-//                     "target": "1",
-//                     "source": "1"
-//                 }
-//             ]
-//         },
-//         "types": [
-//             "merged"
-//         ]
-//     }
-// }
-
 export default () => {
   const field = Field.useField();
   const [mode, setMode] = useState('normal');
@@ -86,7 +29,7 @@ export default () => {
     }, 3000);
   }, []);
 
-  const onClick2 = (mode) => {
+  const onChangeMode = (mode) => {
     setValue('trigger', {});
     setMode(mode);
   };
@@ -108,10 +51,10 @@ export default () => {
   return (
     <div>
       <div style={{ marginBottom: 20 }}>
-        <Button style={{ marginRight: 20 }} onClick={() => onClick2('strict')}>
+        <Button style={{ marginRight: 20 }} onClick={() => onChangeMode('strict')}>
           strict
         </Button>
-        <Button style={{ marginRight: 20 }} onClick={() => onClick2('normal')}>
+        <Button style={{ marginRight: 20 }} onClick={() => onChangeMode('normal')}>
           normal
         </Button>
         <Button style={{ marginRight: 20 }} onClick={verifyTrigger}>

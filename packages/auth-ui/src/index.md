@@ -1,6 +1,6 @@
 ## Auth
 
-# 邮箱登陆
+# 邮箱登录
 
 ```tsx
 import React, { useEffect, useState } from 'react';
@@ -19,6 +19,9 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
+  const onSingIn = async (req) => {
+    console.log('onSingIn 触发登录回调函数', req);
+  };
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -26,6 +29,7 @@ export default () => {
           title={title}
           titleStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           type="LOGINEMAIL"
+          onSingIn={onSingIn}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <a href="#忘记密码">Remember Me</a>
@@ -38,7 +42,7 @@ export default () => {
 };
 ```
 
-# 用户名登陆
+# 用户名登录
 
 ```tsx
 import React, { useEffect, useState } from 'react';
@@ -58,6 +62,9 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
+  const onSingIn = async (req) => {
+    console.log('onSingIn 触发登录回调函数', req);
+  };
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -66,6 +73,7 @@ export default () => {
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           type="LOGIN"
+          onSingIn={onSingIn}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <a href="#忘记密码">忘记密码</a>
@@ -97,13 +105,9 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
-  const Layout = {
-    labelCol: {
-      fixedSpan: 10,
-    },
-    wrapperCol: {
-      span: 14,
-    },
+
+  const onRememberMe = async (req) => {
+    console.log('onRememberMe 触发密码变更回调函数', req);
   };
   return (
     <>
@@ -113,9 +117,10 @@ export default () => {
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           type="REMEMBER"
+          onRememberMe={onRememberMe}
         >
           <div className="admin-public-width">
-            <a href="#用户名登陆" className="admin-register-color admin-cursor admin-go-login">
+            <a href="#用户名登录" className="admin-register-color admin-cursor admin-go-login">
               已经有账户？前往登录
             </a>
           </div>
@@ -132,12 +137,7 @@ export default () => {
 import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field, Button } from '@alicloud/console-components';
-// import DingTalk from '@serverless-cd/dingtalk-ui';
-// import Auth from '@serverless-cd/auth-ui';
-import Auth from './index';
-
-// 使用方式
-//  组件被field接管。
+import Auth from '@serverless-cd/auth-ui';
 
 export default () => {
   const title = (
@@ -147,13 +147,8 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
-  const Layout = {
-    labelCol: {
-      fixedSpan: 10,
-    },
-    wrapperCol: {
-      span: 14,
-    },
+  const onSignUp = async (req) => {
+    console.log('onSingIn 触发注册回调函数', req);
   };
   return (
     <>
@@ -163,9 +158,10 @@ export default () => {
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           type="REGISTER"
+          onSignUp={onSignUp}
         >
           <div className="admin-public-width">
-            <a href="#用户名登陆" className="admin-register-color admin-cursor admin-go-login">
+            <a href="#用户名登录" className="admin-register-color admin-cursor admin-go-login">
               已经有账户？前往登录
             </a>
           </div>

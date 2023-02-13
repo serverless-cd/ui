@@ -13,19 +13,13 @@ import './index.less';
 import './icon.less';
 import { i18n } from './utils';
 
-const dataSource = [
-  { value: 'needless', label: i18n('ui.notifiy.remindType.needless') },
-  { value: 'owner', label: i18n('ui.notifiy.remindType.owner') },
-  { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
-];
-
-const Register = (props: any) => {
+const Auth = (props: any) => {
   const {
     className = {},
     title,
-    singIn = () => {},
-    rememberMe = () => {},
-    signUp = () => {},
+    onSingIn = () => {},
+    onRememberMe = () => {},
+    onSignUp = () => {},
     githubUrl,
     giteeUrl,
     type,
@@ -41,19 +35,19 @@ const Register = (props: any) => {
   const Store_Account_Information: any = {
     [LOGIN_TYPE.LOGIN]: {
       ...LOGIN_TEXT,
-      operateFunc: singIn,
+      operateFunc: onSingIn,
     },
     [LOGIN_TYPE.LOGINEMAIL]: {
       ...LOGIN_EMAIL_TEXT,
-      operateFunc: singIn,
+      operateFunc: onSingIn,
     },
     [LOGIN_TYPE.REMEMBER]: {
       ...REMEMBER_TEXT,
-      operateFunc: rememberMe,
+      operateFunc: onRememberMe,
     },
     [LOGIN_TYPE.REGISTER]: {
       ...REGISTER_TEXT,
-      operateFunc: signUp,
+      operateFunc: onSignUp,
     },
   };
   const validateUsername = (rule, value) => {
@@ -222,12 +216,12 @@ const Register = (props: any) => {
         <div className="admin-tripartite-provider">
           {githubUrl && (
             <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
-              <i className="iconfont">&#xe50e;</i>
+              <i className="iconfont icon-font-size">&#xe50e;</i>
             </div>
           )}
           {giteeUrl && (
             <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
-              <i className="iconfont">&#xe60c;</i>
+              <i className="iconfont icon-font-size icon-gitee-color">&#xe60c;</i>
             </div>
           )}
         </div>
@@ -236,4 +230,4 @@ const Register = (props: any) => {
   );
 };
 
-export default Register;
+export default Auth;

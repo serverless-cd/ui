@@ -36,7 +36,7 @@ const Register = (props: any) => {
   const field = Field.useField();
   const { init, validate, getValue } = field;
 
-  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGIN);
+  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGINEMAIL);
 
   const Store_Account_Information: any = {
     [LOGIN_TYPE.LOGIN]: {
@@ -115,7 +115,7 @@ const Register = (props: any) => {
   };
 
   return (
-    <Form field={field} className={className} style={style}>
+    <Form field={field} className={`auth-content ${className}`} style={style}>
       <Form.Item className="admin-title" style={{ ...titleStyle }}>
         {title}
       </Form.Item>

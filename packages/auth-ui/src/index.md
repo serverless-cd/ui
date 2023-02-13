@@ -19,21 +19,12 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
-  // 其他登陆方式
-  const loginMethod = <div></div>;
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
           title={title}
           titleStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-          style={{
-            width: 400,
-            border: '1px solid #fff',
-            borderRadius: '5px',
-            boxShadow: '-2px 4px 26px 0 rgba(0, 0, 0, 0.1)',
-            padding: '24px 48px',
-          }}
           type="LOGINEMAIL"
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -71,13 +62,6 @@ export default () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
-          style={{
-            width: 400,
-            border: '1px solid #fff',
-            borderRadius: '5px',
-            boxShadow: '-2px 4px 26px 0 rgba(0, 0, 0, 0.1)',
-            padding: '24px 48px',
-          }}
           title={title}
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
@@ -125,13 +109,6 @@ export default () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
-          style={{
-            width: 400,
-            border: '1px solid #fff',
-            borderRadius: '8px',
-            boxShadow: '-2px 4px 26px 0 rgba(0, 0, 0, 0.1)',
-            padding: '24px 48px',
-          }}
           title={title}
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
@@ -182,13 +159,6 @@ export default () => {
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
-          style={{
-            width: 400,
-            border: '1px solid #fff',
-            borderRadius: '8px',
-            boxShadow: '-2px 4px 26px 0 rgba(0, 0, 0, 0.1)',
-            padding: '24px 48px',
-          }}
           title={title}
           githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
           giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"

@@ -4,6 +4,7 @@ import { map, isEmpty, get } from 'lodash';
 import ExternalLinkInButton from './ExternalLinkInButton';
 import Readme from '../readme';
 import { IApiType, IAppCardProps, IAppDataSouce } from '../../types';
+import { i18n } from '../../utils';
 
 const AppCard: FC<IAppCardProps> = (props) => {
   const { dataSouce = {} as IAppDataSouce, apiType = IApiType.fc, column = 1, fetchReadme } = props;
@@ -84,7 +85,7 @@ const AppCard: FC<IAppCardProps> = (props) => {
                 size="small"
                 style={{ border: 0, fontSize: 12, color: '#fe832a', background: '#fff0e5' }}
               >
-                官方
+                {i18n('ui.tag.official')}
               </Tag>
             ) : (
               <Tag
@@ -92,7 +93,7 @@ const AppCard: FC<IAppCardProps> = (props) => {
                 size="small"
                 style={{ border: 0, fontSize: 12, color: '#8099b2', background: '#eef1f5' }}
               >
-                社区
+                {i18n('ui.tag.community')}
               </Tag>
             )}
           </div>
@@ -133,12 +134,12 @@ const AppCard: FC<IAppCardProps> = (props) => {
       </div>
       <div className="applications-card-footer">
         <Button className="mr-8" type="primary" onClick={create}>
-          立即创建
+          {i18n('ui.create.now')}
         </Button>
         <Readme appName={dataSouce.package} onCreate={create} fetchReadme={fetchReadme}>
-          <Button className="mr-8">详情</Button>
+          <Button className="mr-8">{i18n('ui.details')}</Button>
         </Readme>
-        <ExternalLinkInButton url={dataSouce.demo} text="预览" />
+        <ExternalLinkInButton url={dataSouce.demo} text={i18n('ui.review')} />
       </div>
     </Card>
   );

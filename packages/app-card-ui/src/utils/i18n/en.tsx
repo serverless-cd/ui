@@ -38,4 +38,7 @@ export default {
   'ui.copy.sucess': 'Copied.',
   'ui.s.doc': 'Installation Documentation for Serverless Devs',
   'ui.dingding': 'DingTalk group 32245557',
+  'ui.tag.official': 'Official',
+  'ui.tag.community': 'Community',
+  'ui.details': 'Details',
 };

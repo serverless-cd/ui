@@ -6,7 +6,7 @@ import Readme from '../readme';
 import { IApiType, IAppCardProps, IAppDataSouce } from '../../types';
 
 const AppCard: FC<IAppCardProps> = (props) => {
-  const { dataSouce = {} as IAppDataSouce, apiType = IApiType.fc, column = 1 } = props;
+  const { dataSouce = {} as IAppDataSouce, apiType = IApiType.fc, column = 1, fetchReadme } = props;
 
   const create = () => {
     const url =
@@ -135,7 +135,7 @@ const AppCard: FC<IAppCardProps> = (props) => {
         <Button className="mr-8" type="primary" onClick={create}>
           立即创建
         </Button>
-        <Readme appName={dataSouce.package} onCreate={create}>
+        <Readme appName={dataSouce.package} onCreate={create} fetchReadme={fetchReadme}>
           <Button className="mr-8">详情</Button>
         </Readme>
         <ExternalLinkInButton url={dataSouce.demo} text="预览" />

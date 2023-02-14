@@ -9,7 +9,7 @@ import { parseReadme } from '@serverless-cd/ui-help';
 import { i18n, copyText } from '../../utils';
 import axios from 'axios';
 import qs from 'qs';
-import { get, isEmpty, map, find } from 'lodash';
+import { get, isEmpty, map, find, isFunction } from 'lodash';
 import { IApiTypeVal, IApiType } from '../../types';
 
 function copy(val) {
@@ -29,6 +29,7 @@ type Props = PropsWithChildren & {
   createButtonDisabled?: boolean;
   activeTab?: `${NavKey}`;
   apiType?: IApiTypeVal;
+  fetchReadme?: () => Promise<string>;
 };
 
 const AliReadme: FC<Props> = (props) => {
@@ -40,6 +41,7 @@ const AliReadme: FC<Props> = (props) => {
     createButtonDisabled,
     apiType = IApiType.fc,
     activeTab,
+    fetchReadme,
   } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -93,15 +95,36 @@ const AliReadme: FC<Props> = (props) => {
     } else {
       setReadmeInfo(content);
     }
+    setLoading(false);
+  };
+
+  const doFetchReadme = async () => {
+    setLoading(true);
+    try {
+      const content = await fetchReadme();
+      if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
+        const data = parseReadme(content);
+        setReadmeInfo({
+          ...data,
+          logo: get(data, 'logo'),
+          description: get(data, 'description'),
+          codeUrl: get(data, 'codeUrl'),
+          previewUrl: get(data, 'previewUrl'),
+        });
+      } else {
+        setReadmeInfo(content);
+      }
+    } catch (error) {}
 
     setLoading(false);
   };
+
   const onClose = () => {
     setVisible(false);
   };
 
   const onOpen = () => {
-    fetchData();
+    isFunction(fetchReadme) ? doFetchReadme() : fetchData();
     setVisible(true);
   };
 
@@ -181,7 +204,7 @@ const AliReadme: FC<Props> = (props) => {
     return (
       <div className="serverless-cd__alireadme-wrapper">
         <Nav activeTab={activeTab} />
-        <div className="pt-24">
+        <div className={readmeInfo.logo || readmeInfo.description ? 'pt-24' : 'pt-1'}>
           {readmeInfo.logo && <img src={readmeInfo.logo} style={{ height: 30 }} />}
           {readmeInfo.description && <div>{readmeInfo.description}</div>}
           <h1 className="mt-20" id={NavKey.codepre}>

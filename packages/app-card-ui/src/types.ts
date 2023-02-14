@@ -29,4 +29,5 @@ export type IAppCardProps = {
   apiType?: IApiTypeVal;
   // 一行显示几个
   column?: number;
+  fetchReadme?: () => Promise<string>;
 };

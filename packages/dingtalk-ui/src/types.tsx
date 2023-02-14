@@ -22,6 +22,7 @@ export interface IProps {
   onChange?: Function;
   className?: object | any;
   isPreview?: boolean;
+  messageHelp?: string | any;
 }
 
 export enum HELP_TYPE {

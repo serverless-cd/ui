@@ -8,6 +8,7 @@ import 'codemirror/addon/lint/javascript-lint';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/edit/closebrackets';
 import jsonlint from 'jsonlint-mod';
+import '../index.less';
 declare global {
   interface Window {
     jsonlint?: any;

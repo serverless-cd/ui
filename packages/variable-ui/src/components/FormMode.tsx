@@ -1,7 +1,8 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Form, Input, Grid, Field, Button, Icon, Radio } from '@alicloud/console-components';
-import { map, forIn } from 'lodash';
+import { Form, Input, Grid, Field, Button, Icon } from '@alicloud/console-components';
+import { map, forIn, cloneDeep, isEmpty } from 'lodash';
 import { i18n } from '../utils';
+import '../index.less';
 const { Row, Col } = Grid;
 
 const styleEye = {
@@ -25,8 +26,10 @@ const FormMode = (props, ref) => {
   const field = Field.useField({
     onChange: () => {
       let newList = [];
-      forIn(getValues(), (value) => {
-        newList.push(value);
+      forIn(getValues(), (item) => {
+        if (!isEmpty(item)) {
+          newList.push(item);
+        }
       });
       onChange(newList);
     },
@@ -42,9 +45,13 @@ const FormMode = (props, ref) => {
     callback();
   };
 
-  const addItem = () => {
-    let newValue = [...value];
-    newValue.push(getEmptyItem());
+  const onAddOrRemove = (type, index = 0) => {
+    let newValue = cloneDeep(value);
+    if (type === 'add') {
+      newValue.push(getEmptyItem());
+    } else {
+      newValue.splice(index, 1);
+    }
     onChange([...newValue]);
   };
 
@@ -108,13 +115,17 @@ const FormMode = (props, ref) => {
             </Col>
             <Col span={1}>
               <div className="mt-5">
-                <Icon size="small" type="delete" />
+                <Icon
+                  size="small"
+                  type="delete color-primary cursor-pointer"
+                  onClick={() => onAddOrRemove('remove', index as any)}
+                />
               </div>
             </Col>
           </Row>
         ))}
         <div className="mb-20">
-          <Button onClick={addItem}>
+          <Button onClick={() => onAddOrRemove('add')}>
             <Icon type="add" /> {i18n('ui.variable.form.add.btn')}
           </Button>
         </div>

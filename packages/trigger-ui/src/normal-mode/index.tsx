@@ -15,11 +15,15 @@ const NormalModeTrigger = (props: IProps, ref) => {
   const { disabled, onChange, initValue } = props;
 
   const field = Field.useField({
-    onChange: () => {
+    onChange: (name, value) => {
+      if (name === 'pull_request-enable' && value) {
+        setValue('pull_request-branchesEnable', true);
+        setValue('pull_request-types', ['merged']);
+      }
       onChange(getValues());
     },
   });
-  const { getValues, validate } = field;
+  const { getValues, validate, setValue } = field;
 
   useImperativeHandle(ref, () => ({
     validate,

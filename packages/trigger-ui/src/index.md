@@ -94,22 +94,7 @@ import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
 
 const TriggerPreview = Trigger.Preview;
 
-const dataSource = {
-  push: {
-    branches: {
-      precise: ['1', '2222'],
-    },
-    tags: {
-      precise: ['1'],
-    },
-  },
-  pull_request: {
-    branches: {
-      prefix: [{ target: '1', source: '1' }],
-    },
-    types: ['merged', 'closed'],
-  },
-};
+const dataSource = [];
 
 export default () => {
   return <TriggerPreview dataSource={dataSource} />;

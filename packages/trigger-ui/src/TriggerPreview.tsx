@@ -10,7 +10,7 @@ type IPreview = {
 };
 
 const previewFormaData = (value) => {
-  if (isArray(value)) return values;
+  if (isArray(value)) return value;
   let dataSource: any[] = [];
   forEach(['push.branches', 'push.tags', 'pull_request.branches'], (key) => {
     const ruleValues = get(value, key);

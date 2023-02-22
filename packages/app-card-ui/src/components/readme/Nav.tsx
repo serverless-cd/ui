@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
 import { Tab } from '@alicloud/console-components';
 import { isEmpty, throttle } from 'lodash';
-import { i18n } from '../utils';
+import { i18n } from '../../utils';
 
 export enum NavKey {
   codepre = 'codepre',

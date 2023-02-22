@@ -1,6 +1,6 @@
 {
-  "name": "@serverless-cd/ali-readme",
-  "version": "0.0.8",
+  "name": "@serverless-cd/app-card-ui",
+  "version": "0.0.1",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

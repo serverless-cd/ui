@@ -29,6 +29,7 @@ export interface TriggerTypeProps {
 }
 
 export interface TriggersProps {
+  ref: any;
   value?: object;
   onChange: Function;
   mode?: string;

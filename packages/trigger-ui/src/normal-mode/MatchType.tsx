@@ -25,8 +25,10 @@ const MatchType = (props) => {
           rules: [
             {
               validator: (rule, value, callback) => {
-                const validate = validateRef.current.validate;
-                validate((error) => (error ? callback('error') : callback()));
+                const enable = getValue(`${triggerType}-${labelKey}Enable`);
+                if (!enable) return callback();
+                const validate = validateRef?.current?.validate;
+                validate && validate((error) => (error ? callback('error') : callback()));
               },
             },
           ],

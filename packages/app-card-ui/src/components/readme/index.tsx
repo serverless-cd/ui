@@ -1,16 +1,16 @@
-import React, { FC, useState, PropsWithChildren, useEffect } from 'react';
+import React, { FC, useState, PropsWithChildren } from 'react';
 import { SlidePanel } from '@alicloud/console-components-slide-panel';
 import { Loading, Balloon, Message, Button, Icon } from '@alicloud/console-components';
-import Nav, { NavKey } from './components/Nav';
-import ExternalLink from './components/ExternalLink';
-import ReactMarkdown from './components/ReactMarkdown';
-import GithubIcon from './components/GithubIcon';
+import Nav, { NavKey } from './Nav';
+import ExternalLink from './ExternalLink';
+import ReactMarkdown from './ReactMarkdown';
+import GithubIcon from './GithubIcon';
 import { parseReadme } from '@serverless-cd/ui-help';
-import { i18n, copyText } from './utils';
+import { i18n, copyText } from '../../utils';
 import axios from 'axios';
 import qs from 'qs';
-import { get, isEmpty, map, find } from 'lodash';
-import './style/index.less';
+import { get, isEmpty, map, find, isFunction } from 'lodash';
+import { IApiTypeVal, IApiType } from '../../types';
 
 function copy(val) {
   copyText(val);
@@ -27,8 +27,9 @@ type Props = PropsWithChildren & {
   title?: string;
   onCreate?: () => void;
   createButtonDisabled?: boolean;
-  isWebApp?: boolean;
   activeTab?: `${NavKey}`;
+  apiType?: IApiTypeVal;
+  fetchReadme?: () => Promise<string>;
 };
 
 const AliReadme: FC<Props> = (props) => {
@@ -38,8 +39,9 @@ const AliReadme: FC<Props> = (props) => {
     title = name,
     onCreate,
     createButtonDisabled,
-    isWebApp = false,
+    apiType = IApiType.fc,
     activeTab,
+    fetchReadme,
   } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,6 @@ const AliReadme: FC<Props> = (props) => {
 
   const fetchApps = async () => {
     try {
-      const apiType = isWebApp ? 'fcweb' : 'fc';
       const result = await axios({
         method: 'get',
         url: `https://registry.devsapp.cn/console/applications?type=${apiType}`,
@@ -82,22 +83,48 @@ const AliReadme: FC<Props> = (props) => {
     setLoading(true);
     const [app, content] = await Promise.all([fetchApps(), fetchContent()]);
     const appInfo = find(app, (item) => item.package === name);
-    const data = parseReadme(content);
-    setReadmeInfo({
-      ...data,
-      logo: get(data, 'logo') || get(appInfo, 'logo'),
-      description: get(data, 'description') || get(appInfo, 'description'),
-      codeUrl: get(data, 'codeUrl') || get(appInfo, 'url'),
-      previewUrl: get(data, 'previewUrl') || get(appInfo, 'demo'),
-    });
+    if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
+      const data = parseReadme(content);
+      setReadmeInfo({
+        ...data,
+        logo: get(data, 'logo') || get(appInfo, 'logo'),
+        description: get(data, 'description') || get(appInfo, 'description'),
+        codeUrl: get(data, 'codeUrl') || get(appInfo, 'url'),
+        previewUrl: get(data, 'previewUrl') || get(appInfo, 'demo'),
+      });
+    } else {
+      setReadmeInfo(content);
+    }
     setLoading(false);
   };
+
+  const doFetchReadme = async () => {
+    setLoading(true);
+    try {
+      const content = await fetchReadme();
+      if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
+        const data = parseReadme(content);
+        setReadmeInfo({
+          ...data,
+          logo: get(data, 'logo'),
+          description: get(data, 'description'),
+          codeUrl: get(data, 'codeUrl'),
+          previewUrl: get(data, 'previewUrl'),
+        });
+      } else {
+        setReadmeInfo(content);
+      }
+    } catch (error) {}
+
+    setLoading(false);
+  };
+
   const onClose = () => {
     setVisible(false);
   };
 
   const onOpen = () => {
-    fetchData();
+    isFunction(fetchReadme) ? doFetchReadme() : fetchData();
     setVisible(true);
   };
 
@@ -142,9 +169,10 @@ const AliReadme: FC<Props> = (props) => {
         <Button
           type="normal"
           onClick={() => {
-            const shareUrl = isWebApp
-              ? `https://fcnext.console.aliyun.com/web/create?template=${name}`
-              : `https://fcnext.console.aliyun.com/applications/create?template=${name}`;
+            const shareUrl =
+              apiType === IApiType.fc
+                ? `https://fcnext.console.aliyun.com/applications/create?template=${name}`
+                : `https://fcnext.console.aliyun.com/web/create?template=${name}`;
             copyText(shareUrl);
             Message.show({
               type: 'success',
@@ -169,10 +197,14 @@ const AliReadme: FC<Props> = (props) => {
     if (loading) {
       return <Loading visible={loading} inline={false} style={{ minHeight: 400 }} />;
     }
+    // 兼容旧模版
+    if (typeof readmeInfo === 'string') {
+      return <ReactMarkdown text={readmeInfo} />;
+    }
     return (
       <div className="serverless-cd__alireadme-wrapper">
         <Nav activeTab={activeTab} />
-        <div className="pt-24">
+        <div className={readmeInfo.logo || readmeInfo.description ? 'pt-24' : 'pt-1'}>
           {readmeInfo.logo && <img src={readmeInfo.logo} style={{ height: 30 }} />}
           {readmeInfo.description && <div>{readmeInfo.description}</div>}
           <h1 className="mt-20" id={NavKey.codepre}>

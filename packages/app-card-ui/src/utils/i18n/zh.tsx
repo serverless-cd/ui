@@ -37,4 +37,7 @@ export default {
   'ui.copy.sucess': '复制成功！',
   'ui.s.doc': 'Serverless Devs 安装文档',
   'ui.dingding': '钉钉交流群：32245557',
+  'ui.tag.official': '官方',
+  'ui.tag.community': '社区',
+  'ui.details': '详情',
 };

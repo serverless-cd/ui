@@ -38,4 +38,7 @@ export default {
   'ui.copy.sucess': 'コピーしました。',
   'ui.s.doc': 'Serverless Devs のインストールについてのドキュメント',
   'ui.dingding': 'DingTalk グループ 32245557',
+  'ui.tag.official': '公式',
+  'ui.tag.community': 'コミュニティ',
+  'ui.details': '詳細',
 };

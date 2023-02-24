@@ -2,8 +2,6 @@
 
 Demo:
 
-mode： normal strict
-
 ```tsx
 import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
@@ -71,19 +69,7 @@ export default () => {
       </div>
       <Trigger
         {...init('trigger', {
-          initValue: {
-            pull_request: {
-              branches: {
-                prefix: [
-                  {
-                    target: '1',
-                    source: '1',
-                  },
-                ],
-              },
-              types: ['merged', 'closed'],
-            },
-          },
+          initValue: {},
         })}
         mode={mode}
         loading={loading}
@@ -98,4 +84,19 @@ export default () => {
 };
 ```
 
-More skills for writing demo: https://d.umijs.org/guide/basic#write-component-demo
+## 预览效果
+
+```tsx
+import React, { useEffect, useState, useRef } from 'react';
+import '@alicloud/console-components/dist/wind.css';
+import { Field, Button } from '@alicloud/console-components';
+import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+
+const TriggerPreview = Trigger.Preview;
+
+const dataSource = [];
+
+export default () => {
+  return <TriggerPreview dataSource={dataSource} />;
+};
+```

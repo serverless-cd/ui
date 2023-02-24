@@ -8,6 +8,7 @@ import { i18n } from '../utils';
 const MatchTypeValue = (props, ref) => {
   const { triggerTypeChecked, labelKey, triggerType, value, onChange, disabled } = props;
   const [branchList, setBranchList] = useState([]);
+  const [valueType, setValueType] = useState('init');
   const field = Field.useField({
     parseName: true,
   });
@@ -29,7 +30,7 @@ const MatchTypeValue = (props, ref) => {
         id: uniqueId(),
       }));
     }
-    setBranchList(branchValues);
+    valueType === 'init' && setBranchList(branchValues);
   }, [JSON.stringify(value)]);
 
   const onCreate = () => {
@@ -54,6 +55,7 @@ const MatchTypeValue = (props, ref) => {
   };
 
   const onChangeValues = (values) => {
+    setValueType('edit');
     let newValues = [];
     map(values, ({ target, type, source }) => {
       newValues.push({ target, type, source });

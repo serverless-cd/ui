@@ -18,7 +18,7 @@ class TriggerUi extends React.Component<TriggersProps> {
   }
 
   validate = () => this.triggerUiRef.current.validate();
-
+  
   render(): React.ReactNode {
     return <Trigger {...this.props} ref={this.triggerUiRef} />;
   }

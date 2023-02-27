@@ -46,7 +46,7 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
     >
       {map(STRICT_TRIGGER_TYPES, ({ value, label, help }) => {
         return (
-          <div style={{ marginBottom: 20 }}>
+          <div style={{ marginBottom: 20 }} key={value}>
             <Radio value={value}>{label}</Radio>
             {getValue('triggerType') === value && (
               <StrictMatch

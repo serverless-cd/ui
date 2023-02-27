@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Message } from '@alicloud/console-components';
 import StepTask from './components/StepTask';
 import { Props, Request } from './constants/index';
 import { find, isEmpty, map, set, cloneDeep, noop } from 'lodash';
 
-const CreatingUi = (props: Props) => {
+const CreatingUi = (props: Props, ref) => {
   const {
     dataSource,
     onError = noop,
     onComplete = noop,
     countdown = 0,
     onCountdownComplete = noop,
+    showRetry = true,
   } = props;
   const [stepList, setStepList] = useState([]);
   const [isSuspend, setIsSuspend] = useState(false);
@@ -19,6 +20,10 @@ const CreatingUi = (props: Props) => {
   const [count, setCount] = useState(countdown);
   let intervalCount = useRef(count);
   let interval = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    onRetry,
+  }));
   useEffect(() => {
     const newData = map(dataSource, (item: Request, index) => ({
       ...item,
@@ -99,8 +104,14 @@ const CreatingUi = (props: Props) => {
       <Message type="warning" className="mt-5">
         <span className="text-middle">当前阶段请不要刷新页面</span>
       </Message>
-      <StepTask stepList={stepList} isSuspend={isSuspend} count={count} onRetry={onRetry} />
+      <StepTask
+        stepList={stepList}
+        isSuspend={isSuspend}
+        count={count}
+        onRetry={onRetry}
+        showRetry={showRetry}
+      />
     </div>
   );
 };
-export default CreatingUi;
+export default forwardRef(CreatingUi);

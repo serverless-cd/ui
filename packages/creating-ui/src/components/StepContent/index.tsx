@@ -9,10 +9,11 @@ type Props = {
   isSuspend?: boolean;
   currentTask: Request;
   onRetry: () => void;
+  showRetry: boolean;
 };
 
 const StepContent = (props: Props) => {
-  const { tasks = [], currentTask = {} as any, isSuspend, onRetry } = props;
+  const { tasks = [], currentTask = {} as any, isSuspend, onRetry, showRetry } = props;
   return (
     <>
       {map(tasks, (task) => {
@@ -23,12 +24,14 @@ const StepContent = (props: Props) => {
               {isSuspend ? (
                 <div>
                   <span className="color-error">{task.errorMsg}</span>
-                  <Icon
-                    className="ml-8 cursor-pointer"
-                    type="refresh"
-                    size="xs"
-                    onClick={onRetry}
-                  />
+                  {showRetry && (
+                    <Icon
+                      className="ml-8 cursor-pointer"
+                      type="refresh"
+                      size="xs"
+                      onClick={onRetry}
+                    />
+                  )}
                 </div>
               ) : (
                 <div>{task.runningMsg || task.title}</div>

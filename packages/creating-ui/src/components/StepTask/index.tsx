@@ -10,9 +10,10 @@ type Props = {
   isSuspend?: boolean;
   count?: number;
   onRetry: () => void;
+  showRetry?: boolean;
 };
 const StepTask = (props: Props) => {
-  const { stepList, isSuspend, count, onRetry } = props;
+  const { stepList, isSuspend, count, onRetry, showRetry } = props;
   const { found, current, currentTask } = useMemo(() => {
     const found: any = find(stepList, { runStatus: 'wait' });
     const current = !isEmpty(found) ? found?.index : size(stepList);
@@ -63,6 +64,7 @@ const StepTask = (props: Props) => {
                     currentTask={found}
                     isSuspend={isEmpty(tasks) ? isSuspend : false}
                     onRetry={onRetry}
+                    showRetry={showRetry}
                   />
                   {count !== 0 && index === size(stepList) - 1 && current === size(stepList) && (
                     <>{count && <span className="color-error mr-8 ml-8">{`${count} s`}</span>}</>
@@ -75,6 +77,7 @@ const StepTask = (props: Props) => {
                   currentTask={currentTask}
                   isSuspend={isSuspend}
                   onRetry={onRetry}
+                  showRetry={showRetry}
                 />
               }
             />

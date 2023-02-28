@@ -60,11 +60,16 @@ export enum LOGIN_TEXT {
 }
 
 export enum LOGIN_EMAIL_TEXT {
-  label_email = 'Email address',
-  label_password = 'Password',
-  email = 'Please enter email address',
-  password = 'Please input a password',
-  operate = 'Sing in',
+  // label_email = 'Email address',
+  // label_password = 'Password',
+  // email = 'Please enter email address',
+  // password = 'Please input a password',
+  // operate = 'Sing in',
+  // label_email = '邮箱：',
+  // label_password = '密码：',
+  email = '邮箱',
+  password = '请输入密码',
+  operate = '登录',
 }
 
 export enum REMEMBER_TEXT {

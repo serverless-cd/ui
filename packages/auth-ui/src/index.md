@@ -32,8 +32,8 @@ export default () => {
           onSingIn={onSingIn}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <a href="#忘记密码">Remember Me</a>
-            <a href="#注册">Create an account</a>
+            <a href="#忘记密码">忘记密码</a> {/* Remember Me */}
+            <a href="#注册">注册新账号</a> {/* Create an account Me */}
           </div>
         </Auth>
       </div>

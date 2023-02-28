@@ -2,10 +2,10 @@ export default {
   'ui.notifiy.remindType.needless': 'not @ anyone',
   'ui.notifiy.remindType.owner': 'everyone',
   'ui.notifiy.remindType.appoint': 'designated user',
-  'ui.notifiy.webhook.tip': '"webhook address" is required.',
+  'ui.notifiy.webhook.tip': '"Webhook address" is required.',
   'ui.notifiy.webhook.correct.tip': 'Please enter the correct webhook address',
   'ui.notifiy.enable.label': 'DingTalk robot notification configuration',
-  'ui.notifiy.webhook.label': 'webhook address',
+  'ui.notifiy.webhook.label': 'Webhook address',
   'ui.notifiy.webhook.placeholder': 'DingTalk robot webhook address',
   'ui.notifiy.secret.label': 'Signing key',
   'ui.notifiy.secret.label.tips':

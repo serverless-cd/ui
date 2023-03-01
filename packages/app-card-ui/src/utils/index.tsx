@@ -1,4 +1,4 @@
-export { default as i18n } from './i18n';
+export { default as i18n, lang } from './i18n';
 
 const createFakeElement = (value) => {
   const fakeElement = document.createElement('textarea');

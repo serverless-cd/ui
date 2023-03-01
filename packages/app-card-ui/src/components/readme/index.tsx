@@ -6,7 +6,7 @@ import ExternalLink from './ExternalLink';
 import ReactMarkdown from './ReactMarkdown';
 import GithubIcon from './GithubIcon';
 import { parseReadme } from '@serverless-cd/ui-help';
-import { i18n, copyText } from '../../utils';
+import { i18n, copyText, lang } from '../../utils';
 import axios from 'axios';
 import qs from 'qs';
 import { get, isEmpty, map, find, isFunction } from 'lodash';
@@ -22,13 +22,14 @@ function copy(val) {
   });
 }
 
-type Props = PropsWithChildren & {
+export type Props = PropsWithChildren & {
   appName: string;
   title?: string;
   onCreate?: () => void;
   createButtonDisabled?: boolean;
   activeTab?: `${NavKey}`;
   apiType?: IApiTypeVal;
+  visible?: boolean;
   fetchReadme?: () => Promise<string>;
 };
 
@@ -42,8 +43,9 @@ const AliReadme: FC<Props> = (props) => {
     apiType = IApiType.fc,
     activeTab,
     fetchReadme,
+    visible: readmeVisible = false,
   } = props;
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(readmeVisible);
   const [loading, setLoading] = useState(false);
   const [readmeInfo, setReadmeInfo] = useState<any>({});
 
@@ -51,7 +53,7 @@ const AliReadme: FC<Props> = (props) => {
     try {
       const result = await axios({
         method: 'get',
-        url: `https://registry.devsapp.cn/console/applications?type=${apiType}`,
+        url: `https://registry.devsapp.cn/console/applications?type=${apiType}&lang=${lang()}`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -67,7 +69,7 @@ const AliReadme: FC<Props> = (props) => {
     try {
       const result = await axios({
         method: 'post',
-        url: 'https://registry.devsapp.cn/package/content',
+        url: `https://registry.devsapp.cn/package/content?lang=${lang()}`,
         data: qs.stringify({
           name,
         }),

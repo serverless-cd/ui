@@ -129,6 +129,26 @@ const Auth = (props: any) => {
           />
         </Form.Item>
       )}
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
+          />
+        </Form.Item>
+      )}
       {adminStatus === LOGIN_TYPE.LOGINEMAIL && (
         <Form.Item label={Store_Account_Information[adminStatus]['label_email']}>
           <Input
@@ -182,27 +202,6 @@ const Auth = (props: any) => {
           />
         </Form.Item>
       )}
-      {adminStatus === LOGIN_TYPE.REGISTER && (
-        <Form.Item>
-          <Input
-            {...init('email', {
-              rules: [
-                {
-                  validator: validateEmail,
-                },
-              ],
-            })}
-            innerBefore={
-              <div className="admin-icon">
-                <i className="iconfont">&#xe908;</i>
-              </div>
-            }
-            className="admin-public-width"
-            placeholder={Store_Account_Information[adminStatus].email}
-          />
-        </Form.Item>
-      )}
-
       <Form.Item className="admin-public-width">
         <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
           {Store_Account_Information[adminStatus].operate}

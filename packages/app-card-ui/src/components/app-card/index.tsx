@@ -7,8 +7,6 @@ import { IApiType, IAppCardProps, IAppDataSouce } from '../../types';
 import { i18n } from '../../utils';
 
 const AppCard: FC<IAppCardProps> = (props) => {
-  const { dataSouce = {} as IAppDataSouce, apiType = IApiType.fc, column = 1, fetchReadme } = props;
-
   const create = () => {
     const url =
       apiType === IApiType.fc
@@ -16,6 +14,13 @@ const AppCard: FC<IAppCardProps> = (props) => {
         : ` https://fcnext.console.aliyun.com/web/create?template=${dataSouce.package}`;
     window.open(url);
   };
+  const {
+    dataSouce = {} as IAppDataSouce,
+    apiType = IApiType.fc,
+    column = 1,
+    fetchReadme,
+    onCreate = create,
+  } = props;
 
   const tags = get(dataSouce, 'tags', []);
   return (
@@ -133,10 +138,14 @@ const AppCard: FC<IAppCardProps> = (props) => {
         </div>
       </div>
       <div className="applications-card-footer">
-        <Button className="mr-8" type="primary" onClick={create}>
+        <Button className="mr-8" type="primary" onClick={() => onCreate(dataSouce)}>
           {i18n('ui.create.now')}
         </Button>
-        <Readme appName={dataSouce.package} onCreate={create} fetchReadme={fetchReadme}>
+        <Readme
+          appName={dataSouce.package}
+          onCreate={() => onCreate(dataSouce)}
+          fetchReadme={fetchReadme}
+        >
           <Button className="mr-8">{i18n('ui.details')}</Button>
         </Readme>
         <ExternalLinkInButton url={dataSouce.demo} text={i18n('ui.review')} />

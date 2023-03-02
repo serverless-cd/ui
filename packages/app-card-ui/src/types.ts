@@ -30,4 +30,5 @@ export type IAppCardProps = {
   // 一行显示几个
   column?: number;
   fetchReadme?: () => Promise<string>;
+  onCreate?: (data: IAppDataSouce) => void;
 };

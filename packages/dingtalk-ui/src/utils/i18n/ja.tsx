@@ -2,7 +2,7 @@ export default {
   'ui.notifiy.remindType.needless': '@誰でもない',
   'ui.notifiy.remindType.owner': 'みんな',
   'ui.notifiy.remindType.appoint': '指定ユーザー',
-  'ui.notifiy.webhook.tip': '「webhookアドレス」は必須です。',
+  'ui.notifiy.webhook.tip': '「Webhookアドレス」は必須です。',
   'ui.notifiy.webhook.correct.tip': '正しい Webhook アドレスを入力してください',
   'ui.notifiy.enable.label': 'DingTalk ロボット通知の構成',
   'ui.notifiy.webhook.label': 'Webhook アドレス',

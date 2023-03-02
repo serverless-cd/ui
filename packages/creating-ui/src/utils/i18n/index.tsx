@@ -4,8 +4,7 @@ import ja from './ja';
 import Cookies from 'js-cookie';
 
 const obj = { en, zh, ja };
-
-export const lang = () => {
+const lang = () => {
   let language = Cookies.get('aliyun_lang') || Cookies.get('inner_oneconsole_lang') || 'zh';
   // 兼容取值 zh-TW 的case
   if (language.startsWith('zh')) {
@@ -17,10 +16,10 @@ export const lang = () => {
   if (language.startsWith('ja')) {
     language = 'ja';
   }
-  return language;
+  return obj[language] || obj.en;
 };
 
-const i18n = obj[lang()] || obj.en;
+const i18n = lang();
 
 const handleI18n = (key, params?: any) => {
   if (!key) return '';

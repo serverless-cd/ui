@@ -54,7 +54,7 @@ export enum LOGIN_TYPE {
 export type LOGIN_TYPE_VALUE = `${LOGIN_TYPE}`;
 
 export enum LOGIN_TEXT {
-  account = '请输入账号',
+  account = '账号 / 邮箱',
   password = '请输入密码',
   operate = '登录',
 }

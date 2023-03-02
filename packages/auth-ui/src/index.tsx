@@ -116,7 +116,7 @@ const Auth = (props: any) => {
       {adminStatus !== LOGIN_TYPE.LOGINEMAIL && (
         <Form.Item className="admin-public-width">
           <Input
-            {...init('loginname', {
+            {...init(adminStatus === LOGIN_TYPE.LOGIN ? 'loginname' : 'username', {
               rules: [
                 {
                   validator: validateUsername,

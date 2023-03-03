@@ -13,19 +13,13 @@ import './index.less';
 import './icon.less';
 import { i18n } from './utils';
 
-const dataSource = [
-  { value: 'needless', label: i18n('ui.notifiy.remindType.needless') },
-  { value: 'owner', label: i18n('ui.notifiy.remindType.owner') },
-  { value: 'appoint', label: i18n('ui.notifiy.remindType.appoint') },
-];
-
-const Register = (props: any) => {
+const Auth = (props: any) => {
   const {
     className = {},
     title,
-    singIn = () => {},
-    rememberMe = () => {},
-    signUp = () => {},
+    onSingIn = () => {},
+    onRememberMe = () => {},
+    onSignUp = () => {},
     githubUrl,
     giteeUrl,
     type,
@@ -34,26 +28,26 @@ const Register = (props: any) => {
     titleStyle,
   } = props;
   const field = Field.useField();
-  const { init, validate } = field;
+  const { init, validate, getValue } = field;
 
-  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGIN);
+  const [adminStatus] = useState<LOGIN_TYPE_VALUE>(LOGIN_TYPE[type] || LOGIN_TYPE.LOGINEMAIL);
 
   const Store_Account_Information: any = {
     [LOGIN_TYPE.LOGIN]: {
       ...LOGIN_TEXT,
-      operateFunc: singIn,
+      operateFunc: onSingIn,
     },
     [LOGIN_TYPE.LOGINEMAIL]: {
       ...LOGIN_EMAIL_TEXT,
-      operateFunc: singIn,
+      operateFunc: onSingIn,
     },
     [LOGIN_TYPE.REMEMBER]: {
       ...REMEMBER_TEXT,
-      operateFunc: rememberMe,
+      operateFunc: onRememberMe,
     },
     [LOGIN_TYPE.REGISTER]: {
       ...REGISTER_TEXT,
-      operateFunc: signUp,
+      operateFunc: onSignUp,
     },
   };
   const validateUsername = (rule, value) => {
@@ -69,8 +63,19 @@ const Register = (props: any) => {
     });
   };
 
-  const validatePassword = (rule, value) => {
+  const validatePassword = (rule, value, tag) => {
     const regex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,18}');
+    const password = getValue('password');
+    const confirm_password = getValue('confirm_password');
+    if (tag === 'confirm_password') {
+      return new Promise((resolve, reject) => {
+        if (password === confirm_password) {
+          resolve(value);
+        } else {
+          reject([new Error('两次密码不一致')]);
+        }
+      });
+    }
     return new Promise((resolve, reject) => {
       if (regex.test(value)) {
         resolve(value);
@@ -104,14 +109,14 @@ const Register = (props: any) => {
   };
 
   return (
-    <Form field={field} className={className} style={style}>
+    <Form field={field} className={`auth-content ${className}`} style={style}>
       <Form.Item className="admin-title" style={{ ...titleStyle }}>
         {title}
       </Form.Item>
       {adminStatus !== LOGIN_TYPE.LOGINEMAIL && (
         <Form.Item className="admin-public-width">
           <Input
-            {...init('username', {
+            {...init(adminStatus === LOGIN_TYPE.LOGIN ? 'loginname' : 'username', {
               rules: [
                 {
                   validator: validateUsername,
@@ -121,6 +126,26 @@ const Register = (props: any) => {
             innerBefore={<Icon className="admin-icon" type="account" />}
             className="admin-public-width"
             placeholder={Store_Account_Information[adminStatus].account}
+          />
+        </Form.Item>
+      )}
+      {adminStatus === LOGIN_TYPE.REGISTER && (
+        <Form.Item>
+          <Input
+            {...init('email', {
+              rules: [
+                {
+                  validator: validateEmail,
+                },
+              ],
+            })}
+            innerBefore={
+              <div className="admin-icon">
+                <i className="iconfont">&#xe908;</i>
+              </div>
+            }
+            className="admin-public-width"
+            placeholder={Store_Account_Information[adminStatus].email}
           />
         </Form.Item>
       )}
@@ -148,7 +173,7 @@ const Register = (props: any) => {
         className="admin-public-width"
         label={Store_Account_Information[adminStatus]['label_password']}
       >
-        <Input
+        <Input.Password
           {...(init('password', {
             rules: [
               {
@@ -161,13 +186,13 @@ const Register = (props: any) => {
           placeholder={Store_Account_Information[adminStatus].password}
         />
       </Form.Item>
-      {adminStatus === LOGIN_TYPE.REMEMBER && (
+      {(adminStatus === LOGIN_TYPE.REMEMBER || adminStatus === LOGIN_TYPE.REGISTER) && (
         <Form.Item className="admin-public-width" required>
-          <Input
+          <Input.Password
             {...(init('confirm_password', {
               rules: [
                 {
-                  validator: validatePassword,
+                  validator: (rule, value) => validatePassword(rule, value, 'confirm_password'),
                 },
               ],
             }) as {})}
@@ -177,57 +202,6 @@ const Register = (props: any) => {
           />
         </Form.Item>
       )}
-      {(adminStatus === LOGIN_TYPE.REMEMBER || adminStatus === LOGIN_TYPE.REGISTER) && (
-        <Form.Item>
-          <Input
-            {...init('email', {
-              rules: [
-                {
-                  validator: validateEmail,
-                },
-              ],
-            })}
-            innerBefore={
-              <div className="admin-icon">
-                <i className="iconfont">&#xe908;</i>
-              </div>
-            }
-            className="admin-public-width"
-            placeholder={Store_Account_Information[adminStatus].email}
-          />
-        </Form.Item>
-      )}
-
-      {adminStatus === LOGIN_TYPE.REGISTER && (
-        <Form.Item>
-          <Input
-            {...init('phone', {})}
-            innerBefore={
-              <div className="admin-icon">
-                <i className="iconfont">&#xe8ad;</i>
-              </div>
-            }
-            className="admin-public-width"
-            placeholder={Store_Account_Information[adminStatus].phone}
-          />
-        </Form.Item>
-      )}
-
-      {adminStatus === LOGIN_TYPE.REGISTER && (
-        <Form.Item>
-          <Input
-            {...init('address', {})}
-            innerBefore={
-              <div className="admin-icon">
-                <i className="iconfont">&#xe63e;</i>
-              </div>
-            }
-            className="admin-public-width"
-            placeholder={Store_Account_Information[adminStatus].address}
-          />
-        </Form.Item>
-      )}
-
       <Form.Item className="admin-public-width">
         <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
           {Store_Account_Information[adminStatus].operate}
@@ -241,12 +215,12 @@ const Register = (props: any) => {
         <div className="admin-tripartite-provider">
           {githubUrl && (
             <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
-              <i className="iconfont">&#xe50e;</i>
+              <i className="iconfont icon-font-size">&#xe50e;</i>
             </div>
           )}
           {giteeUrl && (
             <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
-              <i className="iconfont">&#xe60c;</i>
+              <i className="iconfont icon-font-size icon-gitee-color">&#xe60c;</i>
             </div>
           )}
         </div>
@@ -255,4 +229,4 @@ const Register = (props: any) => {
   );
 };
 
-export default Register;
+export default Auth;

@@ -54,17 +54,22 @@ export enum LOGIN_TYPE {
 export type LOGIN_TYPE_VALUE = `${LOGIN_TYPE}`;
 
 export enum LOGIN_TEXT {
-  account = '请输入账号',
+  account = '账号 / 邮箱',
   password = '请输入密码',
   operate = '登录',
 }
 
 export enum LOGIN_EMAIL_TEXT {
-  label_email = 'Email address',
-  label_password = 'Password',
-  email = 'Please enter email address',
-  password = 'Please input a password',
-  operate = 'Sing in',
+  // label_email = 'Email address',
+  // label_password = 'Password',
+  // email = 'Please enter email address',
+  // password = 'Please input a password',
+  // operate = 'Sing in',
+  // label_email = '邮箱：',
+  // label_password = '密码：',
+  email = '邮箱',
+  password = '请输入密码',
+  operate = '登录',
 }
 
 export enum REMEMBER_TEXT {
@@ -82,6 +87,7 @@ export enum REGISTER_TEXT {
   phone = '请输入电话',
   address = '请输入地址',
   operate = '注册',
+  reconfirm = '请确认密码',
 }
 
 export enum AUTH_COMPONENT {

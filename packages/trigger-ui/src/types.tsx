@@ -26,6 +26,7 @@ export interface TriggerTypeProps {
   key?: string;
   disabled?: boolean;
   field: any;
+  valueRender?: Function;
 }
 
 export interface TriggersProps {
@@ -38,6 +39,8 @@ export interface TriggersProps {
   loading?: boolean;
   isRefresh?: boolean;
   onRefresh?: Function;
+  valueRender?: Function;
+  selectBranchConfig: any;
 }
 
 export interface StrictModeProps {
@@ -50,6 +53,8 @@ export interface StrictModeProps {
   isRefresh?: boolean;
   onRefresh?: Function;
   ref?: any;
+  valueRender?: Function;
+  selectBranchConfig: any;
 }
 
 export const PR = 'pull_request';

@@ -13,8 +13,13 @@ import store from '../../../store';
 const { Tooltip } = Balloon;
 
 const handleScroll = () => {
-  const dom = document.getElementById('content_container');
-  dom?.scrollTo(0, 220);
+  const dom = document.getElementById('global-vars__wrapper');
+  if (dom) {
+    dom.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    });
+  }
 };
 
 const Fc = (props: any) => {
@@ -40,7 +45,7 @@ const Fc = (props: any) => {
 
   return (
     <>
-      {data ? (
+      {/* {data ? (
         <Tooltip trigger={<span onMouseOver={onMouseOver}>{value}</span>} align="br">
           <code>
             <pre>{yaml.dump(data)}</pre>
@@ -48,7 +53,8 @@ const Fc = (props: any) => {
         </Tooltip>
       ) : (
         <span>{value}</span>
-      )}
+      )} */}
+      <span>{value}</span>
       {_.includes(value, 'vars.') && (
         <Tooltip
           trigger={

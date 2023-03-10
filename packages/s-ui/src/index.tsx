@@ -35,23 +35,25 @@ const SUi: FC<Props> = (props) => {
         />
       </RcInfo>
       {data.vars && (
-        <RcInfo title="全局变量">
-          {isEmpty(EditorRender) ? (
-            <Input.TextArea
-              className="full-width"
-              value={JSON.stringify(data.vars, null, 2)}
-              onChange={(value) => {
-                const newValue = tryfun(JSON.parse, value);
-                newValue && setData({ ...data, vars: newValue });
-              }}
-            />
-          ) : (
-            <EditorRender
-              value={data.vars}
-              onChange={(value) => setData({ ...data, vars: value })}
-            />
-          )}
-        </RcInfo>
+        <div id="global-vars__wrapper">
+          <RcInfo title="全局变量">
+            {isEmpty(EditorRender) ? (
+              <Input.TextArea
+                className="full-width"
+                value={JSON.stringify(data.vars, null, 2)}
+                onChange={(value) => {
+                  const newValue = tryfun(JSON.parse, value);
+                  newValue && setData({ ...data, vars: newValue });
+                }}
+              />
+            ) : (
+              <EditorRender
+                value={data.vars}
+                onChange={(value) => setData({ ...data, vars: value })}
+              />
+            )}
+          </RcInfo>
+        </div>
       )}
       <RcInfo title="应用配置">
         <App

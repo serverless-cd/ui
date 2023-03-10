@@ -1,24 +1,33 @@
 import React, { FC, useState, useEffect, ReactElement } from 'react';
 import RcInfo from '@alicloud/console-components-info';
-import { isEmpty, debounce, get, omit, isFunction } from 'lodash';
+import { isEmpty, debounce, get, noop } from 'lodash';
 import { Input } from '@alicloud/console-components';
 import ProjectBase from './components/project-base';
 import App from './components/app';
-import { tryfun } from './utils';
+import { tryfun, deepCopy } from './utils';
+import store from './store';
 import './style/index.less';
 
 type Props = {
   value: Record<string, any>;
+  onChange?: (value: Record<string, any>) => void;
   accessList: string[];
   EditorRender: ({ value, onChange }) => ReactElement;
 };
 
 const SUi: FC<Props> = (props) => {
-  const { value: dataSource = {}, accessList, EditorRender } = props;
+  const { value: dataSource = {}, onChange = noop, accessList, EditorRender } = props;
   const [data, setData] = useState<any>(dataSource);
 
+  const watchData = debounce(async () => {
+    if (isEmpty(data)) return;
+    const newData = deepCopy(deepCopy(data));
+    onChange(newData);
+    store.setWatchingData(newData);
+  }, 100);
+
   useEffect(() => {
-    console.log('data', data);
+    watchData();
   }, [JSON.stringify(data)]);
 
   return (

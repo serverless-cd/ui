@@ -112,7 +112,7 @@ export default () => {
             memorySize: 512,
             runtime: 'nodejs12',
             timeout: 60,
-            name: 'cicdAction',
+            name: '${vars.region}-dd-${vars.service.name}',
             codeUri: './src/main/node/cicdAction',
           },
         },

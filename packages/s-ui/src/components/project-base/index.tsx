@@ -8,9 +8,6 @@ import { map } from 'lodash';
 const styleProps = {
   'x-decorator-props': {
     labelWidth: 80,
-    wrapperStyle: {
-      marginRight: 16,
-    },
   },
 };
 

@@ -3,8 +3,8 @@ import RcInfo from '@alicloud/console-components-info';
 import { isEmpty, debounce, get, omit, isFunction } from 'lodash';
 import { Input } from '@alicloud/console-components';
 import ProjectBase from './components/project-base';
+import App from './components/app';
 import { tryfun } from './utils';
-// import App from '../App/index';
 import './style/index.less';
 
 type Props = {
@@ -22,7 +22,7 @@ const SUi: FC<Props> = (props) => {
   }, [JSON.stringify(data)]);
 
   return (
-    <>
+    <div className="pl-24 pr-24">
       <RcInfo title="基本信息">
         <ProjectBase
           dataSource={{
@@ -36,32 +36,30 @@ const SUi: FC<Props> = (props) => {
       </RcInfo>
       {data.vars && (
         <RcInfo title="全局变量">
-          <div className="ml-16 mr-16">
-            {isEmpty(EditorRender) ? (
-              <Input.TextArea
-                className="full-width"
-                value={JSON.stringify(data.vars, null, 2)}
-                onChange={(value) => {
-                  const newValue = tryfun(JSON.parse, value);
-                  newValue && setData({ ...data, vars: newValue });
-                }}
-              />
-            ) : (
-              <EditorRender
-                value={data.vars}
-                onChange={(value) => setData({ ...data, vars: value })}
-              />
-            )}
-          </div>
+          {isEmpty(EditorRender) ? (
+            <Input.TextArea
+              className="full-width"
+              value={JSON.stringify(data.vars, null, 2)}
+              onChange={(value) => {
+                const newValue = tryfun(JSON.parse, value);
+                newValue && setData({ ...data, vars: newValue });
+              }}
+            />
+          ) : (
+            <EditorRender
+              value={data.vars}
+              onChange={(value) => setData({ ...data, vars: value })}
+            />
+          )}
         </RcInfo>
       )}
       <RcInfo title="应用配置">
-        {/* <App
+        <App
           dataSource={get(data, 'services')}
           onChange={(value: object) => setData({ ...data, services: value })}
-        /> */}
+        />
       </RcInfo>
-    </>
+    </div>
   );
 };
 

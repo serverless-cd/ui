@@ -74,6 +74,7 @@ const StepTask = (props: Props) => {
               content={
                 <StepContent
                   tasks={tasks}
+                  isChild
                   currentTask={currentTask}
                   isSuspend={isSuspend}
                   onRetry={onRetry}

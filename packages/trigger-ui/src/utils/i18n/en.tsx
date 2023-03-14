@@ -1,6 +1,6 @@
 export default {
   'ui.trigger.match.rule': 'matching rule',
-  'ui.trigger.target.branch': 'Branch of target',
+  'ui.trigger.target.branch': 'Target branch',
   'ui.trigger.add': 'add',
   'ui.trigger.match.rule.type.prefix': 'Prefix matching',
   'ui.trigger.match.rule.type.precise': 'Precise matching',
@@ -22,7 +22,7 @@ export default {
   'ui.trigger.match.tag.include.value': 'Please fill in the regular expression',
   'ui.trigger.match.tag.exclude.value': 'Please complete the Tag name',
   'ui.trigger.activity.type': 'trigger type',
-  'ui.trigger.source.branch': 'source branch',
+  'ui.trigger.source.branch': 'Source branch',
   'ui.notifiy.remindType.needless': 'Do not remind',
   'ui.notifiy.remindType.owner': 'everyone',
   'ui.notifiy.remindType.appoint': 'designated member',

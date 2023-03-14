@@ -5,7 +5,7 @@ import PrMatchContent from './PrMatchContent';
 import Refresh from './Refresh';
 import { i18n } from '../utils';
 import '../index.less';
-import { isEmpty } from 'lodash';
+import { isEmpty, get } from 'lodash';
 
 interface IProps {
   type: string;
@@ -18,6 +18,8 @@ interface IProps {
   onRefresh: Function;
   isRefresh: boolean;
   setBranchList: Function;
+  valueRender: Function;
+  selectBranchConfig: any;
 }
 
 const StrictMatch = (props: IProps) => {
@@ -31,7 +33,8 @@ const StrictMatch = (props: IProps) => {
     loading,
     onRefresh,
     isRefresh,
-    setBranchList,
+    valueRender,
+    selectBranchConfig,
   } = props;
   const { init } = field;
 
@@ -56,8 +59,9 @@ const StrictMatch = (props: IProps) => {
                   initValue: initValue[`${type}Value`],
                   rules: [{ required: true, message: i18n('ui.branch.verify.text') }],
                 })}
-                disabled={disabled || loading}
+                disabled={disabled || loading || get(selectBranchConfig, 'disabled', false)}
                 dataSource={branchList}
+                valueRender={valueRender}
                 state={loading ? 'loading' : undefined}
                 placeholder={i18n('ui.trigger.match.branch.precise.value')}
               />
@@ -88,7 +92,18 @@ const StrictMatch = (props: IProps) => {
         )}
         {type === STRICT_TYPE.PUSH_REQUEST && (
           <PrMatchContent
-            {...{ type, field, branchList, initValue, disabled, loading, onRefresh, isRefresh }}
+            {...{
+              type,
+              field,
+              branchList,
+              initValue,
+              disabled,
+              loading,
+              onRefresh,
+              isRefresh,
+              valueRender,
+              selectBranchConfig,
+            }}
           />
         )}
       </div>

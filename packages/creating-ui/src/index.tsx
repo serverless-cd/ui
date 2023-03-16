@@ -13,6 +13,7 @@ const CreatingUi = (props: Props, ref) => {
     onCountdownComplete = noop,
     showRetry = true,
     retryType = 'current',
+    help = '',
   } = props;
   const [stepList, setStepList] = useState([]);
   const [isSuspend, setIsSuspend] = useState(false);
@@ -108,7 +109,10 @@ const CreatingUi = (props: Props, ref) => {
   return (
     <div className="application-container" style={{ width: 600 }}>
       <Message type="warning" className="mt-5">
-        <span className="text-middle">当前阶段请不要刷新页面</span>
+        <>
+          <div className="text-middle">当前阶段请不要刷新页面</div>
+          {help}
+        </>
       </Message>
       <StepTask
         stepList={stepList}

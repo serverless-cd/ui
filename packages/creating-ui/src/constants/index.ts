@@ -6,6 +6,7 @@ export type Props = {
   showRetry?: boolean;
   countdown?: number;
   retryType?: string;
+  help?: string | HTMLElement;
 };
 
 export type Request = {

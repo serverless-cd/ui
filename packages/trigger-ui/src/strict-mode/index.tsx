@@ -17,6 +17,8 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
     onRefresh,
     initValue,
     onChange = noop,
+    valueRender,
+    selectBranchConfig,
   } = props;
 
   const [newBranchList, setNewBranchList] = useState(branchList);
@@ -59,6 +61,8 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
                 isRefresh={isRefresh}
                 onRefresh={onRefresh}
                 branchList={newBranchList}
+                valueRender={valueRender}
+                selectBranchConfig={selectBranchConfig}
                 setBranchList={setNewBranchList}
               />
             )}

@@ -5,6 +5,7 @@ export type Props = {
   onCountdownComplete?: () => void;
   showRetry?: boolean;
   countdown?: number;
+  retryType?: string;
 };
 
 export type Request = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { map, isEmpty } from 'lodash';
+import { map, isEmpty, get } from 'lodash';
 import { Select, Form, Checkbox, Input } from '@alicloud/console-components';
 import { ActivityTypes } from '../constants';
 import { i18n } from '../utils';
@@ -19,6 +19,8 @@ interface IProps {
   loading: boolean;
   onRefresh: Function;
   isRefresh: boolean;
+  valueRender: Function;
+  selectBranchConfig: any;
 }
 
 const FORM_LAYOUT = {
@@ -29,7 +31,18 @@ const FORM_LAYOUT = {
 };
 
 const PrMatchContent = (props: IProps) => {
-  const { type, field, branchList, initValue, disabled, loading, onRefresh, isRefresh } = props;
+  const {
+    type,
+    field,
+    branchList,
+    initValue,
+    disabled,
+    loading,
+    onRefresh,
+    isRefresh,
+    valueRender,
+    selectBranchConfig,
+  } = props;
   const { init, getValue } = field;
 
   const filterTargetValue = (value) => {
@@ -88,8 +101,9 @@ const PrMatchContent = (props: IProps) => {
                   rules: [{ required: true, message: i18n('ui.branch.verify.text') }],
                 })}
                 dataSource={branchList}
+                valueRender={valueRender}
                 placeholder={i18n('ui.trigger.match.branch.precise.value')}
-                disabled={disabled || loading}
+                disabled={disabled || loading || get(selectBranchConfig, 'disabled', false)}
                 state={loading ? 'loading' : undefined}
               />
             ) : (
@@ -119,6 +133,7 @@ const PrMatchContent = (props: IProps) => {
             {...init(`${type}Source`, {
               initValue: initValue[`${type}Source`],
             })}
+            valueRender={valueRender}
             dataSource={filterTargetValue(getValue(`${type}Target`))}
             placeholder={i18n('ui.trigger.match.source.branch')}
             disabled={disabled || loading}

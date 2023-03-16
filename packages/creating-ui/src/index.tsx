@@ -12,6 +12,7 @@ const CreatingUi = (props: Props, ref) => {
     countdown = 0,
     onCountdownComplete = noop,
     showRetry = true,
+    retryType = 'current',
   } = props;
   const [stepList, setStepList] = useState([]);
   const [isSuspend, setIsSuspend] = useState(false);
@@ -24,15 +25,9 @@ const CreatingUi = (props: Props, ref) => {
   useImperativeHandle(ref, () => ({
     onRetry,
   }));
+
   useEffect(() => {
-    const newData = map(dataSource, (item: Request, index) => ({
-      ...item,
-      index,
-      runStatus: item.runStatus || 'wait',
-      tasks: initTasks(item.tasks),
-    }));
-    setStepList(newData);
-    save(newData, {});
+    onInit();
     return () => {
       clearInterval(interval.current);
     };
@@ -58,6 +53,17 @@ const CreatingUi = (props: Props, ref) => {
     }
   };
 
+  const onInit = () => {
+    const newData = map(dataSource, (item: Request, index) => ({
+      ...item,
+      index,
+      runStatus: item.runStatus || 'wait',
+      tasks: initTasks(item.tasks),
+    }));
+    setStepList(newData);
+    save(newData, {});
+  };
+
   // 执行倒计时逻辑
   const onCountdown = () => {
     interval.current = setInterval(() => {
@@ -74,7 +80,7 @@ const CreatingUi = (props: Props, ref) => {
   // 重试事件
   const onRetry = () => {
     setIsSuspend(false);
-    save(stepList, taskContents);
+    retryType === 'all' ? onInit() : save(stepList, taskContents);
   };
 
   const onRunTask = async (task, content) => {

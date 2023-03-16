@@ -10,14 +10,25 @@ type Props = {
   currentTask: Request;
   onRetry: () => void;
   showRetry: boolean;
+  isChild?: boolean;
 };
 
 const StepContent = (props: Props) => {
-  const { tasks = [], currentTask = {} as any, isSuspend, onRetry, showRetry } = props;
+  const {
+    tasks = [],
+    currentTask = {} as any,
+    isSuspend,
+    onRetry,
+    showRetry,
+    isChild = false,
+  } = props;
   return (
     <>
       {map(tasks, (task) => {
-        if (task.runStatus === 'finish') return <div>{task.successMsg || task.title}</div>;
+        if (task.runStatus === 'finish')
+          return (
+            <div className={isChild ? 'color-success' : ''}> {task.successMsg || task.title} </div>
+          );
         if (currentTask.key === task.key) {
           return (
             <>
@@ -34,7 +45,7 @@ const StepContent = (props: Props) => {
                   )}
                 </div>
               ) : (
-                <div>{task.runningMsg || task.title}</div>
+                <div> {task.runningMsg || task.title} </div>
               )}
             </>
           );

@@ -7,6 +7,9 @@ import NormalModeTrigger from './normal-mode';
 import { againstParseNormalValues, againstParseValues, normalValuesFormat } from './utils/util';
 import './index.less';
 
+const defaultValueRender = (item) => item.label;
+const defaultSelectBranchConfig = { disable: false };
+
 const Trigger = (props: TriggersProps, ref) => {
   const {
     value,
@@ -17,6 +20,8 @@ const Trigger = (props: TriggersProps, ref) => {
     branchList,
     isRefresh,
     onRefresh,
+    valueRender = defaultValueRender,
+    selectBranchConfig = defaultSelectBranchConfig,
   } = props;
   const strictRef = useRef(null);
   const normalRef = useRef(null);
@@ -61,8 +66,10 @@ const Trigger = (props: TriggersProps, ref) => {
           {...init('strict')}
           initValue={againstParseValues(value)}
           disabled={disabled}
+          selectBranchConfig={selectBranchConfig}
           loading={loading}
           branchList={branchList}
+          valueRender={valueRender}
           ref={strictRef}
           isRefresh={isRefresh}
           onRefresh={onRefresh}

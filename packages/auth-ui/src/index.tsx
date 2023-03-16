@@ -98,7 +98,7 @@ const Auth = (props: any) => {
 
   const handleTripartiteProviderUrl = (url) => {
     // 跳转第三方登录
-    window.open(url);
+    window.location.href = url;
   };
 
   const handleLogin = () => {

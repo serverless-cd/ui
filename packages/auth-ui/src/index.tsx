@@ -98,7 +98,7 @@ const Auth = (props: any) => {
 
   const handleTripartiteProviderUrl = (url) => {
     // 跳转第三方登录
-    window.open(url);
+    window.location.href = url;
   };
 
   const handleLogin = () => {
@@ -107,7 +107,13 @@ const Auth = (props: any) => {
       Store_Account_Information[adminStatus].operateFunc(values);
     });
   };
-
+  // 支持Entry键登录
+  const keyboard = (e) => {
+    if (e.keyCode === 13) {
+      adminStatus === LOGIN_TYPE.LOGIN && handleLogin();
+    }
+  };
+  document.addEventListener('keyup', keyboard);
   return (
     <Form field={field} className={`auth-content ${className}`} style={style}>
       <Form.Item className="admin-title" style={{ ...titleStyle }}>
@@ -212,16 +218,27 @@ const Auth = (props: any) => {
         children
       }
       <Form.Item className="admin-public-width">
+        {(githubUrl || giteeUrl) && <hr className="hr" />}
         <div className="admin-tripartite-provider">
           {githubUrl && (
-            <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
+            <Button
+              style={{ width: '100%' }}
+              className="icon admin-github-btn"
+              onClick={() => handleTripartiteProviderUrl(githubUrl)}
+            >
               <i className="iconfont icon-font-size">&#xe50e;</i>
-            </div>
+              <span className="admin-github-btn-font">Github 登录</span>
+            </Button>
           )}
           {giteeUrl && (
-            <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
+            <Button
+              style={{ width: '100%' }}
+              className="icon admin-gitee-btn"
+              onClick={() => handleTripartiteProviderUrl(giteeUrl)}
+            >
               <i className="iconfont icon-font-size icon-gitee-color">&#xe60c;</i>
-            </div>
+              <span className="admin-gitee-btn-font">Gitee 登录</span>
+            </Button>
           )}
         </div>
       </Form.Item>

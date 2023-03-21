@@ -51,13 +51,14 @@ export const onToYamlString = (values) => {
             name: functionName,
             description: 'Initialize',
             runtime: runtime,
-            handler: !isCustom ? handler : undefined,
+            handler: !isCustom && handler ? handler : undefined,
             memorySize: memorySize,
             cpu: cpuCore,
             timeout: 60,
+            codeUri: './',
             diskSize: diskSize,
-            caPort: isCustom ? caPort : undefined,
-            customRuntimeConfig: isCustom ? { command: [command] } : undefined,
+            caPort: isCustom && command ? caPort : undefined,
+            customRuntimeConfig: isCustom && command ? { command: [command] } : undefined,
           },
           triggers: isCustom
             ? [
@@ -66,7 +67,7 @@ export const onToYamlString = (values) => {
                   type: 'http',
                   config: {
                     authType: 'anonymous',
-                    methods: ['GET', 'POST'],
+                    methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'PATCH'],
                   },
                 },
               ]
@@ -161,10 +162,10 @@ const ResourceUI = (props: IProps, ref) => {
           className="full-width"
         />
       </Form.Item>
-      <Form.Item label="环境算力配置" required>
+      <Form.Item label="环境算力配置">
         <Specification field={field} initValue={{}} />
       </Form.Item>
-      <Form.Item label="函数磁盘大小" required>
+      <Form.Item label="函数磁盘大小">
         <Select
           {...init('diskSize', { initValue: 512 })}
           dataSource={[
@@ -176,16 +177,16 @@ const ResourceUI = (props: IProps, ref) => {
       </Form.Item>
       {getValue('shellType') === 'custom' && (
         <>
-          <Form.Item label="启动命令/脚本" required>
+          <Form.Item label="启动命令/脚本">
             <Input
-              {...init('command', { rules: [{ required: true }] })}
+              {...init('command')}
               className="full-width"
               placeholder="启动您程序的命令。例如：python app.py 或 java -jar app.jar"
             />
           </Form.Item>
-          <Form.Item label="端口配置" required>
+          <Form.Item label="端口配置">
             <Input
-              {...init('caPort', { rules: [{ required: true }] })}
+              {...init('caPort')}
               className="full-width"
               htmlType={'number'}
               placeholder="您的代码中所监听的端口"
@@ -195,8 +196,8 @@ const ResourceUI = (props: IProps, ref) => {
       )}
       {getValue('shellType') === 'origin' && (
         <>
-          <Form.Item label="函数入口" required>
-            <Input {...init('funPath', { rules: [{ required: true }] })} className="full-width" />
+          <Form.Item label="函数入口">
+            <Input {...init('handler')} className="full-width" />
           </Form.Item>
         </>
       )}

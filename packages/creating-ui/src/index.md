@@ -291,8 +291,6 @@ export default () => {
 
 ### 支持自定义文案提示
 
-help： 支持 string/dom 类型
-
 ```tsx
 import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
@@ -358,6 +356,87 @@ export default () => {
     },
     {
       title: '创建成功，请前往详情页',
+      key: 'releaseEnv1',
+    },
+  ];
+
+  const onError = (value) => {
+    console.log(value, 'Error 事件');
+  };
+
+  const onComplete = (value) => {
+    console.log(value, 'Complete 事件');
+  };
+
+  const onCountdownComplete = () => {
+    console.log('CountdownComplete 事件 ----');
+    // window.open('https://www.baidu.com/');
+  };
+
+  return (
+    <CreatingUi
+      dataSource={dataSource}
+      onError={onError}
+      onComplete={onComplete}
+      countdown={3}
+      help={<span>测试测试</span>}
+      onCountdownComplete={onCountdownComplete}
+    />
+  );
+};
+```
+
+### 等待任务执行 示例
+
+```tsx
+import React from 'react';
+import '@alicloud/console-components/dist/wind.css';
+import CreatingUi from '@serverless-cd/creating-ui';
+import { Button } from '@alicloud/console-components';
+import { get } from 'lodash';
+
+export default () => {
+  const dataSource = [
+    {
+      title: '提交pr/mr',
+      runStatus: 'wait',
+      key: 'createOrg',
+      runningMsg: '提交pr/mr中...',
+      successMsg: '已提交pr/mr',
+      errorMsg: '提交pr/mr失败',
+      run: async () => {
+        return await new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve('createOrg');
+          }, 3000);
+        });
+      },
+    },
+    {
+      title: '校验 pr/mr 是否已经完成',
+      runStatus: 'wait',
+      key: 'releaseEnv',
+      runningMsg: '校验 pr/mr 中...',
+      successMsg: 'pr/mr校验已完成',
+      errorMsg: 'pr/mr校验失败',
+      run: async (params) => {
+        let check = false;
+        setTimeout(() => {
+          check = true;
+        }, 10000);
+        return await new Promise((resolve, reject) => {
+          let inter = setInterval(() => {
+            console.log('校验中.......');
+            if (check) {
+              resolve(33);
+              clearInterval(inter);
+            }
+          }, 3000);
+        });
+      },
+    },
+    {
+      title: '创建成功',
       key: 'releaseEnv1',
     },
   ];

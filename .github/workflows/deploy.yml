@@ -1,0 +1,32 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: deploy serverless cd website
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: copy markdown source
+        run: node dumi.js
+      - name: install dependencies
+        run: npm install
+      - name: build app
+        run: npm run docs:build
+      - name: copy dist file with scp
+        # You may pin to the exact commit or the version.
+        # uses: appleboy/scp-action@b476d5806f2a4c1ed5902a87fa91b0623cac7258
+        uses: appleboy/scp-action@v0.0.1
+        with: 
+          source: 'dist/'
+      

@@ -16,6 +16,7 @@ for (let i = 0; (len = packages.length), i < len; i++) {
   if (!isExist) continue;
   try {
     fs.copyFileSync(`${path}/src/index.md`, `./src/${file}.md`);
+    console.log(`success  ${path}/src/index.md --> ./src/${file}.md`);
     isCopyFinish = true;
   } catch (error) {
     isCopyFinish = false;
@@ -29,7 +30,7 @@ if (isCopyFinish) {
     JSON.stringify(packagesParse, null, '\t'),
     (error, data) => {
       if (!error) {
-        console.log('write successed.....');
+        console.log('success  package.json write successed');
       }
     },
   );

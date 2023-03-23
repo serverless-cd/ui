@@ -4,6 +4,8 @@ const packages = require('./dumidoc');
 const packagesJson = fs.readFileSync('./package.json', 'utf8');
 const packagesParse = JSON.parse(packagesJson);
 
+let isCopyFinish = false;
+
 for (let i = 0; (len = packages.length), i < len; i++) {
   const component = packages[i];
   const { package, version, path, file } = component;
@@ -14,17 +16,23 @@ for (let i = 0; (len = packages.length), i < len; i++) {
   if (!isExist) continue;
   try {
     fs.copyFileSync(`${path}/src/index.md`, `./src/${file}.md`);
+    isCopyFinish = true;
   } catch (error) {
+    isCopyFinish = false;
     console.error(error);
   }
 }
 
-fs.writeFile(
-  './package.json',
-  JSON.stringify(packagesParse, null, '\t'),
-  (error, data) => {
-    if (!error) {
-      console.log('write successed.....');
-    }
-  },
-);
+if (isCopyFinish) {
+  fs.writeFile(
+    './package.json',
+    JSON.stringify(packagesParse, null, '\t'),
+    (error, data) => {
+      if (!error) {
+        console.log('write successed.....');
+      }
+    },
+  );
+} else {
+  console.error('copy error.....');
+}

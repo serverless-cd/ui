@@ -48,11 +48,7 @@
 		"react-dom": "^18.2.0",
 		"styled-components": "^5.3.6",
 		"stylelint": "^14.9.1",
-		"yorkie": "^2.0.0",
-		"@serverless-cd/dingtalk-ui": "^0.0.12",
-		"@serverless-cd/app-card-ui": "^0.0.5",
-		"@serverless-cd/s-ui": "^0.0.1",
-		"@serverless-cd/trigger-ui": "^0.0.25"
+		"yorkie": "^2.0.0"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.10.6"

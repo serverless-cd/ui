@@ -30,6 +30,7 @@ export default () => {
           titleStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           type="LOGINEMAIL"
           onSingIn={onSingIn}
+          accountBtnName="自定义登录"
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <a href="#忘记密码">忘记密码</a> {/* Remember Me */}
@@ -109,13 +110,24 @@ export default () => {
   const onRememberMe = async (req) => {
     console.log('onRememberMe 触发密码变更回调函数', req);
   };
+  const [lodaing, setLoading] = useState(false);
+
+  setTimeout(() => {}, 2000);
+
+  const loginThirdPartyConfig = {
+    github: {
+      url: 'https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
+      loding: false,
+    },
+    gitee:
+      'https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
+  };
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
           title={title}
-          githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
-          giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
+          // {...loginThirdPartyConfig}
           type="REMEMBER"
           onRememberMe={onRememberMe}
         >

@@ -26,6 +26,7 @@ const Auth = (props: any) => {
     children,
     style,
     titleStyle,
+    accountBtnName,
   } = props;
   const field = Field.useField();
   const { init, validate, getValue } = field;
@@ -210,7 +211,7 @@ const Auth = (props: any) => {
       )}
       <Form.Item className="admin-public-width">
         <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
-          {Store_Account_Information[adminStatus].operate}
+          {accountBtnName ? accountBtnName : Store_Account_Information[adminStatus].operate}
         </Button>
       </Form.Item>
       {

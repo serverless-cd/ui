@@ -1,7 +1,7 @@
 import { defineConfig } from 'dumi';
 
 export default defineConfig({
-  // outputPath: 'docs-dist',
+  outputPath: 'code',
   themeConfig: {
     name: 'serverless-cd Design',
     rtl: true,

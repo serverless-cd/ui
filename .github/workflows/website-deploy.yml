@@ -1,0 +1,31 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Deploy Website
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: copy markdown source
+        run: node dumi.js
+      - name: install dependencies
+        run: npm install
+      - name: build app
+        run: npm run docs:build
+      - name: install @serverless-devs/s
+        run: npm i @serverless-devs/s -g  --registry=https://registry.npmmirror.com
+      - name: deploy
+        run: s deploy
+        
+      

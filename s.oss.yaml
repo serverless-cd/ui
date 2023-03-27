@@ -1,8 +1,8 @@
 edition: 1.0.0
-access: {{ access }}
+access: "alibaba-access"
 
 vars: # 全局变量
-  region: {{ region }}
+  region: "cn-hangzhou"
 
 services:
   serverless-cd-ui:

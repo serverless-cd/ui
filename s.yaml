@@ -1,0 +1,55 @@
+edition: 1.0.0
+name: serverless-cd-ui
+
+access: "alibaba-access"
+
+vars: # 全局变量
+  region: "cn-hangzhou"
+  service:
+    name: "serverless-ui"
+    description: 'serverless-cd ui website'
+
+services:
+  framework:
+    component: fc
+    actions:
+      pre-deploy: # 在deploy之前运行
+        - run: cp nginx.conf ./code/nginx.conf      # 要执行的系统命令，类似于一种钩子的形式
+    props:
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: "nginx"
+        description: 'serverless-cd ui nginx'
+        codeUri: './code'
+        runtime: custom
+        timeout: 300
+        memorySize: 1536
+        caPort: 9000
+        instanceConcurrency: 8
+        customRuntimeConfig:
+          command:
+            - nginx
+          args:
+            - '-c'
+            - '/code/nginx.conf'
+            - '-g'
+            - 'daemon off;'
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - HEAD
+              - OPTIONS
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: /*
+

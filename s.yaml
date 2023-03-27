@@ -1,7 +1,7 @@
 edition: 1.0.0
 name: serverless-cd-ui
 
-access: "alibaba-access"
+access: "default"
 
 vars: # 全局变量
   region: "cn-hangzhou"

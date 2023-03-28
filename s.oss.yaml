@@ -1,0 +1,27 @@
+edition: 1.0.0
+access: "alibaba-access"
+
+vars: # 全局变量
+  region: "cn-hangzhou"
+
+services:
+  serverless-cd-ui:
+    component: oss
+    actions:
+      pre-deploy:
+        - run: node dumi.js
+          path: ./
+        - run: npm install --registry=https://registry.npmmirror.com
+          path: ./
+        - run: npm run docs:build
+          path: ./
+    props:
+      bucket: serverless-cd-ui
+      codeUri: ./dist
+      region: ${vars.region}
+      website:
+        index: index.html
+        error: 404.html
+        subDirType: index
+      customDomains:
+        - domainName: auto

@@ -1,12 +1,16 @@
-## app-card-ui
+---
+title: AppCard 应用卡片
+toc: content
+---
 
-### 基本使用
+# AppCard 应用卡片
+
+## 基本使用
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   const dataSouce = {
@@ -27,10 +31,9 @@ export default () => {
 ### 自定义立即创建
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   const dataSouce = {
@@ -57,10 +60,9 @@ export default () => {
 > apiType 为枚举类型：fc，fcweb（默认为 fc）
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard, { IApiType } from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   const dataSouce = {
@@ -81,13 +83,12 @@ export default () => {
 ### fetchReadme
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard, { IApiType } from '@serverless-cd/app-card-ui';
 import axios from 'axios';
-import qs from 'qs';
 import { get } from 'lodash';
+import qs from 'qs';
+import React from 'react';
 
 export default () => {
   const dataSouce = {
@@ -117,7 +118,13 @@ export default () => {
     } catch (e) {}
   };
 
-  return <AppCard dataSouce={dataSouce} apiType={IApiType.fcweb} fetchReadme={fetchReadme} />;
+  return (
+    <AppCard
+      dataSouce={dataSouce}
+      apiType={IApiType.fcweb}
+      fetchReadme={fetchReadme}
+    />
+  );
 };
 ```
 
@@ -126,10 +133,9 @@ export default () => {
 > 设置 column 属性为 3 时，可以一行展示 3 列
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   const dataSouce = {
@@ -166,10 +172,10 @@ export default () => {
 ### AppCard.Readme （新版 alireadme）
 
 ```tsx
-import React from 'react';
-import '@alicloud/console-components/dist/wind.css';
 import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   return (
@@ -183,10 +189,10 @@ export default () => {
 ### AppCard.Readme （兼容旧模版）
 
 ```tsx
-import React from 'react';
-import '@alicloud/console-components/dist/wind.css';
 import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   return (
@@ -202,14 +208,18 @@ export default () => {
 > 设置 activeTab 属性，slide 视图可以 定位到 对应的 tab
 
 ```tsx
-import React from 'react';
-import '@alicloud/console-components/dist/wind.css';
 import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
   return (
-    <AppCard.Readme appName="png-compress" onCreate={() => {}} activeTab="local_experience">
+    <AppCard.Readme
+      appName="png-compress"
+      onCreate={() => {}}
+      activeTab="local_experience"
+    >
       <Button type="primary">查看详情</Button>
     </AppCard.Readme>
   );
@@ -221,14 +231,27 @@ export default () => {
 > 设置 activeTab 属性，slide 视图可以 定位到 对应的 tab
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Button } from '@alicloud/console-components';
 import AppCard from '@serverless-cd/app-card-ui';
+import React from 'react';
 
 export default () => {
-  return <AppCard.Readme appName="png-compress" visible activeTab="usedetail"></AppCard.Readme>;
+  return (
+    <AppCard.Readme
+      appName="png-compress"
+      visible
+      activeTab="usedetail"
+    ></AppCard.Readme>
+  );
 };
 ```
+
+## API
+
+| 参数        | 说明   | 类型   | 必填 | 默认值 |
+| ----------- | ------ | ------ | ---- | ------ |
+| title       | 标题   | String | 是   |        |
+| description | 描述   | String | 否   |        |
+| download    | 下载量 | Number | 否   |        |
 
 More skills for writing demo: https://d.umijs.org/guide/basic#write-component-demo

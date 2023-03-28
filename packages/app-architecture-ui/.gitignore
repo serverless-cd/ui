@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-.dumi
+
 # dependencies
-node_modules
+/node_modules
 /npm-debug.log*
 /yarn-error.log
 /yarn.lock
@@ -10,9 +10,6 @@ node_modules
 # production
 /es
 /docs-dist
-dist
-code
-src/*.md
 
 # misc
 .DS_Store
@@ -23,7 +20,6 @@ src/*.md
 .umi-production
 .umi-test
 .env.local
-.s
 
 # ide
 /.vscode

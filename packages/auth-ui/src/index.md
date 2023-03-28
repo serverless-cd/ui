@@ -1,12 +1,16 @@
-## Auth
+---
+title: Auth 注册
+toc: content
+---
 
-# 邮箱登录
+# Auth 注册
+
+## 邮箱登录
 
 ```tsx
-import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button, Input } from '@alicloud/console-components';
 import Auth from '@serverless-cd/auth-ui';
+import React, { useState } from 'react';
 
 // 使用方式
 //  组件被field接管。
@@ -14,7 +18,9 @@ import Auth from '@serverless-cd/auth-ui';
 export default () => {
   const title = (
     <div>
-      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>Serverless Application Center</div>
+      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>
+        Serverless Application Center
+      </div>
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
@@ -30,16 +36,32 @@ export default () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Auth
           title={title}
-          titleStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          titleStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
           type="LOGINEMAIL"
           onSingIn={onSingIn}
           accountBtnName="自定义登录"
           loading={loading}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <a href="#忘记密码">忘记密码</a> {/* Remember Me */}
             <a href="#注册">注册新账号</a> {/* Create an account Me */}
           </div>
@@ -50,14 +72,12 @@ export default () => {
 };
 ```
 
-# 用户名登录
+## 用户名登录
 
 ```tsx
-import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button, Input } from '@alicloud/console-components';
 import Auth from '@serverless-cd/auth-ui';
-import './icon.less';
+import React, { useState } from 'react';
 
 // 使用方式
 //  组件被field接管。
@@ -66,7 +86,9 @@ export default () => {
   const title = (
     <div>
       <div style={{ fontSize: '18px', fontWeight: 'blod' }}>开源</div>
-      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>Serverless Application Center</div>
+      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>
+        Serverless Application Center
+      </div>
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
@@ -92,7 +114,13 @@ export default () => {
   ];
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Auth
           title={title}
           thirdPartyConfig={ThirdPartyConfig}
@@ -100,7 +128,13 @@ export default () => {
           onSingIn={onSingIn}
           loading={loading}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <a href="#忘记密码">忘记密码</a>
             <a href="#注册">免费注册</a>
           </div>
@@ -111,13 +145,12 @@ export default () => {
 };
 ```
 
-# 忘记密码
+## 忘记密码
 
 ```tsx
-import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import Auth from '@serverless-cd/auth-ui';
+import React, { useState } from 'react';
 
 // 使用方式
 //  组件被field接管。
@@ -126,7 +159,9 @@ export default () => {
   const title = (
     <div>
       <div style={{ fontSize: '18px', fontWeight: 'blod' }}>开源</div>
-      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>Serverless Application Center</div>
+      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>
+        Serverless Application Center
+      </div>
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
@@ -152,7 +187,13 @@ export default () => {
   ];
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Auth
           title={title}
           thirdPartyConfig={ThirdPartyConfig}
@@ -160,7 +201,10 @@ export default () => {
           onRememberMe={onRememberMe}
         >
           <div className="admin-public-width">
-            <a href="#用户名登录" className="admin-register-color admin-cursor admin-go-login">
+            <a
+              href="#用户名登录"
+              className="admin-register-color admin-cursor admin-go-login"
+            >
               已经有账户？前往登录
             </a>
           </div>
@@ -171,19 +215,20 @@ export default () => {
 };
 ```
 
-# 注册
+## 注册
 
 ```tsx
-import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import Auth from '@serverless-cd/auth-ui';
+import React from 'react';
 
 export default () => {
   const title = (
     <div>
       <div style={{ fontSize: '18px', fontWeight: 'blod' }}>开源</div>
-      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>Serverless Application Center</div>
+      <div style={{ fontSize: '18px', fontWeight: 'blod' }}>
+        Serverless Application Center
+      </div>
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
@@ -192,10 +237,19 @@ export default () => {
   };
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Auth title={title} type="REGISTER" onSignUp={onSignUp}>
           <div className="admin-public-width">
-            <a href="#用户名登录" className="admin-register-color admin-cursor admin-go-login">
+            <a
+              href="#用户名登录"
+              className="admin-register-color admin-cursor admin-go-login"
+            >
               已经有账户？前往登录
             </a>
           </div>

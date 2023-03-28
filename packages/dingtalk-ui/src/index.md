@@ -1,12 +1,17 @@
-## Notifiy
+---
+title: Dingtalk 通知
+toc: content
+---
 
-Demo:
+# Dingtalk 通知
+
+## 基本用法
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { Button, Field, Loading } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button, Loading } from '@alicloud/console-components';
 import DingTalk from '@serverless-cd/dingtalk-ui';
+import React, { useRef, useState } from 'react';
 
 // 使用方式
 //  组件被field接管。

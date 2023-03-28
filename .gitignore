@@ -12,6 +12,7 @@ node_modules
 /docs-dist
 dist
 code
+src/*.md
 
 # misc
 .DS_Store

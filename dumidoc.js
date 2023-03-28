@@ -51,4 +51,10 @@ module.exports = [
     path: './packages/variable-ui',
     name: 'variable',
   },
+  {
+    package: '@serverless-cd/auth-ui',
+    version: '0.0.2',
+    path: './packages/auth-ui',
+    name: 'auth',
+  },
 ];

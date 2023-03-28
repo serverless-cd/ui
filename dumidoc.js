@@ -45,12 +45,12 @@ module.exports = [
     path: './packages/creating-ui',
     name: 'creating',
   },
-  {
-    package: '@serverless-cd/setting-ui',
-    version: '0.0.1',
-    path: './packages/setting-ui',
-    name: 'setting',
-  },
+  // {
+  //   package: '@serverless-cd/setting-ui',
+  //   version: '0.0.1',
+  //   path: './packages/setting-ui',
+  //   name: 'setting',
+  // },
   {
     package: '@serverless-cd/ui-help',
     version: '0.0.2',

@@ -3,7 +3,7 @@ import { defineConfig } from 'dumi';
 export default defineConfig({
   outputPath: 'code',
   themeConfig: {
-    name: 'serverless-cd Design',
+    name: 'serverless-cd/ui',
     logo: '/logo.png',
     rtl: true,
     socialLinks: {
@@ -18,4 +18,5 @@ export default defineConfig({
   },
   title: 'serverless-cd',
   favicons: ['/logo.png'],
+  styles: [`.dumi-default-header-left { width: 264px !important}`],
 });

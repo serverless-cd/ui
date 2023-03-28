@@ -1,15 +1,17 @@
-## CreatingUi
+---
+title: Creating 创建
+toc: content
+---
 
-Demo:
+# Creating 创建
 
-### 基本用法
+## 基本用法
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import CreatingUi from '@serverless-cd/creating-ui';
-import { Button } from '@alicloud/console-components';
 import { get } from 'lodash';
+import React from 'react';
 
 export default () => {
   const dataSource = [
@@ -59,7 +61,11 @@ export default () => {
             console.log('----部署2');
             return await new Promise((resolve, reject) => {
               setTimeout(() => {
-                const success = get(params, 'content.createRelease.success', true);
+                const success = get(
+                  params,
+                  'content.createRelease.success',
+                  true,
+                );
                 success ? reject(33) : resolve(44);
               }, 3000);
             });
@@ -98,14 +104,14 @@ export default () => {
 };
 ```
 
-### 外部调用 重试功能
+## 外部调用 重试功能
 
 ```tsx
-import React, { useRef } from 'react';
+import { Button } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
 import CreatingUi from '@serverless-cd/creating-ui';
-import { Button } from '@alicloud/console-components';
 import { get } from 'lodash';
+import React, { useRef } from 'react';
 
 export default () => {
   const CreatingRef = useRef(null);
@@ -157,7 +163,11 @@ export default () => {
             console.log('----部署2');
             return await new Promise((resolve, reject) => {
               setTimeout(() => {
-                const success = get(params, 'content.createRelease.success', true);
+                const success = get(
+                  params,
+                  'content.createRelease.success',
+                  true,
+                );
                 success ? reject(33) : resolve(44);
               }, 3000);
             });
@@ -184,22 +194,26 @@ export default () => {
       <Button style={{ marginBottom: 20 }} onClick={onRetry}>
         重试
       </Button>
-      <CreatingUi dataSource={dataSource} onError={onError} showRetry={false} ref={CreatingRef} />
+      <CreatingUi
+        dataSource={dataSource}
+        onError={onError}
+        showRetry={false}
+        ref={CreatingRef}
+      />
     </>
   );
 };
 ```
 
-### 全部重试操作
+## 全部重试操作
 
 retryType: all - 从头开始执行 current - 当前错误 task 开始执行
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import CreatingUi from '@serverless-cd/creating-ui';
-import { Button } from '@alicloud/console-components';
 import { get } from 'lodash';
+import React from 'react';
 
 export default () => {
   const dataSource = [
@@ -249,7 +263,11 @@ export default () => {
             console.log('----部署2');
             return await new Promise((resolve, reject) => {
               setTimeout(() => {
-                const success = get(params, 'content.createRelease.success', true);
+                const success = get(
+                  params,
+                  'content.createRelease.success',
+                  true,
+                );
                 success ? reject(33) : resolve(44);
               }, 3000);
             });

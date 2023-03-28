@@ -1,12 +1,17 @@
-## Trigger
+---
+title: Trigger 触发
+toc: content
+---
 
-Demo:
+# Trigger 触发
+
+## 基本用法
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { Button, Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
-import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+import Trigger from '@serverless-cd/trigger-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();
@@ -49,10 +54,16 @@ export default () => {
   return (
     <div>
       <div style={{ marginBottom: 20 }}>
-        <Button style={{ marginRight: 20 }} onClick={() => onChangeMode('strict')}>
+        <Button
+          style={{ marginRight: 20 }}
+          onClick={() => onChangeMode('strict')}
+        >
           strict
         </Button>
-        <Button style={{ marginRight: 20 }} onClick={() => onChangeMode('normal')}>
+        <Button
+          style={{ marginRight: 20 }}
+          onClick={() => onChangeMode('normal')}
+        >
           normal
         </Button>
         <Button style={{ marginRight: 20 }} onClick={verifyTrigger}>
@@ -87,10 +98,9 @@ export default () => {
 ## 预览效果
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
-import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+import Trigger from '@serverless-cd/trigger-ui';
+import React from 'react';
 
 const TriggerPreview = Trigger.Preview;
 
@@ -104,10 +114,10 @@ export default () => {
 ## 严格模式
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { Button, Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();
@@ -182,10 +192,10 @@ export default () => {
 ## 自定义 value
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { Button, Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();
@@ -265,10 +275,10 @@ export default () => {
 ## 严格模式只禁用 分支下拉框
 
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { Button, Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();

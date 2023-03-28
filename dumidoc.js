@@ -33,24 +33,12 @@ module.exports = [
     path: './packages/trigger-ui',
     name: 'trigger',
   },
-  // {
-  //   package: '@serverless-cd/auth-ui',
-  //   version: '0.0.2',
-  //   path: './packages/auth-ui',
-  //   name: 'auth',
-  // },
   {
     package: '@serverless-cd/creating-ui',
     version: '0.0.3',
     path: './packages/creating-ui',
     name: 'creating',
   },
-  // {
-  //   package: '@serverless-cd/setting-ui',
-  //   version: '0.0.1',
-  //   path: './packages/setting-ui',
-  //   name: 'setting',
-  // },
   {
     package: '@serverless-cd/ui-help',
     version: '0.0.2',

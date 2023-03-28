@@ -103,3 +103,8 @@ export enum AUTH_TYPE {
   LOGIN = 'login',
   REGISITER = 'register',
 }
+
+export enum THIRDPARTY {
+  GITHUB = 'github',
+  GITEE = 'gitee',
+}

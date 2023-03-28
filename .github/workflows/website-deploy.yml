@@ -27,6 +27,6 @@ jobs:
         run: npm i @serverless-devs/s -g  --registry=https://registry.npmmirror.com
       - run: s config add --AccessKeyID ${{secrets.SIMPLE_ALIYUN_AK}}  --AccessKeySecret ${{secrets.SIMPLE_ALIYUN_SK}} -a default -f
       - name: deploy
-        run: s deploy --use-local -y
+        run: s deploy --use-local -y --use-local --debug
         
       

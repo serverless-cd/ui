@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field, Button, Input } from '@alicloud/console-components';
 import Auth from '@serverless-cd/auth-ui';
-import './icon.less';
 
 // 使用方式
 //  组件被field接管。

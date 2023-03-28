@@ -1,0 +1,117 @@
+.architecture {
+  display: flex;
+
+  .architecture_content {
+    flex-grow: 1;
+    // flex-basis:0;
+    padding: 0 20px;
+
+    .architecture_header {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 16px;
+      font-weight: bold;
+      font-size: 14px;
+      border-bottom: 1px solid #dedede;
+    }
+  }
+}
+.architecture_wrapper {
+  width: max-content;
+  height: max-content;
+  border: 1px solid #dedede;
+
+  .architecture_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 1px solid #dedede;
+  }
+
+  .architecture_body {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    // height: calc(100% - 56px)
+    padding: 16px;
+  }
+}
+
+.architecture_item_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-width: 100px;
+  // max-width: calc(100% - 20px);
+  height: 120px;
+  margin: 8px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #dedede;
+
+  .architecture_item_component {
+    width: calc(100% - 20px);
+    padding: 16px;
+  }
+
+  &:hover {
+    background: #ebebeb;
+  }
+
+  .architecture_item_text {
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+.architecture_item_wrapper.architecture_item_wrapper_wide {
+  z-index: 10;
+  flex-direction: row;
+  width: calc(100% - 40px);
+}
+
+.architecture_item_wrapper_parrent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  // padding: 16px;
+
+  .architecture_item_children {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    max-width: 400px;
+    margin-top: -60px;
+    padding: 60px 16px 16px;
+    border: 1px solid #dedede;
+  }
+}
+
+.architecture_item_wrapper_disabled {
+  color: #c1c1c1;
+  cursor: not-allowed;
+
+  .architecture_item_text {
+    opacity: 0.6;
+  }
+}
+
+.architecture_item_wrapper_active {
+  color: #ff6a00;
+}
+
+.architecture_item_wrapper_selected {
+  border-color: #0070cc;
+}
+
+.architecture_item_wrapper_leaf {
+  flex-grow: 1;
+}

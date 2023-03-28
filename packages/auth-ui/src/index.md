@@ -19,9 +19,16 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
+  const [loading, setLoading] = useState(false);
+
   const onSingIn = async (req) => {
+    setLoading(true);
     console.log('onSingIn 触发登录回调函数', req);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -31,6 +38,7 @@ export default () => {
           type="LOGINEMAIL"
           onSingIn={onSingIn}
           accountBtnName="自定义登录"
+          loading={loading}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <a href="#忘记密码">忘记密码</a> {/* Remember Me */}
@@ -63,18 +71,35 @@ export default () => {
       <div style={{ textAlign: 'right' }}>https://www.osac.com</div>
     </div>
   );
+  const [loading, setLoading] = useState(false);
   const onSingIn = async (req) => {
+    setLoading(true);
     console.log('onSingIn 触发登录回调函数', req);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
+  const ThirdPartyConfig = [
+    {
+      type: 'github',
+      url: 'https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
+      loading: loading,
+    },
+    {
+      type: 'gitee',
+      url: 'https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
+      loading: false,
+    },
+  ];
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
           title={title}
-          githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
-          giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
+          thirdPartyConfig={ThirdPartyConfig}
           type="LOGIN"
           onSingIn={onSingIn}
+          loading={loading}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <a href="#忘记密码">忘记密码</a>
@@ -114,20 +139,24 @@ export default () => {
 
   setTimeout(() => {}, 2000);
 
-  const loginThirdPartyConfig = {
-    github: {
+  const ThirdPartyConfig = [
+    {
+      type: 'github',
       url: 'https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
-      loding: false,
+      loading: false,
     },
-    gitee:
-      'https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
-  };
+    {
+      type: 'gitee',
+      url: 'https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo',
+      loading: false,
+    },
+  ];
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Auth
           title={title}
-          // {...loginThirdPartyConfig}
+          thirdPartyConfig={ThirdPartyConfig}
           type="REMEMBER"
           onRememberMe={onRememberMe}
         >
@@ -165,13 +194,7 @@ export default () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Auth
-          title={title}
-          githubUrl="https://github.com/login/oauth/authorize?  client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
-          giteeUrl="https://github.com/login/oauth/authorize?client_id=86059a1b2bb20d3e5fc3&scope=repo,repo:status,delete_repo"
-          type="REGISTER"
-          onSignUp={onSignUp}
-        >
+        <Auth title={title} type="REGISTER" onSignUp={onSignUp}>
           <div className="admin-public-width">
             <a href="#用户名登录" className="admin-register-color admin-cursor admin-go-login">
               已经有账户？前往登录

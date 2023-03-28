@@ -29,10 +29,12 @@ const StepContent = (props: Props) => {
     resumeText,
   } = props;
 
+  const className = isChild ? 'mt-4' : '';
+
   const currentTaskStatusRender = (task) => {
     const statusRender = {
       pending: (
-        <div>
+        <div className={className}>
           {!isExecutePendingTask ? task.title : task.runningMsg || task.title}
           {!isExecutePendingTask && (
             <span className="ml-8 cursor-pointer color-primary" onClick={onResume}>
@@ -41,7 +43,7 @@ const StepContent = (props: Props) => {
           )}
         </div>
       ),
-      wait: <div>{task.runningMsg || task.title}</div>,
+      wait: <div className={className}>{task.runningMsg || task.title}</div>,
     };
     return statusRender[task.runStatus];
   };
@@ -51,19 +53,21 @@ const StepContent = (props: Props) => {
       {map(tasks, (task) => {
         if (task.runStatus === 'finish')
           return (
-            <div className={isChild ? 'color-success' : ''}>{task.successMsg || task.title}</div>
+            <div className={isChild ? `color-success` : className}>
+              {task.successMsg || task.title}
+            </div>
           );
         if (currentTask.key === task.key) {
           return (
             <>
               {isSuspend ? (
-                <div>
-                  {task.errorMsg || task.title}
+                <div className={className}>
+                  <span className="color-error">{task.errorMsg || task.title}</span>
                   {showRetry && (
                     <Icon
                       className="ml-8 cursor-pointer"
                       type="refresh"
-                      size="xs"
+                      size="small"
                       onClick={onRetry}
                     />
                   )}
@@ -74,7 +78,7 @@ const StepContent = (props: Props) => {
             </>
           );
         }
-        return <div>{task.title}</div>;
+        return <div className={className}>{task.title}</div>;
       })}
     </>
   );

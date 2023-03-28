@@ -7,7 +7,7 @@ import { find, isEmpty, map, set, cloneDeep, noop } from 'lodash';
 
 const CreatingUi = (props: Props, ref) => {
   const {
-    dataSource,
+    dataSource = [],
     onError = noop,
     onComplete = noop,
     countdown = 0,
@@ -28,14 +28,18 @@ const CreatingUi = (props: Props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onRetry,
+    stepList,
   }));
 
   useEffect(() => {
-    onInit();
     return () => {
       clearInterval(interval.current);
     };
   }, []);
+
+  useEffect(() => {
+    onInit();
+  }, [dataSource]);
 
   const save = async (values, params = {}, pendingExecuteStatus = false) => {
     const found = find(values, { runStatus: 'wait' });

@@ -1,4 +1,9 @@
-## SUi
+---
+title: s 工具可视化
+toc: content
+---
+
+# s 工具可视化
 
 ## 安装
 
@@ -9,9 +14,9 @@ $ npm install @serverless-cd/s-ui --save
 ## 基本用法
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import SUi from '@serverless-cd/s-ui';
+import React from 'react';
 
 export default () => {
   const data = {
@@ -125,7 +130,11 @@ export default () => {
   };
   return (
     <>
-      <SUi onChange={console.log} value={data} accessList={['default', 'dk', 'test']} />
+      <SUi
+        onChange={console.log}
+        value={data}
+        accessList={['default', 'dk', 'test']}
+      />
     </>
   );
 };
@@ -134,10 +143,10 @@ export default () => {
 ## Field 示例
 
 ```tsx
-import React from 'react';
+import { Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
 import SUi from '@serverless-cd/s-ui';
-import { Field } from '@alicloud/console-components';
+import React from 'react';
 
 export default () => {
   const data = {
@@ -254,17 +263,20 @@ export default () => {
   console.log(getValue('data'));
   return (
     <>
-      <SUi {...init('data', { initValue: data })} accessList={['default', 'dk', 'test']} />
+      <SUi
+        {...init('data', { initValue: data })}
+        accessList={['default', 'dk', 'test']}
+      />
     </>
   );
 };
 ```
 
-## Api
+## API
 
-| 参数 | 说明 | 类型 | 必填 | 默认值 |
-| --- | --- | --- | --- | --- |
-| value | 当前值 | Record<string, any> | 是 |  |
-| onChange | value 发生改变的时候触发的回调 | (value: Record<string, any>) => void | 否 |  |
-| accessList | 密钥数据源 | string[] | 否 |  |
-| EditorRender | 自定义编辑器 | ({ value, onChange }) => ReactElement | 否 |  |
+| 参数         | 说明                           | 类型                                  | 必填 | 默认值 |
+| ------------ | ------------------------------ | ------------------------------------- | ---- | ------ |
+| value        | 当前值                         | Record<string, any>                   | 是   |        |
+| onChange     | value 发生改变的时候触发的回调 | (value: Record<string, any>) => void  | 否   |        |
+| accessList   | 密钥数据源                     | string[]                              | 否   |        |
+| EditorRender | 自定义编辑器                   | ({ value, onChange }) => ReactElement | 否   |        |

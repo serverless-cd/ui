@@ -226,11 +226,13 @@ const Auth = (props: any) => {
         children
       }
       <Form.Item className="admin-public-width">
-        {!isEmpty(thirdPartyConfig) && <hr className="hr" />}
+        {!isEmpty(thirdPartyConfig) && thirdPartyConfig.some((item) => item.url) && (
+          <hr className="hr" />
+        )}
         <div className="admin-tripartite-provider">
           {!isEmpty(thirdPartyConfig) &&
             map(thirdPartyConfig, (item) => {
-              if (item.type === THIRDPARTY['GITHUB']) {
+              if (item.type === THIRDPARTY['GITHUB'] && item.url) {
                 return (
                   <Button
                     style={{ width: '100%' }}
@@ -243,7 +245,7 @@ const Auth = (props: any) => {
                   </Button>
                 );
               }
-              if (item.type === THIRDPARTY['GITEE']) {
+              if (item.type === THIRDPARTY['GITEE'] && item.url) {
                 return (
                   <Button
                     style={{ width: '100%' }}

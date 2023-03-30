@@ -1,15 +1,12 @@
 ## ResourceUi
 
-Demo:
+# 基础使用
 
 ```tsx
 import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import { Field, Button, Loading } from '@alicloud/console-components';
 import ResourceUi, { onToYamlString } from '@serverless-cd/resource-ui';
-
-// 使用方式
-//  组件被field接管。
 
 export default () => {
   const field = Field.useField();
@@ -30,10 +27,16 @@ export default () => {
       >
         生成yaml string
       </Button>
-      <ResourceUi {...init('yamlConfig')} regionList={regionList} />
+      <ResourceUi
+        {...init('yamlConfig', {
+          initValue: {
+            serviceName: 'serverless-devs-application',
+            functionName: 'todolist-app-awgl',
+          },
+        })}
+        regionList={regionList}
+      />
     </>
   );
 };
 ```
-
-More skills for writing demo: https://d.umijs.org/guide/basic#write-component-demo

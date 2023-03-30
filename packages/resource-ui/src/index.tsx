@@ -85,7 +85,7 @@ export const onToYamlString = (values) => {
 };
 
 const ResourceUI = (props: IProps, ref) => {
-  const { onChange = noop, regionList } = props;
+  const { onChange = noop, regionList, value } = props;
   const [dataSource, setDataSource] = useState([]);
   const field = Field.useField({
     onChange: () => {
@@ -124,7 +124,10 @@ const ResourceUI = (props: IProps, ref) => {
       </Form.Item>
       <Form.Item label="服务名称" required>
         <Input
-          {...init('serviceName', { rules: [{ required: true, validator: nameValidator }] })}
+          {...init('serviceName', {
+            initValue: value['serviceName'],
+            rules: [{ required: true, validator: nameValidator }],
+          })}
           className="full-width"
           maxLength={128}
           minLength={1}
@@ -134,7 +137,10 @@ const ResourceUI = (props: IProps, ref) => {
       </Form.Item>
       <Form.Item label="函数名称" required>
         <Input
-          {...init('functionName', { rules: [{ required: true, validator: nameValidator }] })}
+          {...init('functionName', {
+            initValue: value['functionName'],
+            rules: [{ required: true, validator: nameValidator }],
+          })}
           className="full-width"
           maxLength={128}
           minLength={1}

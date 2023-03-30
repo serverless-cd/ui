@@ -550,16 +550,18 @@ export default () => {
 };
 ```
 
-### 等待任务执行 示例
+### 等待任务执行 示例二
 
 ```tsx
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import CreatingUi from '@serverless-cd/creating-ui';
 import { Button } from '@alicloud/console-components';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 
 export default () => {
+  const CreatingUiRef = useRef(null);
+
   const dataSource = [
     {
       title: '提交代码评审 (PR/MR)流程',
@@ -622,15 +624,20 @@ export default () => {
         let check = false;
         setTimeout(() => {
           check = true;
-        }, 4000);
+        }, 2000);
         return await new Promise((resolve, reject) => {
           let inter = setInterval(() => {
             console.log('校验中.......');
             if (check) {
+              const stepList = CreatingUiRef.current.stepList;
+              const step = find(stepList, { runStatus: 'pending' });
+              step.title = <span style={{ color: 'red' }}>检验没通过</span>;
+              setStepList(stepList);
+              console.log(step, 'CreatingUiRef.current.stepList');
               reject(33);
               clearInterval(inter);
             }
-          }, 3000);
+          }, 1000);
         });
       },
     },
@@ -639,6 +646,8 @@ export default () => {
       key: 'checkSuccess',
     },
   ];
+
+  const [stepList, setStepList] = useState(dataSource);
 
   const onError = (value) => {
     console.log(value, 'Error 事件');
@@ -655,13 +664,14 @@ export default () => {
 
   return (
     <CreatingUi
-      dataSource={dataSource}
+      dataSource={stepList}
       onError={onError}
       onComplete={onComplete}
       countdown={3}
       help={<span>测试测试</span>}
       resumeText="校验审核通过"
       onCountdownComplete={onCountdownComplete}
+      ref={CreatingUiRef}
     />
   );
 };

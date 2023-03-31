@@ -30,6 +30,7 @@ export type Props = PropsWithChildren & {
   activeTab?: `${NavKey}`;
   apiType?: IApiTypeVal;
   visible?: boolean;
+  env?: 'vscode' | 'web';
   fetchReadme?: () => Promise<string>;
 };
 
@@ -41,6 +42,7 @@ const AliReadme: FC<Props> = (props) => {
     onCreate,
     createButtonDisabled,
     apiType = IApiType.fc,
+    env = 'web',
     activeTab,
     fetchReadme,
     visible: readmeVisible = false,
@@ -484,7 +486,7 @@ const AliReadme: FC<Props> = (props) => {
         title={title}
         isShowing={visible}
         onClose={onClose}
-        customFooter={renderFooter()}
+        customFooter={env==='web' && renderFooter()}
       >
         {renderBody()}
       </SlidePanel>

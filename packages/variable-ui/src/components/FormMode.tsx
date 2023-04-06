@@ -82,7 +82,7 @@ const FormMode = (props, ref) => {
                 />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={11}>
               <Form.Item required>
                 <Input
                   {...init(`form-item-${index}.value`, {
@@ -101,7 +101,7 @@ const FormMode = (props, ref) => {
                   innerAfter={
                     <Icon
                       style={styleEye}
-                      type={`form-item-${index}.password` ? 'eye' : 'eye-slash'}
+                      type={getValue(`form-item-${index}.password`) ? 'eye' : 'eye-close'}
                       onClick={() =>
                         setValue(
                           `form-item-${index}.password`,
@@ -117,7 +117,7 @@ const FormMode = (props, ref) => {
               <div className="mt-5">
                 <Icon
                   size="small"
-                  type="delete color-primary cursor-pointer"
+                  type="ashbin color-primary cursor-pointer"
                   onClick={() => onAddOrRemove('remove', index as any)}
                 />
               </div>

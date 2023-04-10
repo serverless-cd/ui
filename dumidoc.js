@@ -17,7 +17,7 @@ module.exports = [
   },
   {
     package: '@serverless-cd/app-card-ui',
-    version: '0.0.5',
+    version: '0.0.7',
     path: './packages/app-card-ui',
     name: 'appcard',
   },
@@ -59,7 +59,7 @@ module.exports = [
   },
   {
     package: '@serverless-cd/credential-ui',
-    version: '0.0.1',
+    version: '0.0.3',
     path: './packages/credential-ui',
     name: 'credential',
   },

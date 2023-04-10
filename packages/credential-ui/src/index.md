@@ -12,10 +12,40 @@ import React from 'react';
 import { Button } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
 import CredentialUi from '@serverless-cd/credential-ui';
+const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
+
+const onConfirm = async data => {
+  console.log(data);
+  await sleep()
+}
 
 export default () => {
   return (
-    <CredentialUi onConfirm={console.log}>
+    <CredentialUi onConfirm={onConfirm}>
+      <Button type="primary">添加密钥</Button>
+    </CredentialUi>
+  );
+};
+```
+
+## onConfirm
+
+```tsx
+import React from 'react';
+import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
+import CredentialUi from '@serverless-cd/credential-ui';
+const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
+
+const onConfirm = async data => {
+  console.log(data);
+  await sleep()
+  return Promise.reject('error')
+}
+
+export default () => {
+  return (
+    <CredentialUi onConfirm={onConfirm}>
       <Button type="primary">添加密钥</Button>
     </CredentialUi>
   );

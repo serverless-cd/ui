@@ -48,7 +48,10 @@ const CredentialUi: FC<IProps> = (props) => {
         const customData = customFormat(custom);
         data = { provider, alias, ...customData };
       }
-      await onConfirm(data);
+      try {
+        await onConfirm(data);
+        handleClose();
+      } catch (error) { }
       setLoading(false);
     });
   };

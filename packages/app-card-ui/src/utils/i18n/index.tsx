@@ -2,6 +2,7 @@ import en from './en';
 import zh from './zh';
 import ja from './ja';
 import Cookies from 'js-cookie';
+import { get } from 'lodash';
 
 const obj = { en, zh, ja };
 
@@ -16,6 +17,10 @@ export const lang = () => {
   }
   if (language.startsWith('ja')) {
     language = 'ja';
+  }
+  const vscodeLanguage = get(window, 'SERVERLESS_DEVS_CONFIG.lang');
+  if (vscodeLanguage) {
+    language = vscodeLanguage;
   }
   return language;
 };

@@ -31,10 +31,7 @@ const CredentialUi: FC<IProps> = (props) => {
   const [loading, setLoading] = useState(false);
 
   const field = Field.useField({
-    values: {
-      provider: PROVIDER.alibaba,
-      ...dataSource
-    }
+    values: dataSource
   });
   const { init, resetToDefault, validate, getValue } = field;
   const handleClose = () => {
@@ -96,6 +93,7 @@ const CredentialUi: FC<IProps> = (props) => {
                     placeholder={i18n('webview.credential_list.cloud_vendor_placeholder')}
                     className="full-width"
                     {...init('provider', {
+                      initValue: PROVIDER.alibaba,
                       rules: [
                         {
                           required: true,

@@ -59,7 +59,7 @@ module.exports = [
   },
   {
     package: '@serverless-cd/credential-ui',
-    version: '0.0.3',
+    version: '0.0.4',
     path: './packages/credential-ui',
     name: 'credential',
   },

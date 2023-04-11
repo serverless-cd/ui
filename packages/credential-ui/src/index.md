@@ -62,7 +62,7 @@ import CredentialUi from '@serverless-cd/credential-ui';
 
 export default () => {
   return (
-    <CredentialUi title="自定义标题">
+    <CredentialUi title="自定义标题" onConfirm={console.log}>
       <Button type="primary">自定义标题</Button>
     </CredentialUi>
   );
@@ -79,7 +79,24 @@ import CredentialUi from '@serverless-cd/credential-ui';
 
 export default () => {
   return (
-    <CredentialUi existAlias={['a']}>
+    <CredentialUi existAlias={['a']} onConfirm={console.log}>
+      <Button type="primary">添加密钥</Button>
+    </CredentialUi>
+  );
+};
+```
+
+## showAccountID
+
+```tsx
+import React from 'react';
+import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
+import CredentialUi from '@serverless-cd/credential-ui';
+
+export default () => {
+  return (
+    <CredentialUi showAccountID onConfirm={console.log}>
       <Button type="primary">添加密钥</Button>
     </CredentialUi>
   );
@@ -96,7 +113,7 @@ import CredentialUi from '@serverless-cd/credential-ui';
 
 export default () => {
   return (
-    <CredentialUi onOpenDocument={console.log}>
+    <CredentialUi onOpenDocument={console.log} onConfirm={console.log}>
       <Button type="primary">添加密钥</Button>
     </CredentialUi>
   );
@@ -110,5 +127,6 @@ export default () => {
 | ----------- | ------ | ------ | ---- | ------ |
 | title       | 标题   | string | 否   |   添加密钥   |
 | existAlias  | 已添加过的密钥   | string[] | 否   |      |
+| showAccountID  | 仅在配置阿里云密钥时生效，表示是否显示AccountID   | boolean | 否   |  false    |
 | onConfirm |  点击确定后触发  | function | 否   |        |
 | onOpenDocument | 点击 密钥获取引导 后触发 | function | 否   |     |

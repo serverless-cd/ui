@@ -7,13 +7,28 @@ const FormItem = Form.Item;
 
 type Props = {
   field: Field;
+  showAccountID?: boolean;
 };
 
 const Alibaba: FC<Props> = (props) => {
-  const { field } = props;
+  const { field, showAccountID = false } = props;
   const { init } = field;
   return (
     <>
+      {showAccountID && <FormItem label="AccountID" required {...FORM_LAYOUT}>
+        <Input
+          placeholder={i18n('webview.credential_list.account_id')}
+          className="full-width"
+          {...init('AccountID', {
+            rules: [
+              {
+                required: true,
+                message: i18n('webview.credential_list.account_id_required'),
+              },
+            ],
+          })}
+        />
+      </FormItem>}
       <FormItem label="AccessKeyID" required {...FORM_LAYOUT}>
         <Input
           placeholder={i18n('webview.credential_list.access_key_id')}

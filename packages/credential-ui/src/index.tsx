@@ -20,19 +20,17 @@ const { Row, Col } = Grid;
 type IProps = PropsWithChildren & {
   title?: string;
   existAlias?: string[];
-  dataSource?: Record<string, any>;
+  showAccountID?: boolean;
   onConfirm?: (data: Record<string, any>) => Promise<void>;
   onOpenDocument?: (data: Record<string, any>) => void;
 }
 
 const CredentialUi: FC<IProps> = (props) => {
-  const { children, title = i18n('webview.credential_list.add_key'), existAlias, onConfirm = noop, onOpenDocument, dataSource } = props;
+  const { children, title = i18n('webview.credential_list.add_key'), existAlias, onConfirm = noop, onOpenDocument, showAccountID } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const field = Field.useField({
-    values: dataSource
-  });
+  const field = Field.useField();
   const { init, resetToDefault, validate, getValue } = field;
   const handleClose = () => {
     resetToDefault();
@@ -136,7 +134,7 @@ const CredentialUi: FC<IProps> = (props) => {
               })}
             />
           </FormItem>
-          {getValue('provider') === PROVIDER.alibaba && <Alibaba field={field} />}
+          {getValue('provider') === PROVIDER.alibaba && <Alibaba field={field} showAccountID={showAccountID} />}
           {[PROVIDER.aws, PROVIDER.huawei, PROVIDER.baidu].includes(getValue('provider')) && (
             <Aws field={field} />
           )}

@@ -83,11 +83,8 @@
 }
 
 .admin-tripartite-provider {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-top: 16px;
+  width: '100%';
+  margin-top: 32px;
 }
 
 .icon {
@@ -98,6 +95,62 @@
   cursor: pointer;
 }
 
-.icon-gitee-color {
-  color: red;
+.admin-github-btn,
+.admin-gitee-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.admin-github-btn {
+  color: #fff !important;
+  font-weight: 400;
+  font-size: 14px;
+  background: #333 !important;
+  border-color: #24292e !important;
+}
+
+.admin-github-btn:hover {
+  background: #000 !important;
+}
+.admin-gitee-btn:hover {
+  background: #b03320 !important;
+}
+
+.admin-gitee-btn {
+  color: #fff !important;
+  background: #e24329 !important;
+  border-color: #b03320 !important;
+}
+
+.admin-github-btn-font {
+  width: 66px;
+  margin-left: 16px;
+}
+
+.admin-gitee-btn-font {
+  width: 66px;
+  margin-left: 16px;
+}
+
+.hr {
+  margin: 32px 0 -1px;
+  overflow: visible;
+  text-align: center;
+  border: 0;
+  border-top: 2px solid #e9ebeb;
+}
+
+.hr::before {
+  position: relative;
+  top: -11px;
+  display: inline-block;
+  padding: 4px;
+  color: rgb(14, 30, 37);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  background-color: #fff;
+  content: '或';
 }

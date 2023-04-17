@@ -29,6 +29,7 @@ export type IAppCardProps = {
   apiType?: IApiTypeVal;
   // 一行显示几个
   column?: number;
+  env?: 'vscode' | 'web';
   fetchReadme?: () => Promise<string>;
   onCreate?: (data: IAppDataSouce) => void;
 };

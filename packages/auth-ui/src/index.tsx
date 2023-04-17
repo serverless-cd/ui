@@ -8,9 +8,11 @@ import {
   LOGIN_EMAIL_TEXT,
   REMEMBER_TEXT,
   REGISTER_TEXT,
+  THIRDPARTY,
 } from './types';
 import './index.less';
 import './icon.less';
+import { isEmpty, map } from 'lodash';
 import { i18n } from './utils';
 
 const Auth = (props: any) => {
@@ -20,12 +22,13 @@ const Auth = (props: any) => {
     onSingIn = () => {},
     onRememberMe = () => {},
     onSignUp = () => {},
-    githubUrl,
-    giteeUrl,
     type,
     children,
     style,
     titleStyle,
+    accountBtnName,
+    loading,
+    thirdPartyConfig,
   } = props;
   const field = Field.useField();
   const { init, validate, getValue } = field;
@@ -98,7 +101,7 @@ const Auth = (props: any) => {
 
   const handleTripartiteProviderUrl = (url) => {
     // 跳转第三方登录
-    window.open(url);
+    window.location.href = url;
   };
 
   const handleLogin = () => {
@@ -107,7 +110,13 @@ const Auth = (props: any) => {
       Store_Account_Information[adminStatus].operateFunc(values);
     });
   };
-
+  // 支持Entry键登录
+  const keyboard = (e) => {
+    if (e.keyCode === 13) {
+      adminStatus === LOGIN_TYPE.LOGIN && handleLogin();
+    }
+  };
+  document.addEventListener('keyup', keyboard);
   return (
     <Form field={field} className={`auth-content ${className}`} style={style}>
       <Form.Item className="admin-title" style={{ ...titleStyle }}>
@@ -203,8 +212,13 @@ const Auth = (props: any) => {
         </Form.Item>
       )}
       <Form.Item className="admin-public-width">
-        <Button type="primary" className="admin-public-width" onClick={() => handleLogin()}>
-          {Store_Account_Information[adminStatus].operate}
+        <Button
+          type="primary"
+          className="admin-public-width"
+          onClick={() => handleLogin()}
+          loading={loading}
+        >
+          {accountBtnName ? accountBtnName : Store_Account_Information[adminStatus].operate}
         </Button>
       </Form.Item>
       {
@@ -212,17 +226,39 @@ const Auth = (props: any) => {
         children
       }
       <Form.Item className="admin-public-width">
+        {!isEmpty(thirdPartyConfig) && thirdPartyConfig.some((item) => item.url) && (
+          <hr className="hr" />
+        )}
         <div className="admin-tripartite-provider">
-          {githubUrl && (
-            <div className="icon" onClick={() => handleTripartiteProviderUrl(githubUrl)}>
-              <i className="iconfont icon-font-size">&#xe50e;</i>
-            </div>
-          )}
-          {giteeUrl && (
-            <div className="icon" onClick={() => handleTripartiteProviderUrl(giteeUrl)}>
-              <i className="iconfont icon-font-size icon-gitee-color">&#xe60c;</i>
-            </div>
-          )}
+          {!isEmpty(thirdPartyConfig) &&
+            map(thirdPartyConfig, (item) => {
+              if (item.type === THIRDPARTY['GITHUB'] && item.url) {
+                return (
+                  <Button
+                    style={{ width: '100%' }}
+                    className="icon admin-github-btn"
+                    onClick={() => handleTripartiteProviderUrl(item.url)}
+                    loading={item.loading}
+                  >
+                    <i className="iconfont icon-font-size">&#xe50e;</i>
+                    <span className="admin-github-btn-font">Github 登录</span>
+                  </Button>
+                );
+              }
+              if (item.type === THIRDPARTY['GITEE'] && item.url) {
+                return (
+                  <Button
+                    style={{ width: '100%' }}
+                    className="icon admin-gitee-btn"
+                    onClick={() => handleTripartiteProviderUrl(item.url)}
+                    loading={item.loading}
+                  >
+                    <i className="iconfont icon-font-size icon-gitee-color">&#xe60c;</i>
+                    <span className="admin-gitee-btn-font">Gitee 登录</span>
+                  </Button>
+                );
+              }
+            })}
         </div>
       </Form.Item>
     </Form>

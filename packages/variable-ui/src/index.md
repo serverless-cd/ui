@@ -1,14 +1,16 @@
-## VariableUi
+---
+title: Variable 变量
+toc: content
+---
 
-Demo:
+# Variable 变量
 
-### 基本用法
+## 基本用法
 
 ```tsx
-import React from 'react';
 import '@alicloud/console-components/dist/wind.css';
 import VariableUi from '@serverless-cd/variable-ui';
-import { Button } from '@alicloud/console-components';
+import React from 'react';
 
 export default () => {
   return (
@@ -21,15 +23,15 @@ export default () => {
 };
 ```
 
-### 校验
+## 校验
 
 > form 实例可通过 children 的第一个参数或者 onChange 第二个参数 得到。
 
 ```tsx
-import React, { useRef } from 'react';
+import { Button } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
 import VariableUi from '@serverless-cd/variable-ui';
-import { Button } from '@alicloud/console-components';
+import React, { useRef } from 'react';
 
 export default () => {
   const VariableUiRef = useRef(null);
@@ -39,7 +41,11 @@ export default () => {
   };
   return (
     <>
-      <Button type="primary" onClick={() => onSubmit()} style={{ marginBottom: 20 }}>
+      <Button
+        type="primary"
+        onClick={() => onSubmit()}
+        style={{ marginBottom: 20 }}
+      >
         校验
       </Button>
       <VariableUi onChange={console.log} ref={VariableUiRef} />
@@ -48,13 +54,13 @@ export default () => {
 };
 ```
 
-### Field 用法
+## Field 用法
 
 ```tsx
-import React from 'react';
+import { Button, Field } from '@alicloud/console-components';
 import '@alicloud/console-components/dist/wind.css';
-import { Field, Button } from '@alicloud/console-components';
 import VariableUi from '@serverless-cd/variable-ui';
+import React from 'react';
 
 export default () => {
   const field = Field.useField();
@@ -65,7 +71,11 @@ export default () => {
   };
   return (
     <>
-      <Button type="primary" onClick={() => onSubmit()} style={{ marginBottom: 20 }}>
+      <Button
+        type="primary"
+        onClick={() => onSubmit()}
+        style={{ marginBottom: 20 }}
+      >
         submit
       </Button>
       <VariableUi

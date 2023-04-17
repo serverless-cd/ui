@@ -18,6 +18,7 @@ const AppCard: FC<IAppCardProps> = (props) => {
     dataSouce = {} as IAppDataSouce,
     apiType = IApiType.fc,
     column = 1,
+    env = 'web',
     fetchReadme,
     onCreate = create,
   } = props;
@@ -145,10 +146,11 @@ const AppCard: FC<IAppCardProps> = (props) => {
           appName={dataSouce.package}
           onCreate={() => onCreate(dataSouce)}
           fetchReadme={fetchReadme}
+          env={env}
         >
           <Button className="mr-8">{i18n('ui.details')}</Button>
         </Readme>
-        <ExternalLinkInButton url={dataSouce.demo} text={i18n('ui.review')} />
+        {env === 'web' &&  <ExternalLinkInButton url={dataSouce.demo} text={i18n('ui.review')} />}
       </div>
     </Card>
   );

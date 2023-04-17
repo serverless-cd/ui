@@ -4,6 +4,7 @@ export type Props = {
   onError?: (error: any) => void;
   onComplete?: (value: any) => void;
   onCountdownComplete?: () => void;
+  onRetry?: () => void;
   showRetry?: boolean;
   countdown?: number;
   retryType?: string;

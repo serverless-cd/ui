@@ -12,6 +12,7 @@ const CreatingUi = (props: Props, ref) => {
     onComplete = noop,
     countdown = 0,
     onCountdownComplete = noop,
+    onRetry: onBeforeRetry = noop,
     showRetry = true,
     retryType = 'current',
     help = '',
@@ -116,6 +117,7 @@ const CreatingUi = (props: Props, ref) => {
 
   // 重试事件
   const onRetry = () => {
+    onBeforeRetry && onBeforeRetry();
     setIsSuspend(false);
     retryType === 'all' ? onInit() : save(stepList, taskContents);
   };

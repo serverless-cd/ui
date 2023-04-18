@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FC, useState, PropsWithChildren } from 'react';
 import SlidePanel from '@alicloud/console-components-slide-panel';
 import { Form, Field, Select, Button, Input, Message, Grid } from '@alicloud/console-components';
@@ -18,6 +18,7 @@ const FormItem = Form.Item;
 const { Row, Col } = Grid;
 
 type IProps = PropsWithChildren & {
+  dataSource?: Record<string, any>
   title?: string;
   existAlias?: string[];
   showAccountID?: boolean;
@@ -26,12 +27,26 @@ type IProps = PropsWithChildren & {
 }
 
 const CredentialUi: FC<IProps> = (props) => {
-  const { children, title = i18n('webview.credential_list.add_key'), existAlias, onConfirm = noop, onOpenDocument, showAccountID } = props;
+  const { children, title = i18n('webview.credential_list.add_key'), existAlias, onConfirm = noop, onOpenDocument, showAccountID, dataSource = {} } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const field = Field.useField();
-  const { init, resetToDefault, validate, getValue } = field;
+  const field = Field.useField({
+    values: dataSource
+  });
+  const { init, resetToDefault, validate, getValue, setValue } = field;
+
+  useEffect(() => {
+    const { provider, alias, ...other } = dataSource as Record<string, any>
+    if (provider === PROVIDER.custom) {
+      const newData = [] as Record<string, any>;
+      for (const key in other) {
+        newData.push({ key, value: other[key] })
+      }
+      setValue('custom', newData)
+    }
+  }, [get(dataSource, 'provider')])
+
   const handleClose = () => {
     resetToDefault();
     setVisible(false);
@@ -146,6 +161,7 @@ const CredentialUi: FC<IProps> = (props) => {
             <FormItem label="Custom" required>
               <Custom
                 {...init('custom', {
+                  initValue: [],
                   rules: [
                     {
                       required: true,

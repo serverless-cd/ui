@@ -270,7 +270,7 @@ const AliReadme: FC<Props> = (props) => {
           {readmeInfo.remark && (
             <>
               <h2 className="mt-20">{i18n('ui.precautions')}</h2>
-              {readmeInfo.remark}
+              <ReactMarkdown text={readmeInfo.remark} />
             </>
           )}
           {readmeInfo.disclaimers && (

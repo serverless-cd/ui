@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useEffect, useState } from 'react';
-import { isEmpty, noop, first, get } from 'lodash';
+import { isEmpty, noop, first, get, join, split, filter } from 'lodash';
 import { Form, Input, Select, Field, Radio } from '@alicloud/console-components';
 import { FORM_CUSTOM_MIDDLE_LABEL_LEFT } from './types';
 import { customRuntime, sourceRuntime } from './constants/Runtime';
@@ -7,6 +7,8 @@ import Specification from './components/Specification';
 import './index.less';
 import yaml from 'js-yaml';
 import { i18n } from './utils';
+import { W } from './constants/index';
+
 const RadioGroup = Radio.Group;
 const NAME_REG = /^[a-zA-Z0-9-_]{1,128}$/;
 const STARTS_WITH_REG = /^[a-zA-Z_]{1}.*$/;
@@ -35,6 +37,8 @@ export const onToYamlString = (values) => {
   } = values;
 
   const isCustom = shellType === 'custom';
+  const cmd = split(command, ' ');
+  const runtimeConfig = runtimeFormat(runtime, region);
   const componentsJson = {
     edition: '1.0.0',
     name: 'my-framework-app',
@@ -50,7 +54,9 @@ export const onToYamlString = (values) => {
           function: {
             name: functionName,
             description: 'Initialize',
-            runtime: runtime,
+            runtime: isCustom ? runtimeConfig.runtime : runtime,
+            environmentVariables: isCustom ? runtimeConfig.environmentVariables : undefined,
+            layersArnV2: isCustom ? runtimeConfig.layersArnV2 : undefined,
             handler: !isCustom && handler ? handler : undefined,
             memorySize: memorySize,
             cpu: cpuCore,
@@ -58,19 +64,19 @@ export const onToYamlString = (values) => {
             codeUri: './',
             diskSize: diskSize,
             caPort: isCustom && command ? caPort : undefined,
-            customRuntimeConfig: isCustom && command ? { command: [command] } : undefined,
+            customRuntimeConfig: isCustom && command ? { command: [cmd[0]], arg: filter(cmd, (_, i) => i !== 0) } : undefined,
           },
           triggers: isCustom
             ? [
-                {
-                  name: 'httpTrigger',
-                  type: 'http',
-                  config: {
-                    authType: 'anonymous',
-                    methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'PATCH'],
-                  },
+              {
+                name: 'httpTrigger',
+                type: 'http',
+                config: {
+                  authType: 'anonymous',
+                  methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'PATCH'],
                 },
-              ]
+              },
+            ]
             : undefined,
         },
       },
@@ -84,6 +90,83 @@ export const onToYamlString = (values) => {
   }
 };
 
+const runtimeFormat = (runtime, regionId) => {
+  try {
+    const {
+      publicLayer,
+      publicLayerPath,
+      extraPublicLayer,
+      demoCodePublicLayer,
+      customRuntimeConfig,
+      extraEnvs = {},
+    } = W.LAYERS[runtime];
+
+    let out = {
+      runtime: 'custom'
+    } as any;
+    if (runtime.indexOf('debian10') !== -1) {
+      out['runtime'] = 'custom.debian10'
+    }
+
+    if (publicLayer) {
+      const layers = [`acs:fc:${regionId}:official:layers${publicLayer}`];
+      if (extraPublicLayer) {
+        layers.push(`acs:fc:${regionId}:official:layers${extraPublicLayer}`);
+      }
+      out = {
+        ...out,
+        layersArnV2: layers,
+        environmentVariables: { PATH: `${publicLayerPath}${W.PATH}`, ...extraEnvs },
+      };
+    }
+
+    if (!publicLayer && publicLayerPath) {
+      out['environmentVariables'] = { PATH: `${publicLayerPath}${W.PATH}`, ...extraEnvs };
+    }
+
+    const envs = out.environmentVariables || {};
+    const layers = out.layersArnV2 || [];
+
+    if (demoCodePublicLayer) {
+      layers.push(`acs:fc:${regionId}:official:layers${demoCodePublicLayer}`);
+    }
+
+    if (layers.length > 0) {
+      out['layersArnV2'] = layers;
+    }
+
+    if (runtime?.startsWith('node')) {
+      envs['NODE_PATH'] = '/opt/nodejs/node_modules';
+    } else if (runtime?.startsWith('python') || runtime === 'debian10') {
+      envs['PYTHONPATH'] = W.PYTHONPATH;
+    }
+
+    const envsOut = {
+      ...envs,
+      LD_LIBRARY_PATH:
+        '/code:/code/lib:/usr/local/lib:/opt/lib:/opt/php8.1/lib:/opt/php8.0/lib:/opt/php7.2/lib',
+    };
+
+    if (!envsOut['JAVA_HOME']) {
+      if (runtime === 'java17') {
+        envsOut['JAVA_HOME'] = '/opt/java17';
+      } else if (runtime === 'java11') {
+        envsOut['JAVA_HOME'] = '/opt/java11';
+      } else if (runtime === 'java8') {
+        envsOut['JAVA_HOME'] = '/usr/lib/jvm/java-8-openjdk-amd64';
+      }
+    }
+
+    out = {
+      ...out,
+      environmentVariables: envsOut,
+      customRuntimeConfig,
+    };
+    return out;
+
+  } catch (error) { }
+}
+
 const ResourceUI = (props: IProps, ref) => {
   const { onChange = noop, regionList, value } = props;
   const [dataSource, setDataSource] = useState([]);
@@ -92,7 +175,7 @@ const ResourceUI = (props: IProps, ref) => {
       onChange(getValues());
     },
   });
-  const { init, getValue, getValues, validate, reset } = field;
+  const { init, getValue, getValues, validate, reset, setValue } = field;
 
   useImperativeHandle(ref, () => ({
     validate,
@@ -102,6 +185,24 @@ const ResourceUI = (props: IProps, ref) => {
     reset(['runtime']);
     setDataSource(getValue('shellType') === 'custom' ? customRuntime : sourceRuntime);
   }, [getValue('shellType')]);
+
+
+  useEffect(() => {
+    if (getValue('shellType') !== 'custom') return;
+    const runtimeConfig = runtimeFormat(getValue('runtime'), getValue('region'));
+    if (runtimeConfig) {
+      const { customRuntimeConfig } = runtimeConfig;
+      if (!isEmpty(customRuntimeConfig)) {
+        const { args, command } = customRuntimeConfig;
+        const cmd = join([...command, ...args], ' ');
+        if (cmd) {
+          setValue('command', cmd);
+          onChange(getValues());
+        }
+      }
+    }
+  }, [getValue('runtime'), getValue('region')]);
+
 
   const nameValidator = (_, value, callback) => {
     if (value && NAME_REG.test(value) && STARTS_WITH_REG.test(value)) {
@@ -192,7 +293,7 @@ const ResourceUI = (props: IProps, ref) => {
           </Form.Item>
           <Form.Item label="端口配置">
             <Input
-              {...init('caPort')}
+              {...init('caPort', { initValue: 9000 })}
               className="full-width"
               htmlType={'number'}
               placeholder="您的代码中所监听的端口"

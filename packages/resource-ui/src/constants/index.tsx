@@ -661,6 +661,12 @@ export const W = {
     },
   },
   LAYERS: {
+    debian: {
+      customRuntimeConfig: {
+        command: ['node'],
+        args: ['index.js'],
+      },
+    },
     debian10: {
       publicLayerPath: '/var/fc/lang/python3.10/bin',
       code: 'flask-web-code',

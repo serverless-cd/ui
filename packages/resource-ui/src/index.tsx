@@ -56,7 +56,7 @@ export const onToYamlString = (values) => {
             description: 'Initialize',
             runtime: isCustom ? runtimeConfig.runtime : runtime,
             environmentVariables: isCustom ? runtimeConfig.environmentVariables : undefined,
-            layersArnV2: isCustom ? runtimeConfig.layersArnV2 : undefined,
+            layers: isCustom ? runtimeConfig.layers : undefined,
             handler: !isCustom && handler ? handler : undefined,
             memorySize: memorySize,
             cpu: cpuCore,
@@ -115,7 +115,7 @@ const runtimeFormat = (runtime, regionId) => {
       }
       out = {
         ...out,
-        layersArnV2: layers,
+        layers,
         environmentVariables: { PATH: `${publicLayerPath}${W.PATH}`, ...extraEnvs },
       };
     }
@@ -125,14 +125,14 @@ const runtimeFormat = (runtime, regionId) => {
     }
 
     const envs = out.environmentVariables || {};
-    const layers = out.layersArnV2 || [];
+    const layers = out.layers || [];
 
     if (demoCodePublicLayer) {
       layers.push(`acs:fc:${regionId}:official:layers${demoCodePublicLayer}`);
     }
 
     if (layers.length > 0) {
-      out['layersArnV2'] = layers;
+      out['layers'] = layers;
     }
 
     if (runtime?.startsWith('node')) {

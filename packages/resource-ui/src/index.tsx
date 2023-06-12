@@ -64,7 +64,7 @@ export const onToYamlString = (values) => {
             codeUri: './',
             diskSize: diskSize,
             caPort: isCustom && command ? caPort : undefined,
-            customRuntimeConfig: isCustom && command ? { command: [cmd[0]], arg: filter(cmd, (_, i) => i !== 0) } : undefined,
+            customRuntimeConfig: isCustom && command ? { command: [cmd[0]], args: filter(cmd, (_, i) => i !== 0) } : undefined,
           },
           triggers: isCustom
             ? [

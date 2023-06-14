@@ -34,6 +34,7 @@ export const onToYamlString = (values) => {
     functionName,
     region,
     diskSize,
+    codeUri
   } = values;
 
   const isCustom = shellType === 'custom';
@@ -61,7 +62,7 @@ export const onToYamlString = (values) => {
             memorySize: memorySize,
             cpu: cpuCore,
             timeout: 60,
-            codeUri: './',
+            codeUri: codeUri || './',
             diskSize: diskSize,
             caPort: isCustom && command ? caPort : undefined,
             customRuntimeConfig: isCustom && command ? { command: [cmd[0]], args: filter(cmd, (_, i) => i !== 0) } : undefined,
@@ -308,6 +309,12 @@ const ResourceUI = (props: IProps, ref) => {
           </Form.Item>
         </>
       )}
+      <Form.Item label="执行构建命令路径" extra={<div className='mt-4 color-gray'>此处可以指定构建命令的执行目录，只需填写自己的代码的相对目录即可，例如在当前文件夹：./</div>}>
+        <Input
+          {...init('codeUri', { initValue: './' })}
+          className="full-width"
+        />
+      </Form.Item>
     </Form>
   );
 };

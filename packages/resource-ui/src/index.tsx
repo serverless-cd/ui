@@ -309,7 +309,7 @@ const ResourceUI = (props: IProps, ref) => {
           </Form.Item>
         </>
       )}
-      <Form.Item label="执行构建命令路径" extra={<div className='mt-4 color-gray'>此处可以指定构建命令的执行目录，只需填写自己的代码的相对目录即可，例如在当前文件夹：./</div>}>
+      <Form.Item label="函数代码路径" extra={<div className='mt-4 color-gray'>指定函数代码目录所在的相对路径，部署时会对该目录打包成代码包上传到函数计算。</div>}>
         <Input
           {...init('codeUri', { initValue: './' })}
           className="full-width"

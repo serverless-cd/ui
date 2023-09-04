@@ -1,6 +1,6 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect } from 'react';
 import { Form, Input, Grid, Field, Button, Icon } from '@alicloud/console-components';
-import { map, forIn, cloneDeep, isEmpty } from 'lodash';
+import { map, forIn, cloneDeep, isEmpty, forEach } from 'lodash';
 import { i18n } from '../utils';
 import '../index.less';
 const { Row, Col } = Grid;
@@ -36,6 +36,14 @@ const FormMode = (props, ref) => {
     parseName: true,
   });
   const { init, getValue, setValue, getValues, validate } = field;
+
+  useEffect(() => {
+    if (isEmpty(value)) return
+    forEach(value, (item, index) => {
+      setValue(`form-item-${index}.key`, item.key);
+      setValue(`form-item-${index}.value`, item.value);
+    })
+  }, [JSON.stringify(value)])
 
   const valueValidator = (name, value, callback) => {
     if (new RegExp('[\\u4e00-\\u9fa5]', 'g').test(value)) {

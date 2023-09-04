@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/variable-ui",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -38,5 +38,6 @@
     "js-cookie": "^3.0.1",
     "jsonlint-mod": "^1.7.6",
     "react-codemirror2": "^7.2.1"
-  }
+  },
+  "repository": "git@github.com:g-fengchen/ui.git"
 }

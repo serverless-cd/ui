@@ -114,7 +114,7 @@ const DingTalk = (props: IProps, ref) => {
               className="full-width"
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label={i18n('ui.notifiy.atUserIds.label')}
             help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
           >
@@ -123,7 +123,7 @@ const DingTalk = (props: IProps, ref) => {
               placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
               className="full-width"
             />
-          </Form.Item>
+          </Form.Item> */}
         </>
       )}
     </Form>

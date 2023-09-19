@@ -194,7 +194,7 @@ const ResourceUI = (props: IProps, ref) => {
     if (runtimeConfig) {
       const { customRuntimeConfig } = runtimeConfig;
       if (!isEmpty(customRuntimeConfig)) {
-        const { args, command } = customRuntimeConfig;
+        const { args = [], command = [] } = customRuntimeConfig;
         const cmd = join([...command, ...args], ' ');
         if (cmd) {
           setValue('command', cmd);

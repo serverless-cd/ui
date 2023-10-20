@@ -1,16 +1,22 @@
-import React, { FC, useState, PropsWithChildren } from 'react';
+import {
+  Balloon,
+  Button,
+  Icon,
+  Loading,
+  Message,
+} from '@alicloud/console-components';
 import { SlidePanel } from '@alicloud/console-components-slide-panel';
-import { Loading, Balloon, Message, Button, Icon } from '@alicloud/console-components';
-import Nav, { NavKey } from './Nav';
-import ExternalLink from './ExternalLink';
-import ReactMarkdown from './ReactMarkdown';
-import GithubIcon from './GithubIcon';
 import { parseReadme } from '@serverless-cd/ui-help';
-import { i18n, copyText, lang } from '../../utils';
 import axios from 'axios';
+import { find, get, isEmpty, isFunction, map } from 'lodash';
 import qs from 'qs';
-import { get, isEmpty, map, find, isFunction } from 'lodash';
-import { IApiTypeVal, IApiType } from '../../types';
+import React, { FC, PropsWithChildren, useState } from 'react';
+import { IApiType, IApiTypeVal } from '../../types';
+import { copyText, i18n, lang } from '../../utils';
+import ExternalLink from './ExternalLink';
+import GithubIcon from './GithubIcon';
+import Nav, { NavKey } from './Nav';
+import ReactMarkdown from './ReactMarkdown';
 
 function copy(val) {
   copyText(val);
@@ -32,6 +38,7 @@ export type Props = PropsWithChildren & {
   visible?: boolean;
   env?: 'vscode' | 'web';
   fetchReadme?: () => Promise<string>;
+  isV3?: boolean;
 };
 
 const AliReadme: FC<Props> = (props) => {
@@ -46,10 +53,12 @@ const AliReadme: FC<Props> = (props) => {
     activeTab,
     fetchReadme,
     visible: readmeVisible = false,
+    isV3 = false,
   } = props;
   const [visible, setVisible] = useState(readmeVisible);
   const [loading, setLoading] = useState(false);
   const [readmeInfo, setReadmeInfo] = useState<any>({});
+
 
   const fetchApps = async () => {
     try {
@@ -85,8 +94,7 @@ const AliReadme: FC<Props> = (props) => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [app, content] = await Promise.all([fetchApps(), fetchContent()]);
-    const appInfo = find(app, (item) => item.package === name);
+    const [content, appInfo] = isV3 ? await fetchV3(name) : await fetchV2(name);
     if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
       const data = parseReadme(content);
       setReadmeInfo({
@@ -100,6 +108,42 @@ const AliReadme: FC<Props> = (props) => {
       setReadmeInfo(content);
     }
     setLoading(false);
+  };
+
+  const fetchV3 = async (name) => {
+    const { version = {}, package: app = {} } = await getAppV3(name);
+    if (!isEmpty(version)) return [version.readme, app];
+    else []
+  };
+
+  const fetchV2 = async (name) => {
+    const [app, content] = await Promise.all([fetchApps(), fetchContent()]);
+    const appInfo = find(app, (item) => item.package === name);
+    return [content, appInfo]
+  };
+
+  const getAppV3 = async (projectName) => {
+    try {
+      const result = await axios({
+        method: 'get',
+        url: `https://api.devsapp.cn/v3/console/project/${projectName}?lang=${lang()}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+      const Response = get(result, 'data.body', {});
+
+      return {
+        ...Response,
+        package: {
+          ...get(Response, 'package', {}),
+          package: get(Response, 'package.name'),
+          title: Response.name,
+        },
+      };
+    } catch (e) {
+      return {};
+    }
   };
 
   const doFetchReadme = async () => {
@@ -199,7 +243,9 @@ const AliReadme: FC<Props> = (props) => {
   };
   const renderBody = () => {
     if (loading) {
-      return <Loading visible={loading} inline={false} style={{ minHeight: 400 }} />;
+      return (
+        <Loading visible={loading} inline={false} style={{ minHeight: 400 }} />
+      );
     }
     // 兼容旧模版
     if (typeof readmeInfo === 'string') {
@@ -208,8 +254,14 @@ const AliReadme: FC<Props> = (props) => {
     return (
       <div className="serverless-cd__alireadme-wrapper">
         <Nav activeTab={activeTab} />
-        <div className={readmeInfo.logo || readmeInfo.description ? 'pt-24' : 'pt-1'}>
-          {readmeInfo.logo && <img src={readmeInfo.logo} style={{ height: 30 }} />}
+        <div
+          className={
+            readmeInfo.logo || readmeInfo.description ? 'pt-24' : 'pt-1'
+          }
+        >
+          {readmeInfo.logo && (
+            <img src={readmeInfo.logo} style={{ height: 30 }} />
+          )}
           {readmeInfo.description && <div>{readmeInfo.description}</div>}
           <h1 className="mt-20" id={NavKey.codepre}>
             {i18n('ui.codepre.title')}
@@ -220,7 +272,11 @@ const AliReadme: FC<Props> = (props) => {
               <ul style={{ listStyle: 'unset' }} className="pl-16">
                 {map(readmeInfo.service, (item) => (
                   <li key={item.label}>
-                    <a className="color-link cursor-pointer" href={item.url} target="_blank">
+                    <a
+                      className="color-link cursor-pointer"
+                      href={item.url}
+                      target="_blank"
+                    >
                       {item.name}:
                     </a>
                     <span className="ml-8">{item.description}</span>
@@ -317,7 +373,10 @@ const AliReadme: FC<Props> = (props) => {
                     label={i18n('ui.s.doc')}
                   />
                 </li>
-                <li className="align-start mt-8" style={{ background: '#f8f8f9' }}>
+                <li
+                  className="align-start mt-8"
+                  style={{ background: '#f8f8f9' }}
+                >
                   <div
                     style={{ height: 100, width: 100, background: '#000' }}
                     className="align-center"
@@ -328,7 +387,14 @@ const AliReadme: FC<Props> = (props) => {
                       style={{ width: 60 }}
                     />
                   </div>
-                  <div style={{ flex: 1, height: '100%', padding: 16, border: '1px solid #eee' }}>
+                  <div
+                    style={{
+                      flex: 1,
+                      height: '100%',
+                      padding: 16,
+                      border: '1px solid #eee',
+                    }}
+                  >
                     <div
                       dangerouslySetInnerHTML={{
                         __html: i18n('ui.s.intro'),
@@ -400,7 +466,10 @@ const AliReadme: FC<Props> = (props) => {
                 align="t"
                 closable={false}
                 trigger={
-                  <code className="cursor-pointer" onClick={() => copy('s config add')}>
+                  <code
+                    className="cursor-pointer"
+                    onClick={() => copy('s config add')}
+                  >
                     s config add
                   </code>
                 }
@@ -443,7 +512,10 @@ const AliReadme: FC<Props> = (props) => {
                 align="t"
                 closable={false}
                 trigger={
-                  <code className="cursor-pointer" onClick={() => copy(`cd ${name} && s deploy`)}>
+                  <code
+                    className="cursor-pointer"
+                    onClick={() => copy(`cd ${name} && s deploy`)}
+                  >
                     {`cd ${name} && s deploy`}
                   </code>
                 }
@@ -466,11 +538,15 @@ const AliReadme: FC<Props> = (props) => {
             {i18n('ui.application.center.disclaimer')}
           </h1>
           <div
-            dangerouslySetInnerHTML={{ __html: i18n('ui.application.center.disclaimer.content') }}
+            dangerouslySetInnerHTML={{
+              __html: i18n('ui.application.center.disclaimer.content'),
+            }}
           />
           {readmeInfo.disclaimers && (
             <>
-              <h1 className="mt-20">{i18n('ui.disclaimer.for.current.application')}</h1>
+              <h1 className="mt-20">
+                {i18n('ui.disclaimer.for.current.application')}
+              </h1>
               <ReactMarkdown text={readmeInfo.disclaimers} />
             </>
           )}
@@ -486,7 +562,7 @@ const AliReadme: FC<Props> = (props) => {
         title={title}
         isShowing={visible}
         onClose={onClose}
-        customFooter={env==='web' && renderFooter()}
+        customFooter={env === 'web' && renderFooter()}
       >
         {renderBody()}
       </SlidePanel>

@@ -94,7 +94,7 @@ const AliReadme: FC<Props> = (props) => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [content, appInfo] = isV3 ? await fetchV3(name) : await fetchV2(name);
+    const [content, appInfo] = await getTemplateInfo(name);
     if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
       const data = parseReadme(content);
       setReadmeInfo({
@@ -109,6 +109,16 @@ const AliReadme: FC<Props> = (props) => {
     }
     setLoading(false);
   };
+
+  const getTemplateInfo = async (name) => {
+    const v3Info = await fetchV3(name);
+    if (isEmpty(v3Info)) {
+      const v2Info = await fetchV2(name);
+      return v2Info
+    } else {
+      return v3Info
+    }
+  }
 
   const fetchV3 = async (name) => {
     const { version = {}, package: app = {} } = await getAppV3(name);

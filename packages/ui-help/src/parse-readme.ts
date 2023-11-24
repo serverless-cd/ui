@@ -1,4 +1,4 @@
-import { find, startsWith, endsWith } from "lodash";
+import { find, startsWith, endsWith, trim } from "lodash";
 import { SERVICES } from "./constant";
 
 const trimTag = (source: string, tagName: string, attribute?: string) => {
@@ -13,6 +13,12 @@ const trimTag = (source: string, tagName: string, attribute?: string) => {
 
   return source.slice(start + startTag.length, end).trim();
 };
+
+const trimPlaintextTag = (source: any) => {
+  const src = trim(source.replace(/```plaintext|```/g, ''));
+  return src
+};
+
 const parseReadme = (readmeStr: string) => {
   if (!readmeStr) {
     return {};
@@ -72,6 +78,24 @@ const parseReadme = (readmeStr: string) => {
   if (appdetailStr) {
     data.appdetail = appdetailStr;
   }
+
+  // 测试函数
+  const testEventStr = trimTag(readmeStr, "testEvent");
+  if (testEventStr) {
+    let strData = '';
+    testEventStr.split("\n").map((item) => {
+      const str = item.trim();
+      strData += `${str}\n`
+    })
+    const trimStr = trimPlaintextTag(strData);
+    try {
+      const obj = JSON.parse(trimStr);
+      data.testEvent = [obj];
+    } catch (error) {
+      data.testEvent = [trimStr];
+    }
+  }
+
 
   // 使用文档/后续操作
   const usedetailStr = trimTag(readmeStr, "usedetail", ' id="flushContent"');

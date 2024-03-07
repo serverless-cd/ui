@@ -22,14 +22,14 @@ const navs = [
     key: NavKey.appdetail,
     title: i18n('ui.application.introduction.document'),
   },
-  {
-    key: NavKey.usedetail,
-    title: i18n('ui.application.usage.document'),
-  },
-  {
-    key: NavKey.local_experience,
-    title: i18n('ui.local_experience'),
-  },
+  // {
+  //   key: NavKey.usedetail,
+  //   title: i18n('ui.application.usage.document'),
+  // },
+  // {
+  //   key: NavKey.local_experience,
+  //   title: i18n('ui.local_experience'),
+  // },
   {
     key: NavKey.disclaimers,
     title: i18n('ui.project.disclaimer'),
@@ -90,7 +90,7 @@ const Nav: FC<Props> = (props) => {
     const scrollElement = document.getElementsByClassName('panel-body')[0];
     const anchorElement = document.getElementById(id);
     scrollElement.scrollTo({
-      top: anchorElement.offsetTop - 90,
+      top: anchorElement?.offsetTop - 90,
     });
     setTimeout(() => {
       scrollRef.current.listen = true;

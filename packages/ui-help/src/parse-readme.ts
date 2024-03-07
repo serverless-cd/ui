@@ -80,7 +80,7 @@ const parseReadme = (readmeStr: string) => {
   }
 
   // 测试函数
-  const testEventStr = trimTag(readmeStr, "testEvent");
+  const testEventStr = trimTag(readmeStr, "div", ` name="test-case" hidden`);
   if (testEventStr) {
     let strData = '';
     testEventStr.split("\n").map((item) => {

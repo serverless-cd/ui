@@ -8,7 +8,7 @@ import {
 import { SlidePanel } from '@alicloud/console-components-slide-panel';
 import { parseReadme } from '@serverless-cd/ui-help';
 import axios from 'axios';
-import { find, get, isEmpty, isFunction, map } from 'lodash';
+import { find, get, isEmpty, isFunction, map, isNumber } from 'lodash';
 import qs from 'qs';
 import React, { FC, PropsWithChildren, useState } from 'react';
 import { IApiType, IApiTypeVal } from '../../types';
@@ -95,7 +95,16 @@ const AliReadme: FC<Props> = (props) => {
   const fetchData = async () => {
     setLoading(true);
     const [content, appInfo] = await getTemplateInfo(name);
-    if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
+     if (isNumber(name)) {
+      const data = parseReadme(content);
+      setReadmeInfo({
+        ...data,
+        logo: get(appInfo, 'logo'),
+        description: get(appInfo, 'description'),
+        codeUrl: get(appInfo, 'codeUrl'),
+        previewUrl: get(appInfo, 'previewUrl'),
+      });
+     } else if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
       const data = parseReadme(content);
       setReadmeInfo({
         ...data,
@@ -148,6 +157,9 @@ const AliReadme: FC<Props> = (props) => {
         package: {
           ...get(Response, 'package', {}),
           package: get(Response, 'package.name'),
+          codeUrl: get(Response, 'repo'),
+          previewUrl: get(Response, 'demo'),
+          logo: get(Response, 'logo'),
           title: Response.name,
         },
       };
@@ -346,14 +358,15 @@ const AliReadme: FC<Props> = (props) => {
             </>
           )}
           <h1 className="mt-20" id={NavKey.appdetail}>
-            {i18n('ui.application.introduction.document')}
+            {readmeInfo.appdetail ? i18n('ui.application.introduction.document') : null}
           </h1>
           <ReactMarkdown text={readmeInfo.appdetail} />
+
           <h1 className="mt-20" id={NavKey.usedetail}>
-            {i18n('ui.application.usage.document')}
+            {readmeInfo.usedetail ? i18n('ui.application.usage.document') : null}
           </h1>
           <ReactMarkdown text={readmeInfo.usedetail} />
-          <h1 className="mt-20" id={NavKey.local_experience}>
+          {/* <h1 className="mt-20" id={NavKey.local_experience}>
             {i18n('ui.local_experience')}
           </h1>
           <ul className="ml-0">
@@ -543,7 +556,7 @@ const AliReadme: FC<Props> = (props) => {
                 </li>
               </ul>
             </li>
-          </ul>
+          </ul> */}
           <h1 className="mt-20" id={NavKey.disclaimers}>
             {i18n('ui.application.center.disclaimer')}
           </h1>

@@ -51,14 +51,14 @@ const DingTalk = (props: IProps, ref) => {
           {...init('webhook', {
             initValue: value['webhook'],
             rules: [{ validator: validateWebhook }],
-          })}
+          }) as any}
           placeholder={i18n('ui.notifiy.webhook.placeholder')}
           className="full-width"
         />
       </Form.Item>
       <Form.Item label={i18n('ui.notifiy.secret.label')} help={HELP_RENDER[HELP_TYPE.SECRET]}>
         <Input
-          {...init('secret', { initValue: value['secret'] })}
+          {...init('secret', { initValue: value['secret'] }) as any}
           placeholder={i18n('ui.notifiy.secret.placeholder')}
           className="full-width"
         />
@@ -75,7 +75,7 @@ const DingTalk = (props: IProps, ref) => {
         label={i18n('ui.notifiy.messageContent.label')}
         extra={
           <span
-            style={{ display: 'inline-block', textAlign: 'justify' }}
+            style={{ display: 'inline-block', textAlign: 'justify', lineHeight: '25px' }}
             dangerouslySetInnerHTML={{
               __html: messageHelp,
             }}
@@ -87,7 +87,7 @@ const DingTalk = (props: IProps, ref) => {
           {...init('messageContent', {
             initValue: value['messageContent'],
             rules: [{ required: true, message: i18n('ui.notifiy.help.message.text') }],
-          })}
+          }) as any}
           placeholder={i18n('ui.notifiy.messageContent.placeholder')}
           className="full-width"
         />
@@ -109,12 +109,12 @@ const DingTalk = (props: IProps, ref) => {
             help={HELP_RENDER[HELP_TYPE.AT_MOBILES]}
           >
             <Input
-              {...init('atMobiles', { initValue: value['atMobiles'] })}
+              {...init('atMobiles', { initValue: value['atMobiles'] }) as any}
               placeholder={i18n('ui.notifiy.atMobiles.placeholder')}
               className="full-width"
             />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label={i18n('ui.notifiy.atUserIds.label')}
             help={HELP_RENDER[HELP_TYPE.AT_USER_IDS]}
           >
@@ -123,7 +123,7 @@ const DingTalk = (props: IProps, ref) => {
               placeholder={i18n('ui.notifiy.atUserIds.placeholder')}
               className="full-width"
             />
-          </Form.Item>
+          </Form.Item> */}
         </>
       )}
     </Form>

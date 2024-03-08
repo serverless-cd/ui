@@ -1,6 +1,6 @@
 {
-  "name": "@serverless-cd/dingtalk-ui",
-  "version": "0.0.16",
+  "name": "@serverless-cd/resource-ui",
+  "version": "0.0.11",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -18,7 +18,9 @@
   "module": "dist/esm/index.js",
   "typings": "dist/esm/index.d.ts",
   "dependencies": {
-    "js-cookie": "^3.0.1"
+    "js-cookie": "^3.0.1",
+    "js-yaml": "^4.1.0",
+    "mathjs": "^11.7.0"
   },
   "peerDependencies": {
     "react": ">=16.0.0",

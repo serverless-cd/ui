@@ -174,7 +174,10 @@ export default () => {
       </div>
       <Trigger
         {...init('trigger', {
-          initValue: {},
+          initValue: {
+            'triggerType': 'push',
+            'pushValue': 'master'
+          },
         })}
         mode={mode}
         loading={loading}
@@ -192,10 +195,10 @@ export default () => {
 ## 自定义 value
 
 ```tsx
-import { Button, Field } from '@alicloud/console-components';
+import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
+import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
-import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();
@@ -275,10 +278,10 @@ export default () => {
 ## 严格模式只禁用 分支下拉框
 
 ```tsx
-import { Button, Field } from '@alicloud/console-components';
+import React, { useEffect, useState, useRef } from 'react';
 import '@alicloud/console-components/dist/wind.css';
+import { Field, Button } from '@alicloud/console-components';
 import Trigger, { valuesFormat } from '@serverless-cd/trigger-ui';
-import React, { useEffect, useRef, useState } from 'react';
 
 export default () => {
   const field = Field.useField();

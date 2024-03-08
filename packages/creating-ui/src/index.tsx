@@ -2,20 +2,25 @@ import React, { useEffect, useState, useRef, forwardRef, useImperativeHandle } f
 import { Message } from '@alicloud/console-components';
 import StepTask from './components/StepTask';
 import { Props, Request } from './constants/index';
+import { onTaskOrderContrast } from './utils/util';
 import { find, isEmpty, map, set, cloneDeep, noop } from 'lodash';
 
 const CreatingUi = (props: Props, ref) => {
   const {
-    dataSource,
+    dataSource = [],
     onError = noop,
     onComplete = noop,
     countdown = 0,
     onCountdownComplete = noop,
+    onRetry: onBeforeRetry = noop,
     showRetry = true,
     retryType = 'current',
+    help = '',
+    resumeText,
   } = props;
   const [stepList, setStepList] = useState([]);
   const [isSuspend, setIsSuspend] = useState(false);
+  const [isExecutePendingTask, setIsExecutePendingTask] = useState(false);
   const [taskContents, setTaskContents] = useState({});
 
   const [count, setCount] = useState(countdown);
@@ -24,29 +29,62 @@ const CreatingUi = (props: Props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onRetry,
+    stepList,
   }));
 
   useEffect(() => {
-    onInit();
     return () => {
       clearInterval(interval.current);
     };
   }, []);
 
-  const save = async (values, params = {}) => {
+  useEffect(() => {
+    onInit();
+  }, [dataSource]);
+
+  const save = async (values, params = {}, pendingExecuteStatus = false) => {
     const found = find(values, { runStatus: 'wait' });
-    if (!isEmpty(found)) {
+    const pendingFound = find(values, { runStatus: 'pending' });
+    const isOrderFound = onTaskOrderContrast(found, pendingFound);
+
+    if (isOrderFound || (!isEmpty(found) && isEmpty(pendingFound))) {
       const task = find(found.tasks, { runStatus: 'wait' });
+      const pendingTask = find(found.tasks, { runStatus: 'pending' });
+      const isOrderTask = onTaskOrderContrast(task, pendingTask);
+      if ((!isEmpty(task) && isOrderTask) || isEmpty(pendingTask)) {
+        try {
+          const content: any = await onRunTask(!isEmpty(task) ? task : found, params);
+          setStepList([...values]);
+          setTaskContents(content);
+          await save([...values], content);
+        } catch (content) {
+          setIsSuspend(true);
+          setTaskContents(content);
+          onError && onError(content);
+        }
+      } else {
+        if (!pendingExecuteStatus) return;
+        try {
+          const content: any = await onRunTask(pendingTask, params);
+          setStepList([...values]);
+          setTaskContents(content);
+          await save([...values], content);
+        } catch (content) {
+          setTaskContents(content);
+        }
+        setIsExecutePendingTask(false);
+      }
+    } else if (!isEmpty(pendingFound)) {
+      if (!pendingExecuteStatus) return;
       try {
-        const content: any = await onRunTask(!isEmpty(task) ? task : found, params);
+        const content: any = await onRunTask(pendingFound, params);
         setStepList([...values]);
         setTaskContents(content);
         await save([...values], content);
       } catch (content) {
-        setIsSuspend(true);
         setTaskContents(content);
-        onError && onError(content);
       }
+      setIsExecutePendingTask(false);
     } else {
       onComplete && onComplete(params);
       intervalCount.current && onCountdown();
@@ -79,6 +117,7 @@ const CreatingUi = (props: Props, ref) => {
 
   // 重试事件
   const onRetry = () => {
+    onBeforeRetry && onBeforeRetry();
     setIsSuspend(false);
     retryType === 'all' ? onInit() : save(stepList, taskContents);
   };
@@ -102,19 +141,35 @@ const CreatingUi = (props: Props, ref) => {
 
   const initTasks = (value = []) => {
     if (isEmpty(value)) return [];
-    return map(value, (item: Request) => ({ ...item, runStatus: item.runStatus || 'wait' }));
+    return map(value, (item: Request, index) => ({
+      ...item,
+      runStatus: item.runStatus || 'wait',
+      index,
+    }));
+  };
+
+  // 继续执行事件
+  const onResume = () => {
+    setIsExecutePendingTask(true);
+    save(stepList, taskContents, true);
   };
 
   return (
     <div className="application-container" style={{ width: 600 }}>
       <Message type="warning" className="mt-5">
-        <span className="text-middle">当前阶段请不要刷新页面</span>
+        <>
+          <div className="text-middle">当前阶段请不要刷新页面</div>
+          {help}
+        </>
       </Message>
       <StepTask
         stepList={stepList}
         isSuspend={isSuspend}
         count={count}
         onRetry={onRetry}
+        onResume={onResume}
+        resumeText={resumeText}
+        isExecutePendingTask={isExecutePendingTask}
         showRetry={showRetry}
       />
     </div>

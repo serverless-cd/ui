@@ -81,6 +81,7 @@ const MatchTypeValue = (props, ref) => {
               style={{ width: '100%', marginBottom: getError(`${id}.target`) ? 32 : 10 }}
               {...init(`${id}.type`, {
                 initValue: matchType,
+                // @ts-ignore
                 props: {
                   onChange: (val) => {
                     onBranchValueChange(val, 'type', id);
@@ -112,10 +113,12 @@ const MatchTypeValue = (props, ref) => {
           const id = get(value, 'id', uniqueId());
           return (
             <Form.Item style={{ position: 'relative', width: '100%', marginBottom: 0 }} key={id}>
+              {/* @ts-ignore */}
               <Input
                 style={{ width: '100%', marginBottom: 10 }}
                 {...init(`${id}.target`, {
                   initValue: branchValue,
+                  // @ts-ignore
                   props: {
                     onChange: (val) => {
                       onBranchValueChange(val, 'target', id);
@@ -143,10 +146,12 @@ const MatchTypeValue = (props, ref) => {
             const id = get(value, 'id', uniqueId());
             return (
               <div style={{ position: 'relative' }} key={id}>
+                {/* @ts-ignore */}
                 <Input
                   style={{ width: '100%', marginBottom: getError(`${id}.target`) ? 32 : 10 }}
                   {...init(`${id}.source`, {
                     initValue: sourceValue,
+                    // @ts-ignore
                     props: {
                       onChange: (val) => {
                         onBranchValueChange(val, 'source', id);

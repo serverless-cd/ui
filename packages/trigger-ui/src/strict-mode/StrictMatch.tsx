@@ -40,7 +40,7 @@ const StrictMatch = (props: IProps) => {
 
   return (
     <Form field={field} className="radio-content">
-      {help}
+      {/* {help} */}
       <div style={{ marginTop: 10, position: 'relative' }}>
         {type === STRICT_TYPE.PUSH && (
           <Form.Item
@@ -51,6 +51,7 @@ const StrictMatch = (props: IProps) => {
                 ''
               )
             }
+            style={{display: 'none'}}
           >
             {!isEmpty(branchList) ? (
               <Select

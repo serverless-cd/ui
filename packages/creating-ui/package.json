@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/creating-ui",
-  "version": "0.0.3",
+  "version": "0.0.8",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

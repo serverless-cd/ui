@@ -120,11 +120,58 @@ export default () => {
 };
 ```
 
+## dataSource
+
+```tsx
+import React from 'react';
+import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
+import CredentialUi from '@serverless-cd/credential-ui';
+
+export default () => {
+  const dataSource = {
+    "provider": "alibaba",
+    "alias": "s",
+    "AccessKeyID": "s",
+    "AccessKeySecret": "s"
+}
+  return (
+    <CredentialUi onOpenDocument={console.log} onConfirm={console.log} dataSource={dataSource}>
+      <Button type="primary">添加密钥</Button>
+    </CredentialUi>
+  );
+};
+```
+
+## Custom
+
+```tsx
+import React from 'react';
+import { Button } from '@alicloud/console-components';
+import '@alicloud/console-components/dist/wind.css';
+import CredentialUi from '@serverless-cd/credential-ui';
+
+export default () => {
+  const dataSource = {
+    "provider": "custom",
+    "alias": "s",
+    "s": "s",
+    "d": "d"
+}
+  return (
+    <CredentialUi onOpenDocument={console.log} onConfirm={console.log} dataSource={dataSource}>
+      <Button type="primary">添加密钥</Button>
+    </CredentialUi>
+  );
+};
+```
+
 
 ## API
 
 | 参数        | 说明   | 类型   | 必填 | 默认值 |
 | ----------- | ------ | ------ | ---- | ------ |
+| dataSource       | 数据源   | object | 否   |   {}   |
 | title       | 标题   | string | 否   |   添加密钥   |
 | existAlias  | 已添加过的密钥   | string[] | 否   |      |
 | showAccountID  | 仅在配置阿里云密钥时生效，表示是否显示AccountID   | boolean | 否   |  false    |

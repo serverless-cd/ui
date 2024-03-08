@@ -1,10 +1,11 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { StrictModeProps } from '../types';
-import { map, noop } from 'lodash';
+import { map, noop, get } from 'lodash';
 import { Radio, Field } from '@alicloud/console-components';
 import { STRICT_TYPE, STRICT_TRIGGER_TYPES } from '../constants';
 import StrictMatch from './StrictMatch';
 import '../index.less';
+import { i18n } from '../utils';
 
 const RadioGroup = Radio.Group;
 
@@ -47,9 +48,11 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
       className="strict-mode-radio-Group full-width"
     >
       {map(STRICT_TRIGGER_TYPES, ({ value, label, help }) => {
+        const pushBranch = get(initValue,`pushValue`) || getValue('pushValue') || '';
         return (
-          <div style={{ marginBottom: 20 }} key={value}>
-            <Radio value={value}>{label}</Radio>
+          <div style={{ marginBottom: 15 }} key={value}>
+            <Radio value={value}>{ value === STRICT_TYPE.PUSH ? `${i18n('ui.strict.on.push.label')} ${pushBranch ? `(${pushBranch})` : ' '}` : label}</Radio>
+            <div style={{marginLeft: 22, color: '#7E7C7C'}}>{help}</div>
             {getValue('triggerType') === value && (
               <StrictMatch
                 type={value}

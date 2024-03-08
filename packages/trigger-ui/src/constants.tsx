@@ -22,7 +22,8 @@ export const STRICT_TRIGGER_TYPES = [
   {
     value: STRICT_TYPE.PUSH,
     label: STRICT_MATCH_LABEL[STRICT_TYPE.PUSH],
-    help: STRICT_MATCH_HELP[STRICT_TYPE.PUSH],
+    // help: STRICT_MATCH_HELP[STRICT_TYPE.PUSH],
+    help: '',
   },
   {
     value: STRICT_TYPE.TAG,

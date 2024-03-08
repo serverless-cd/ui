@@ -174,7 +174,10 @@ export default () => {
       </div>
       <Trigger
         {...init('trigger', {
-          initValue: {},
+          initValue: {
+            'triggerType': 'push',
+            'pushValue': 'master'
+          },
         })}
         mode={mode}
         loading={loading}

@@ -46,7 +46,7 @@ export default {
   'ui.notifiy.atUserIds.tips': '多个用户之间以,分隔',
   'ui.notifiy.atUserIds.placeholder': '输入你要@的用户',
   'ui.branch.verify.text': '分支是必填项',
-  'ui.strict.on.push.label': 'Push到指定分支触发',
+  'ui.strict.on.push.label': 'Push代码到默认分支',
   'ui.strict.on.tag.label': 'Tag / Release事件',
   'ui.strict.on.pr.label': 'Merge / Pull Request事件',
   'ui.strict.on.push.help': '当代码被Push到当前分支，进行流水线的触发',

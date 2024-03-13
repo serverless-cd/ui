@@ -366,6 +366,12 @@ const AliReadme: FC<Props> = (props) => {
             {readmeInfo.usedetail ? i18n('ui.application.usage.document') : null}
           </h1>
           <ReactMarkdown text={readmeInfo.usedetail} />
+
+          <h1 className="mt-20" id={NavKey.matters}>
+            {readmeInfo.matters ? i18n('ui.application.matters.document') : null}
+          </h1>
+          <ReactMarkdown text={readmeInfo.matters} />
+
           {/* <h1 className="mt-20" id={NavKey.local_experience}>
             {i18n('ui.local_experience')}
           </h1>

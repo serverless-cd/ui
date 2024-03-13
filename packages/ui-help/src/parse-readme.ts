@@ -103,6 +103,12 @@ const parseReadme = (readmeStr: string) => {
     data.usedetail = usedetailStr;
   }
 
+  // 注意事项
+  const mattersStr = trimTag(readmeStr, "usedetail", ' id="flushContent"');
+  if (mattersStr) {
+    data.matters = mattersStr;
+  }
+
   // 项目注意事项
   const remarkStr = trimTag(readmeStr, "remark");
   if (remarkStr) {

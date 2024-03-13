@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/ui-help",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "ui help library",
   "main": "lib/index.js",
   "scripts": {

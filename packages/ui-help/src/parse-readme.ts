@@ -104,7 +104,7 @@ const parseReadme = (readmeStr: string) => {
   }
 
   // 注意事项
-  const mattersStr = trimTag(readmeStr, "usedetail", ' id="flushContent"');
+  const mattersStr = trimTag(readmeStr, "matters", ' id="flushContent"');
   if (mattersStr) {
     data.matters = mattersStr;
   }

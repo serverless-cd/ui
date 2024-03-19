@@ -7,6 +7,7 @@ export enum NavKey {
   codepre = 'codepre',
   appdetail = 'appdetail',
   usedetail = 'usedetail',
+  matters = 'matters',
   local_experience = 'local_experience',
   disclaimers = 'disclaimers',
 }
@@ -27,9 +28,13 @@ const navs = [
     title: i18n('ui.application.usage.document'),
   },
   {
-    key: NavKey.local_experience,
-    title: i18n('ui.local_experience'),
+    key: NavKey.matters,
+    title: i18n('ui.application.matters.document'),
   },
+  // {
+  //   key: NavKey.local_experience,
+  //   title: i18n('ui.local_experience'),
+  // },
   {
     key: NavKey.disclaimers,
     title: i18n('ui.project.disclaimer'),
@@ -68,6 +73,7 @@ const Nav: FC<Props> = (props) => {
     const scrollBottom = scrollHeight - scrollTop - clientHeight;
     const appdetail = document.getElementById(NavKey.appdetail);
     const usedetail = document.getElementById(NavKey.usedetail);
+    const matters = document.getElementById(NavKey.matters);
     const local_experience = document.getElementById(NavKey.local_experience);
     const disclaimers = document.getElementById(NavKey.disclaimers);
 
@@ -81,6 +87,8 @@ const Nav: FC<Props> = (props) => {
       setActiveKey(NavKey.usedetail);
     } else if (scrollTop < disclaimers.offsetTop - FIX_HEIGHT) {
       setActiveKey(NavKey.local_experience);
+    } else if (scrollTop < matters.offsetTop - FIX_HEIGHT) {
+      setActiveKey(NavKey.matters);
     }
   }, 300);
 
@@ -90,7 +98,7 @@ const Nav: FC<Props> = (props) => {
     const scrollElement = document.getElementsByClassName('panel-body')[0];
     const anchorElement = document.getElementById(id);
     scrollElement.scrollTo({
-      top: anchorElement.offsetTop - 90,
+      top: anchorElement?.offsetTop - 90,
     });
     setTimeout(() => {
       scrollRef.current.listen = true;

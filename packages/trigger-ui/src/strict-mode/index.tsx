@@ -15,6 +15,7 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
     branchList,
     isRefresh,
     onRefresh,
+    isPrMatchNew=false,
     initValue,
     onChange = noop,
     valueRender,
@@ -59,6 +60,7 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
                 disabled={disabled}
                 initValue={initValue}
                 isRefresh={isRefresh}
+                isPrMatchNew={isPrMatchNew}
                 onRefresh={onRefresh}
                 branchList={newBranchList}
                 valueRender={valueRender}

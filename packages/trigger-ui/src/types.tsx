@@ -38,6 +38,7 @@ export interface TriggersProps {
   branchList?: Array<any>;
   loading?: boolean;
   isRefresh?: boolean;
+  isPrMatchNew?: boolean;
   onRefresh?: Function;
   valueRender?: Function;
   selectBranchConfig: any;
@@ -51,6 +52,7 @@ export interface StrictModeProps {
   branchList?: Array<any>;
   loading?: boolean;
   isRefresh?: boolean;
+  isPrMatchNew?: boolean;
   onRefresh?: Function;
   ref?: any;
   valueRender?: Function;

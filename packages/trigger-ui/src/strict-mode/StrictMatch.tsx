@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Select, Input, Form, Message } from '@alicloud/console-components';
 import { STRICT_TYPE } from '../constants';
 import PrMatchContent from './PrMatchContent';
+import PrMatchNewContent from './PrMatchNewContent';
 import Refresh from './Refresh';
 import { i18n } from '../utils';
 import '../index.less';
@@ -17,6 +18,7 @@ interface IProps {
   loading: boolean;
   onRefresh: Function;
   isRefresh: boolean;
+  isPrMatchNew?: boolean;
   setBranchList: Function;
   valueRender: Function;
   selectBranchConfig: any;
@@ -32,6 +34,7 @@ const StrictMatch = (props: IProps) => {
     disabled,
     loading,
     onRefresh,
+    isPrMatchNew,
     isRefresh,
     valueRender,
     selectBranchConfig,
@@ -91,7 +94,20 @@ const StrictMatch = (props: IProps) => {
           />
         )}
         {type === STRICT_TYPE.PUSH_REQUEST && (
-          <PrMatchContent
+            isPrMatchNew ? <PrMatchNewContent
+            {...{
+              type,
+              field,
+              branchList,
+              initValue,
+              disabled,
+              loading,
+              onRefresh,
+              isRefresh,
+              valueRender,
+              selectBranchConfig,
+            }}
+          /> :<PrMatchContent
             {...{
               type,
               field,

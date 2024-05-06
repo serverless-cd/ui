@@ -19,6 +19,7 @@ const Trigger = (props: TriggersProps, ref) => {
     loading,
     branchList,
     isRefresh,
+    isPrMatchNew,
     onRefresh,
     valueRender = defaultValueRender,
     selectBranchConfig = defaultSelectBranchConfig,
@@ -72,6 +73,7 @@ const Trigger = (props: TriggersProps, ref) => {
           valueRender={valueRender}
           ref={strictRef}
           isRefresh={isRefresh}
+          isPrMatchNew={isPrMatchNew}
           onRefresh={onRefresh}
         />
       )}

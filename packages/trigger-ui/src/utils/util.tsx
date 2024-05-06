@@ -123,6 +123,9 @@ export const againstParseValues = (values) => {
     if (!isEmpty(precise)) {
       set(newValues, `${triggerType}Target`, get(precise, 'target'));
       set(newValues, `${triggerType}Source`, get(precise, 'source'));
+      if (get(precise, 'trigger')) {// 添加手动选择/ 正则表达式
+        set(newValues, `${triggerType}Trigger`, get(precise, 'trigger'));
+      }
     }
     if (!isEmpty(types)) {
       set(newValues, `${triggerType}Types`, types);

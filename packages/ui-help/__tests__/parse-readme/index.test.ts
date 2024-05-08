@@ -61,6 +61,7 @@ test.only("parseReadme 测试", () => {
         description: "为什么需要该权限",
       },
     ],
+    testEvent: [],
     appdetail:
       "当前应用仅支持 PNG 图片的压缩，压缩效果如下：\n" +
       "\n" +

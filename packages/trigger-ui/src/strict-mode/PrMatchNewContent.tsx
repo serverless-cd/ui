@@ -31,6 +31,69 @@ const FORM_LAYOUT = {
   labelTextAlign: 'left' as Align,
 };
 
+function extractPatterns(patternString) {
+  // 使用正则表达式匹配圆括号中的内容
+  const regex = /\(([^)]+)\)/g;
+  let matches;
+  const patterns = [];
+
+  // 使用循环来找到所有匹配项
+  while ((matches = regex.exec(patternString)) !== null) {
+    // 将匹配到的值添加到patterns数组中
+    patterns.push(matches[1]);
+  }
+
+  return patterns;
+}
+
+
+
+// 用于转义正则特殊字符的辅助函数
+function createRegexStringFromArray(array) {
+  const escapedElements = array.map(element => `(${element})`);
+  const combinedPattern = escapedElements.join('|');
+  if (array.length !== 0) {
+    return `^${combinedPattern}$`;
+  }
+  return ``;
+}
+
+
+function getPipeSourceBranch(trigger, source){
+  if (trigger === 'manual') {
+    const manualSourceBranch = source&&Array.isArray(source)&&!isEmpty(source)? createRegexStringFromArray(source) :''
+    return manualSourceBranch
+  }
+
+  if (trigger === 'reg') {
+    if (source && typeof source==='string') {
+      // if (source.split(',').length) {// 如果转换过后, 符合规则, 那么也返回匹配之后的值
+      //   const sourceArr = source.split(',')
+      //   return createRegexStringFromArray(sourceArr)
+      // }
+      let pre = '^'
+      let deil = '$'
+      if (source.startsWith('^')) {
+        pre=''
+      }
+      if (source.endsWith('$')) {
+        deil=''
+      }
+      if (!source.startsWith('(')) {
+        source = '('+source
+      }
+
+      if (!source.endsWith(')')) {
+        source = source + ')'
+      }
+      return pre+source+deil
+    }
+    if (source && Array.isArray(source)) {
+      return createRegexStringFromArray(source)
+    }
+  }
+}
+
 
 const PrMatchNewContent = (props: IProps) => {
   const {
@@ -49,12 +112,13 @@ const PrMatchNewContent = (props: IProps) => {
 
   const filterTargetValue = (value) => {
     if (isEmpty(branchList)) return [];
-    return map(branchList, (branchItem) => {
-      let newItem = { ...branchItem };
-      newItem.disabled = newItem.value === value;
-      return newItem;
+
+    return branchList.filter((branchItem) => {
+      return branchItem.value !== value;
     });
+   
   };
+
 
   return (
     <Form field={field} {...FORM_LAYOUT}>
@@ -84,7 +148,7 @@ const PrMatchNewContent = (props: IProps) => {
       <Form.Item
         required
         label={i18n('ui.trigger.target.branch')}
-        className="full-width"
+        className="full-width99"
         extra={
           isEmpty(branchList) && !loading ? (
             <span style={{ color: '#ed6a0c' }}>{i18n('ui.strict.branch.list.null.help')}</span>
@@ -126,7 +190,7 @@ const PrMatchNewContent = (props: IProps) => {
       </Form.Item>
       <Form.Item
         label={i18n('ui.trigger.source.branch')}
-        className="full-width"
+        className="full-width99"
         help={i18n('ui.strict.on.pr.source.help')}
       >
         <RadioGroup
@@ -136,8 +200,22 @@ const PrMatchNewContent = (props: IProps) => {
                 onChange: (value) => {
                   if (value === 'manual') {// 切换手动选择, 如果输入框为字符串,则晴空Source
                     if (typeof getValue(`${type}Source`)==='string') {
+                      const sourcebranchs = extractPatterns(get(initValue, `${type}Source`))
+                      let newSelectSource = []
+                      if (sourcebranchs.length!=0) {
+                        newSelectSource = sourcebranchs
+                      }
+
                       field.setValues({
-                        [`${type}Source`]: [],
+                        [`${type}Source`]: newSelectSource,
+                      });
+                    }
+                  }
+
+                  if (value === 'reg') {// 切换正则选择
+                    if (initValue[`${type}Source`] ) {
+                      field.setValues({
+                        [`${type}Source`]: getPipeSourceBranch('reg', initValue[`${type}Source`]),
                       });
                     }
                   }
@@ -163,6 +241,7 @@ const PrMatchNewContent = (props: IProps) => {
               disabled={disabled || loading}
               state={loading ? 'loading' : undefined}
               mode='tag'
+              hasSelectAll
             />
             {isRefresh && <Refresh style={{ top: 0 }} onRefresh={onRefresh} />}
           </div>
@@ -170,7 +249,7 @@ const PrMatchNewContent = (props: IProps) => {
           <Input
             className="full-width"
             {...init(`${type}Source`, {
-              initValue: initValue[`${type}Source`],
+              initValue: initValue[`${type}Source`]||'',
             })}
             placeholder={i18n('ui.trigger.match.source.branch')}
             disabled={disabled || loading}

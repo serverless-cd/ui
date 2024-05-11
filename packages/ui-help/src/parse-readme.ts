@@ -107,6 +107,8 @@ const parseReadme = (readmeStr: string) => {
   const mattersStr = trimTag(readmeStr, "matters", ' id="flushContent"');
   if (mattersStr) {
     data.matters = mattersStr;
+  }else{
+    data.matters = '    '// 如果没有注意事项不显示
   }
 
   // 项目注意事项

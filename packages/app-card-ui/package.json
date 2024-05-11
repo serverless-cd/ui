@@ -19,7 +19,7 @@
   "typings": "dist/esm/index.d.ts",
   "dependencies": {
     "@alicloud/console-components-slide-panel": "^2.2.14",
-    "@serverless-cd/ui-help": "^0.0.9",
+    "@serverless-cd/ui-help": "^0.0.12",
     "axios": "^1.2.2",
     "qs": "^6.11.0",
     "react-markdown": "^8.0.4",

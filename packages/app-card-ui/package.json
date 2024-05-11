@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/app-card-ui",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

@@ -15,7 +15,7 @@ export default {
   'ui.trigger.match.branch.precise.value': '请填写完整分支名称',
   'ui.trigger.match.branch.include.value': '请填写正则表达式',
   'ui.trigger.match.branch.exclude.value': '请填写完整分支名称',
-  'ui.trigger.match.tag.prefix.value': '正则表达式过滤标签,不填写默认件套所有标签',
+  'ui.trigger.match.tag.prefix.value': '正则表达式过滤标签,不填写默认监听所有标签',
   'ui.trigger.match.tag.precise.value': '请填写完整Tag名称',
   'ui.trigger.match.tag.include.value': '请填写正则表达式',
   'ui.trigger.match.tag.exclude.value': '请填写完整Tag名称',

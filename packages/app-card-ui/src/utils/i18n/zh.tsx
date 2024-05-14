@@ -41,4 +41,9 @@ export default {
   'ui.tag.official': '官方',
   'ui.tag.community': '社区',
   'ui.details': '详情',
+  "serviceName.label": "服务名称",
+  "service.open.status": "服务开通状态",
+  "service.enable.purpose": "服务开通目的",
+  "service.enable": "已开通",
+  "service.non.enable": " <span className=\"ml-4\">未开通，<a target=\"_blank\" href=\"{url}\" className=\"ml-4\">立即开通</a></span>",
 };

@@ -6,6 +6,7 @@ import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import './ReactMarkdown.less'
 
 SyntaxHighlighter.registerLanguage('jsx', jsx);
 SyntaxHighlighter.registerLanguage('javascript', javascript);
@@ -15,14 +16,26 @@ SyntaxHighlighter.registerLanguage('php', php);
 type Props = {
   text: string;
   className?: string;
+  type?: string;
 };
 const ReactMarkdown = (props: Props) => {
-  const { text = '', className = '' } = props;
+  const { text = '', className = '', type = '' } = props;
 
-  var emojified = text?.replace(
-    /:(\w+):/g,
-    '![:$1:](https://github.githubassets.com/images/icons/emoji/$1.png#emoji)',
-  );
+  var emojified = React.useMemo(()=>{
+    if (type == 'usedetail') {
+      if (text.indexOf(`'acs:ram::123456:role/aliyuncdnserverlessdevsrole'`)!==-1) {
+        return text?.replace(`'acs:ram::123456:role/aliyuncdnserverlessdevsrole'`, 'acs:ram::123456:role/aliyuncdnserverlessdevsrole')
+      }
+      
+      return text
+    }
+
+    else{
+      return text?.replace(
+        /:(\w+):/g,
+        '![:$1:](https://github.githubassets.com/images/icons/emoji/$1.png#emoji)')
+    }
+  }, [text, type])
 
   return (
     <Markdown
@@ -60,12 +73,15 @@ const ReactMarkdown = (props: Props) => {
         h4(props) {
           return <h4 id={`${props.children}`}> {props.children}</h4>;
         },
+        table({ children }) {
+          return <table className='fc-markdown1'>{children}</table>;
+        },
         ul({ depth, children }) {
           return <ul className={`ul-${depth} ml-32`}>{children}</ul>;
         },
-        ol({ depth, children }) {
-          return <ol className={`ol-${depth} ml-32`}>{children}</ol>;
-        },
+        // ol({ depth, children }) {
+        //   return <ol className={`ol-${depth} ml-32`}>{children}</ol>;
+        // },
         a({ href, target, children }) {
           if (/^\#\S/.test(href)) {
             return <a href={href}>{children}</a>;

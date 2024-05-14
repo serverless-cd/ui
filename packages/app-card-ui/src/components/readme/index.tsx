@@ -1,5 +1,5 @@
 import {
-  Balloon,
+  // Balloon,
   Button,
   Icon,
   Loading,
@@ -17,6 +17,7 @@ import ExternalLink from './ExternalLink';
 import GithubIcon from './GithubIcon';
 import Nav, { NavKey } from './Nav';
 import ReactMarkdown from './ReactMarkdown';
+import ServiceStatus from './ServiceStatus';
 
 function copy(val) {
   copyText(val);
@@ -27,7 +28,11 @@ function copy(val) {
     offset: [-32, 64],
   });
 }
-
+const getTemplate = (packages='', version=({} as any)) => {
+  return (!!version?.tag_name
+    ? `${packages}@${version.tag_name}`
+    : packages);
+}
 export type Props = PropsWithChildren & {
   appName: string;
   title?: string;
@@ -58,6 +63,7 @@ const AliReadme: FC<Props> = (props) => {
   const [visible, setVisible] = useState(readmeVisible);
   const [loading, setLoading] = useState(false);
   const [readmeInfo, setReadmeInfo] = useState<any>({});
+  const [template, setTemplate] = useState('');
 
 
   const fetchApps = async () => {
@@ -89,13 +95,13 @@ const AliReadme: FC<Props> = (props) => {
         },
       });
       return get(result, 'data.Response.readme');
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const fetchData = async () => {
     setLoading(true);
-    const [content, appInfo] = await getTemplateInfo(name);
-     if (isNumber(name)) {
+    const [content, appInfo, template_str] = await getTemplateInfo(name);
+    if (isNumber(name)) {
       const data = parseReadme(content);
       setReadmeInfo({
         ...data,
@@ -104,7 +110,7 @@ const AliReadme: FC<Props> = (props) => {
         codeUrl: get(appInfo, 'codeUrl'),
         previewUrl: get(appInfo, 'previewUrl'),
       });
-     } else if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
+    } else if (content.match(/(?=<appdetai)[\s\S]+(?=<\/appdetail>)/)) {
       const data = parseReadme(content);
       setReadmeInfo({
         ...data,
@@ -115,6 +121,9 @@ const AliReadme: FC<Props> = (props) => {
       });
     } else {
       setReadmeInfo(content);
+    }
+    if (template_str) {
+      setTemplate(template_str)
     }
     setLoading(false);
   };
@@ -131,14 +140,17 @@ const AliReadme: FC<Props> = (props) => {
 
   const fetchV3 = async (name) => {
     const { version = {}, package: app = {} } = await getAppV3(name);
-    if (!isEmpty(version)) return [version.readme, app];
+    const template_str = getTemplate(get(app, 'package'), version)
+    if (!isEmpty(version)) return [version.readme, app, template_str];
     else []
   };
 
   const fetchV2 = async (name) => {
     const [app, content] = await Promise.all([fetchApps(), fetchContent()]);
     const appInfo = find(app, (item) => item.package === name);
-    return [content, appInfo]
+    const appInfoItem = app[name]||{}
+    const template_str = getTemplate(appInfoItem?.package, appInfoItem?.version)
+    return [content, appInfo, template_str]
   };
 
   const getAppV3 = async (projectName) => {
@@ -184,7 +196,7 @@ const AliReadme: FC<Props> = (props) => {
       } else {
         setReadmeInfo(content);
       }
-    } catch (error) {}
+    } catch (error) { }
 
     setLoading(false);
   };
@@ -197,7 +209,6 @@ const AliReadme: FC<Props> = (props) => {
     isFunction(fetchReadme) ? doFetchReadme() : fetchData();
     setVisible(true);
   };
-
   const renderFooter = () => {
     return (
       <>
@@ -288,7 +299,10 @@ const AliReadme: FC<Props> = (props) => {
           <h1 className="mt-20" id={NavKey.codepre}>
             {i18n('ui.codepre.title')}
           </h1>
-          {!isEmpty(readmeInfo.service) && (
+          {/* 前期准备区域---》更换成所依赖服务表格 */}
+          <ServiceStatus template={template} />
+
+          {/* {!isEmpty(readmeInfo.service) && (
             <>
               <div className="mb-4">{i18n('ui.codepre.label')}</div>
               <ul style={{ listStyle: 'unset' }} className="pl-16">
@@ -306,7 +320,8 @@ const AliReadme: FC<Props> = (props) => {
                 ))}
               </ul>
             </>
-          )}
+          )} */}
+
           {!isEmpty(readmeInfo.auth) && (
             <>
               <div className="mt-16 mb-4">{i18n('ui.codepre.permissions')}</div>
@@ -360,13 +375,12 @@ const AliReadme: FC<Props> = (props) => {
           <h1 className="mt-20" id={NavKey.appdetail}>
             {readmeInfo.appdetail ? i18n('ui.application.introduction.document') : null}
           </h1>
-          <ReactMarkdown text={readmeInfo.appdetail} />
+          <ReactMarkdown text={readmeInfo.appdetail} type={name == '26' ? 'usedetail' : ''} />
 
           <h1 className="mt-20" id={NavKey.usedetail}>
             {readmeInfo.usedetail ? i18n('ui.application.usage.document') : null}
           </h1>
-          <ReactMarkdown text={readmeInfo.usedetail} />
-
+          <ReactMarkdown text={readmeInfo.usedetail} type='usedetail' />
           <h1 className="mt-20" id={NavKey.matters}>
             {readmeInfo.matters ? i18n('ui.application.matters.document') : null}
           </h1>

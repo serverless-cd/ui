@@ -1,6 +1,6 @@
 {
   "name": "@serverless-cd/trigger-ui",
-  "version": "0.0.26",
+  "version": "0.0.32",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

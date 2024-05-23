@@ -12,6 +12,7 @@ export default {
   'ui.trigger.match.type.tag': 'Tag 匹配',
   'ui.trigger.match.branch.prefix.value': '请填写分支前缀，不填默认监听所有分支',
   'ui.trigger.match.source.branch': '请选择分支名称或输入正则表达式指定',
+  'ui.trigger.match.source.prnewcontent.branch': '请选择分支名称或输入正则表达式指定, 不填默认选择所有分支',
   'ui.trigger.match.branch.precise.value': '请填写完整分支名称',
   'ui.trigger.match.branch.include.value': '请填写正则表达式',
   'ui.trigger.match.branch.exclude.value': '请填写完整分支名称',

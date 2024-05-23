@@ -1,5 +1,5 @@
 import React from 'react';
-import { map, isEmpty, get } from 'lodash';
+import { isEmpty, get } from 'lodash';
 import { Select, Form, Checkbox, Input, Radio } from '@alicloud/console-components';
 import { ActivityTypes } from '../constants';
 import { i18n } from '../utils';
@@ -59,14 +59,14 @@ function createRegexStringFromArray(array) {
 }
 
 
-function getPipeSourceBranch(trigger, source){
+function getPipeSourceBranch(trigger, source) {
   if (trigger === 'manual') {
-    const manualSourceBranch = source&&Array.isArray(source)&&!isEmpty(source)? createRegexStringFromArray(source) :''
+    const manualSourceBranch = source && Array.isArray(source) && !isEmpty(source) ? createRegexStringFromArray(source) : ''
     return manualSourceBranch
   }
 
   if (trigger === 'reg') {
-    if (source && typeof source==='string') {
+    if (source && typeof source === 'string') {
       // if (source.split(',').length) {// 如果转换过后, 符合规则, 那么也返回匹配之后的值
       //   const sourceArr = source.split(',')
       //   return createRegexStringFromArray(sourceArr)
@@ -74,19 +74,19 @@ function getPipeSourceBranch(trigger, source){
       let pre = '^'
       let deil = '$'
       if (source.startsWith('^')) {
-        pre=''
+        pre = ''
       }
       if (source.endsWith('$')) {
-        deil=''
+        deil = ''
       }
       if (!source.startsWith('(')) {
-        source = '('+source
+        source = '(' + source
       }
 
       if (!source.endsWith(')')) {
         source = source + ')'
       }
-      return pre+source+deil
+      return pre + source + deil
     }
     if (source && Array.isArray(source)) {
       return createRegexStringFromArray(source)
@@ -116,9 +116,8 @@ const PrMatchNewContent = (props: IProps) => {
     return branchList.filter((branchItem) => {
       return branchItem.value !== value;
     });
-   
-  };
 
+  };
 
   return (
     <Form field={field} {...FORM_LAYOUT}>
@@ -195,35 +194,48 @@ const PrMatchNewContent = (props: IProps) => {
       >
         <RadioGroup
           {...init(`${type}Trigger`, {
-              initValue: initValue[`${type}Trigger`] || 'manual',
-              props: {
-                onChange: (value) => {
-                  if (value === 'manual') {// 切换手动选择, 如果输入框为字符串,则晴空Source
-                    if (typeof getValue(`${type}Source`)==='string') {
-                      const sourcebranchs = extractPatterns(get(initValue, `${type}Source`))
-                      let newSelectSource = []
-                      if (sourcebranchs.length!=0) {
-                        newSelectSource = sourcebranchs
-                      }
-
-                      field.setValues({
-                        [`${type}Source`]: newSelectSource,
-                      });
+            initValue: initValue[`${type}Trigger`] || 'manual',
+            props: {
+              onChange: (value) => {
+                if (value === 'manual') {// 切换手动选择, 如果输入框为字符串,则晴空Source
+                  if (typeof getValue(`${type}Source`) === 'string') {
+                    // if ((getValue(`${type}Source`) === '.*' || getValue(`${type}Source`)?.[0] == '.*')) {
+                    //   field.setValues({
+                    //     [`${type}Source`]: '全部',
+                    //   });
+                    //   return 
+                    // }
+                    const sourcebranchs = extractPatterns(get(initValue, `${type}Source`))
+                    let newSelectSource = []
+                    if (sourcebranchs.length != 0) {
+                      newSelectSource = sourcebranchs
                     }
-                  }
 
-                  if (value === 'reg') {// 切换正则选择
-                    if (initValue[`${type}Source`] ) {
-                      field.setValues({
-                        [`${type}Source`]: getPipeSourceBranch('reg', initValue[`${type}Source`]),
-                      });
-                    }
+                    field.setValues({
+                      [`${type}Source`]: newSelectSource,
+                    });
                   }
-                },
+                }
+
+                if (value === 'reg') {// 切换正则选择
+                  if (isEmpty(initValue[`${type}Source`])) {
+                    field.setValues({
+                      [`${type}Source`]: '.*',
+                    });
+                  }else{
+                    field.setValues({
+                      [`${type}Source`]: (
+                        (initValue[`${type}Source`] === '全部' || initValue[`${type}Source`]?.[0] == '全部') ||
+                        (getValue(`${type}Source`) === '全部' || getValue(`${type}Source`)?.[0] == '全部')
+                      ) ? '.*' : getPipeSourceBranch('reg', initValue[`${type}Source`]),
+                    });
+                  }
+                }
               },
+            },
           })}
           style={{ display: 'flex', flexDirection: 'row', marginBottom: 16 }}
-          >
+        >
           <Radio id="manual" value="manual" label="手动选择" />
           <Radio id="reg" value="reg" label="正则过滤" />
         </RadioGroup>
@@ -234,14 +246,40 @@ const PrMatchNewContent = (props: IProps) => {
               className="full-width"
               {...init(`${type}Source`, {
                 initValue: initValue[`${type}Source`] || [],
+                props: {
+                  onChange: (value, actionType, item) => {
+                    // console.log('value===');
+                    // console.log(value, actionType, item);
+                    // 判断是全部回传 .*
+                    if (actionType === 'selectAll') {
+                      field.setValues({
+                        [`${type}Source`]: '全部',
+                      });
+                    } else {
+                      field.setValues({
+                        [`${type}Source`]: value,
+                      });
+                    }
+                  }
+                },
               })}
               valueRender={valueRender}
               dataSource={filterTargetValue(getValue(`${type}Target`))}
-              placeholder={i18n('ui.trigger.match.source.branch')}
+              placeholder={i18n('ui.trigger.match.source.prnewcontent.branch')}
               disabled={disabled || loading}
               state={loading ? 'loading' : undefined}
+              // mode={(getValue(`${type}Source`) === '全部'||getValue(`${type}Source`) === '.*') ? "single" : 'tag'}
               mode='tag'
-              hasSelectAll
+              // hasSelectAll
+              // onVisibleChange={(visible) => {
+              //   if (visible) {
+              //     if (document) {
+              //       setTimeout(() => {
+              //         document.querySelector('.next-select-all-inner').innerHTML = '全部'
+              //       }, 100)
+              //     }
+              //   }
+              // }}
             />
             {isRefresh && <Refresh style={{ top: 0 }} onRefresh={onRefresh} />}
           </div>
@@ -249,9 +287,9 @@ const PrMatchNewContent = (props: IProps) => {
           <Input
             className="full-width"
             {...init(`${type}Source`, {
-              initValue: initValue[`${type}Source`]||'',
+              initValue: isEmpty(initValue[`${type}Source`])? '.*' : initValue[`${type}Source`],
             })}
-            placeholder={i18n('ui.trigger.match.source.branch')}
+            placeholder={i18n('ui.trigger.match.source.prnewcontent.branch')}
             disabled={disabled || loading}
             state={loading ? 'loading' : undefined}
           />

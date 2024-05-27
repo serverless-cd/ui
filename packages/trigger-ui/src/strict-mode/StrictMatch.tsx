@@ -40,7 +40,6 @@ const StrictMatch = (props: IProps) => {
     selectBranchConfig,
   } = props;
   const { init } = field;
-
   return (
     <Form field={field} className="radio-content">
       {help}

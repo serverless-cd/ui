@@ -41,6 +41,7 @@ export interface TriggersProps {
   isPrMatchNew?: boolean;
   onRefresh?: Function;
   valueRender?: Function;
+  pushValue?:any;
   selectBranchConfig: any;
 }
 
@@ -57,6 +58,7 @@ export interface StrictModeProps {
   ref?: any;
   valueRender?: Function;
   selectBranchConfig: any;
+  pushValue?:any;
 }
 
 export const PR = 'pull_request';

@@ -21,11 +21,13 @@ const Trigger = (props: TriggersProps, ref) => {
     isRefresh,
     isPrMatchNew,
     onRefresh,
+    pushValue,
     valueRender = defaultValueRender,
     selectBranchConfig = defaultSelectBranchConfig,
   } = props;
   const strictRef = useRef(null);
   const normalRef = useRef(null);
+
 
   const field = Field.useField({
     onChange: (name) => {
@@ -74,6 +76,7 @@ const Trigger = (props: TriggersProps, ref) => {
           ref={strictRef}
           isRefresh={isRefresh}
           isPrMatchNew={isPrMatchNew}
+          pushValue={pushValue}
           onRefresh={onRefresh}
         />
       )}

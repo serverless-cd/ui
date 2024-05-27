@@ -20,6 +20,7 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
     onChange = noop,
     valueRender,
     selectBranchConfig,
+    pushValue
   } = props;
 
   const [newBranchList, setNewBranchList] = useState(branchList);
@@ -28,11 +29,16 @@ const StrictModeTrigger = (props: StrictModeProps, ref) => {
       onChange(getValues());
     },
   });
-  const { init, getValue, validate, getValues } = field;
+  const { init, getValue, validate, getValues , setValue} = field;
 
   useEffect(() => {
     setNewBranchList(branchList);
   }, [JSON.stringify(branchList)]);
+
+
+  useEffect(()=>{
+   pushValue && setValue('pushValue',pushValue)
+  },[pushValue])
 
   useImperativeHandle(ref, () => ({
     validate,
